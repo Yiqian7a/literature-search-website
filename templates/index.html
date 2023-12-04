@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文献搜索</title>
+    <style>
+         .news-item {
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .pagination {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .pagination a {
+        display: inline-block;
+        margin: 0 5px;
+        padding: 5px 10px;
+        background-color: #f2f2f2;
+        color: #333;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+      .pagination a.active {
+        background-color: #4CAF50;
+        color: white;
+      }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #f2f2f2;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            text-decoration: none;
+            margin: 10px;
+            color: #333;
+            font-weight: bold;
+        }
+        main {
+            padding: 20px;
+        }
+        footer {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>文献搜索</h1>
+    </header>
+    <nav>
+        <a href="#">首页</a>
+        <a href="#">热门文献</a>
+        <a href="#">我的收藏</a>
+        <a href="https://www.baidu.com">历史记录</a>
+    </nav>
+    <main>
+        <h2>欢迎使用文献搜索</h2>
+        <p>在这里您可以搜索到各种学术文献，包括期刊论文、学术会议论文、专著等。利用我们强大的搜索引擎，您可以快速找到您需要的文献资源。</p>
+        <h3>查询文献</h3>
+        <form>
+          <label for="start-date">开始日期：</label>
+          <input type="date" id="start-date" name="start-date">
+          <label for="end-date">结束日期：</label>
+          <input type="date" id="end-date" name="end-date"> 
+          <button type="submit">查询</button>
+        </form>
+    </main>
+    <h1>文献列表</h1>
+    <div id="news-container"></div>
+    <div class="pagination"></div>
+    <script>
+      // 新闻数据
+      const newsData = [
+        {
+          title: "文献标题 1",
+          content: "文献内容 1"
+        },
+        {
+          title: "文献标题 2",
+          content: "文献内容 2"
+        },
+        {
+          title: "文献标题 3",
+          content: "文献内容 3"
+        },
+        {
+          title: "文献标题 4",
+          content: "文献内容 4"
+        },
+        {
+          title: "文献标题 5",
+          content: "文献内容 5"
+        },
+        {
+          title: "文献标题 6",
+          content: "文献内容 6"
+        },
+        {
+          title: "文献标题 7",
+          content: "文献内容 7"
+        },
+        {
+          title: "文献标题 8",
+          content: "文献内容 8"
+        },
+        {
+          title: "文献标题 9",
+          content: "文献内容 9"
+        },
+        {
+          title: "文献标题 10",
+          content: "文献内容 10"
+        },
+        {
+          title: "文献标题 11",
+          content: "文献内容 11"
+        },
+        {
+          title: "文献标题 12",
+          content: "文献内容 12"
+        }
+      ];
+
+      // 每页显示的新闻数
+      const newsPerPage = 5;
+
+      // 计算总页数
+      const totalPages = Math.ceil(newsData.length / newsPerPage);
+
+      // 初始化当前页码
+      let currentPage = 1;
+
+      // 获取新闻容器和翻页容器
+      const newsContainer = document.getElementById("news-container");
+      const paginationContainer = document.querySelector(".pagination");
+
+      // 显示当前页的新闻
+      function showPage(page) {
+        // 更新当前页码
+        currentPage = page;
+
+        // 计算起始索引和结束索引
+        const startIndex = (page - 1) * newsPerPage;
+        const endIndex = startIndex + newsPerPage;
+
+        // 清空新闻容器中的内容
+        newsContainer.innerHTML = "";
+
+        // 遍历新闻数据，显示当前页的新闻
+        for (let i = startIndex; i < endIndex && i < newsData.length; i++) {
+          const newsItem = newsData[i];
+          const newsElement = document.createElement("div");
+          newsElement.classList.add("news-item");
+          newsElement.innerHTML = `
+            <h2>${newsItem.title}</h2>
+            <p>${newsItem.content}</p>
+          `;
+          newsContainer.appendChild(newsElement);
+        }
+
+        // 更新翻页导航栏
+        updatePagination();
+      }
+
+      // 更新翻页导航栏
+      function updatePagination() {
+        // 生成翻页链接
+        let paginationHTML = "";
+        for (let i = 1; i <= totalPages; i++) {
+          if (i === currentPage) {
+            paginationHTML += `
+              <a href="#" class="active">${i}</a>
+            `;
+          } else {
+            paginationHTML += `
+              <a href="#" onclick="showPage(${i})">${i}</a>
+            `;
+          }
+        }
+
+        // 更新翻页容器中的内容
+        paginationContainer.innerHTML = paginationHTML;
+      }
+
+      // 显示第一页的新闻
+      showPage(1);
+    </script>
+    <footer>
+        &copy; 2023 文献搜索. All rights reserved.
+    </footer>
+</body>
+</html>
