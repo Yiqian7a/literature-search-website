@@ -3,74 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文献搜索</title>
-    <style>
-         .news-item {
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-      }
-      .pagination {
-        text-align: center;
-        margin-top: 20px;
-      }
-      .pagination a {
-        display: inline-block;
-        margin: 0 5px;
-        padding: 5px 10px;
-        background-color: #f2f2f2;
-        color: #333;
-        text-decoration: none;
-        border-radius: 5px;
-      }
-      .pagination a.active {
-        background-color: #4CAF50;
-        color: white;
-      }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        nav {
-            background-color: #f2f2f2;
-            padding: 10px;
-            text-align: center;
-        }
-        nav a {
-            text-decoration: none;
-            margin: 10px;
-            color: #333;
-            font-weight: bold;
-        }
-        main {
-            padding: 20px;
-        }
-        footer {
-            background-color: #007bff;
-            color: white;
-            padding: 10px;
-            text-align: center;
-        }
-    </style>
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/index.css">
 </head>
 <body>
     <header>
-        <h1>文献搜索</h1>
+        <nav>
+            <a href="http://127.0.0.1:5500/123/lianxi.html?start-date=2024-01-18&end-date=2024-01-25">首页</a>
+            <a href="#">热门文献</a>
+            <a href="#">我的收藏</a>
+            <a href="https://www.baidu.com">历史记录</a>
+        </nav>
+        <h1>AI智能文献搜索</h1>
+        <div class="search-container">
+            <form action="/search" method="POST">
+                <input type="text" class="search-input" placeholder="搜索学者，论文，专利...">
+                <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
     </header>
-    <nav>
-        <a href="#">首页</a>
-        <a href="#">热门文献</a>
-        <a href="#">我的收藏</a>
-        <a href="https://www.baidu.com">历史记录</a>
-    </nav>
+
     <main>
         <h2>欢迎使用文献搜索</h2>
         <p>在这里您可以搜索到各种学术文献，包括期刊论文、学术会议论文、专著等。利用我们强大的搜索引擎，您可以快速找到您需要的文献资源。</p>
@@ -84,14 +37,19 @@
         </form>
     </main>
     <h1>文献列表</h1>
+
+    <!-- 新闻容器 -->
     <div id="news-container"></div>
+  
+    <!-- 翻页容器 -->
     <div class="pagination"></div>
+  
     <script>
       // 新闻数据
       const newsData = [
         {
-          title: "文献标题 1",
-          content: "文献内容 1"
+          title: "文献标倒萨倒萨倒萨倒萨倒萨大苏打题 1",
+          content: "文献内倒萨倒萨倒萨倒萨倒萨大苏打容 1"
         },
         {
           title: "文献标题 2",
@@ -137,33 +95,34 @@
           title: "文献标题 12",
           content: "文献内容 12"
         }
+        
       ];
-
+  
       // 每页显示的新闻数
       const newsPerPage = 5;
-
+  
       // 计算总页数
       const totalPages = Math.ceil(newsData.length / newsPerPage);
-
+  
       // 初始化当前页码
       let currentPage = 1;
-
+  
       // 获取新闻容器和翻页容器
       const newsContainer = document.getElementById("news-container");
       const paginationContainer = document.querySelector(".pagination");
-
+  
       // 显示当前页的新闻
       function showPage(page) {
         // 更新当前页码
         currentPage = page;
-
+  
         // 计算起始索引和结束索引
         const startIndex = (page - 1) * newsPerPage;
         const endIndex = startIndex + newsPerPage;
-
+  
         // 清空新闻容器中的内容
         newsContainer.innerHTML = "";
-
+  
         // 遍历新闻数据，显示当前页的新闻
         for (let i = startIndex; i < endIndex && i < newsData.length; i++) {
           const newsItem = newsData[i];
@@ -172,14 +131,15 @@
           newsElement.innerHTML = `
             <h2>${newsItem.title}</h2>
             <p>${newsItem.content}</p>
+            <a href="www.baidu.com" onclick
           `;
           newsContainer.appendChild(newsElement);
         }
-
+  
         // 更新翻页导航栏
         updatePagination();
       }
-
+  
       // 更新翻页导航栏
       function updatePagination() {
         // 生成翻页链接
@@ -195,13 +155,17 @@
             `;
           }
         }
-
+  
         // 更新翻页容器中的内容
         paginationContainer.innerHTML = paginationHTML;
       }
-
+  
       // 显示第一页的新闻
       showPage(1);
+    </script>
+  </body>
+  </html>
+
     </script>
     <footer>
         &copy; 2023 文献搜索. All rights reserved.

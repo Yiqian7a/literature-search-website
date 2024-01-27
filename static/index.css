@@ -1,0 +1,124 @@
+.search-container {
+    text-align: center;
+    margin-top: 20px;
+    box-shadow: 0 0.9rem 1.7rem rgba(0, 0, 0, 0.25),
+    0 0.7rem 0.7rem rgba(0, 0, 0, 0.22);
+}
+
+
+.search-input {
+    padding: 15px;
+    width: 500px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #ccc;
+}
+
+#search-form {
+    display: inline-block;
+}
+
+.search-button {
+    padding: 17px 20px;
+    background-color: lightblue;
+    color: black;
+    border: none;
+    border-radius: 0.7rem;
+    cursor: pointer;
+}
+
+.news-item {
+padding: 10px;
+margin-bottom: 20px;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+.pagination {
+text-align: center;
+margin-top: 20px;
+}
+
+.pagination a {
+display: inline-block;
+margin: 0 5px;
+padding: 5px 10px;
+background-color: #f2f2f2;
+color: #333;
+text-decoration: none;
+border-radius: 5px;
+}
+
+.pagination a.active {
+background-color: #4CAF50;
+color: white;
+}
+.news-item {
+    border: 2px solid black;
+    padding: 10px;
+    margin-top: 10px;
+    width: 50%;
+    margin-left: 100px;
+  }
+  
+  /* 标题和内容的样式 */
+.news-item h2 {
+    color: black;
+    text-align: center;
+  }
+  
+.news-item p {
+    color: lightslategray;
+    text-align: center;
+    
+  }
+  
+  /* 分页导航栏的样式 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-left: 10px;
+  }
+  
+.pagination a {
+    margin: 0 5px;
+  }
+  
+.pagination a.active {
+    font-weight: bold;
+  }
+
+body {
+   font-family: Arial, sans-serif;
+   margin: 0;
+   padding: 0;
+}
+header {
+    color:white;
+    padding: 20px;
+    text-align: center;
+    background-image:url("https://ts1.cn.mm.bing.net/th/id/R-C.c67a9e1c2e8557af9c2e3a4ce82e4380?rik=eAPKwgjEnq7NRA&riu=http%3a%2f%2fpic.52112.com%2f180308%2f180308_94%2f4S0JMaqsnM_small.jpg&ehk=fgspuQgrQSnCfzxp4N9GowHSn57wE%2br3cTxBT2765ts%3d&risl=&pid=ImgRaw&r=0")
+
+}
+nav {
+   padding: 10px;
+   text-align: left;
+}
+nav a {
+   text-decoration: none;
+   margin: 10px;
+   color: white;
+   font-weight: bold;
+}
+main {
+   padding: 20px;
+}
+footer {
+   background-color: #007bff;
+   color: white;
+   padding: 10px;
+   text-align: center;
+}
+
