@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>文献搜索</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login_register.css') }}">
+    <link rel="stylesheet" type="text/css" href="/static/login_register.css">
 
 </head>
 <body>
     <div class="container right-panel-active">
         <!-- 注册 -->
         <div class="container__form container--signup">
-            <form action="#" class="form" id="form1">
+            <form class="form" id="form1">
                 <h2 class="form__title">注册账号</h2>
                 <input type="text" id="username" placeholder="用户名" class="input" />
                 <input type="email" id="Remail" placeholder="邮箱" class="input" />
@@ -23,7 +23,7 @@
     
         <!-- 登录 -->
         <div class="container__form container--signin">
-            <form action="#" class="form" id="form2">
+            <form class="form" id="form2">
                 <h2 class="form__title">欢迎登陆</h2>
                 <input type="email" id="Lemail" placeholder="邮箱" class="input" />
                 <input type="password" id="Lpassword" placeholder="密码" class="input" />
@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='login_register.js') }}"></script>
+    <script src="/static/login_register.js"></script>
 </body>
 
 </html>
