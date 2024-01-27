@@ -1,12 +1,13 @@
 from flask import Flask, session, render_template, request, jsonify, json
-# from database import db
+import database as db
 import logging
 from flask_wtf import CSRFProtect
 
 # 创建flask实例对象
 app = Flask(__name__, template_folder=r".\templates")
-# app.config.from_object(db.DevelopmentConfig)
-# db.init_app(app)
+app.config.from_object(db.DevelopmentConfig) # 配置数据库
+with app.app_context():
+    db.init_app(app) # 在上下文环境中初始化数据库
 
 # 设置日志级别
 app.logger.setLevel(logging.INFO)
@@ -74,3 +75,6 @@ def logout():
 
 if __name__ == '__main__':
     app.run(port=5000)
+
+    # 删除所有继承自db.Model的表
+    db.drop_all()
