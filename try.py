@@ -1,8 +1,8 @@
 
 dic = {
-    "user":1
+    "users":"user"
 }
-print("usr" in dic, "222")
+print("user" in dic, "222")
 
 
 

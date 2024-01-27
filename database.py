@@ -15,26 +15,6 @@ class BaseConfig:
 class DevelopmentConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:root@127.0.0.1:3306/literaturesearch?charset=utf8mb4"
 
-    # # 邮箱配置
-    # MAIL_SERVER = "smtp.163.com"
-    # MAIL_USE_SSL = True
-    # MAIL_PORT = 465
-    # MAIL_USERNAME = "hynever@163.com"
-    # MAIL_PASSWORD = "1111111111111"
-    # MAIL_DEFAULT_SENDER = "hynever@163.com"
-
-    # # 缓存配置
-    # CACHE_TYPE = "RedisCache"
-    # CACHE_REDIS_HOST = "127.0.0.1"
-    # CACHE_REDIS_PORT = 6379
-    #
-    # # Celery配置
-    # # 格式：redis://:password@hostname:port/db_number
-    # CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
-    # CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
-    #
-    # AVATARS_SAVE_PATH = os.path.join(BaseConfig.UPLOAD_IMAGE_PATH,"avatars")
-
 
 def init_app(app):
     db = SQLAlchemy(app)
