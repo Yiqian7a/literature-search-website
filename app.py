@@ -1,19 +1,24 @@
 from flask import Flask, session, render_template, request, jsonify, json
 import database as db
-import logging
+import logging, os
 from flask_wtf import CSRFProtect
 
 # 创建flask实例对象
 app = Flask(__name__, template_folder=r".\templates")
+app.secret_key = os.urandom(24)
+print(app.secret_key)
+
 app.config.from_object(db.DevelopmentConfig) # 配置数据库
+
 with app.app_context():
-    db.init_app(app) # 在上下文环境中初始化数据库
+    db_app = db.init_app(app) # 在上下文环境中初始化数据库
+    db.create_user(db_app, "John",'John@163.com', "John")
 
 # 设置日志级别
 app.logger.setLevel(logging.INFO)
 
-app.config['SECRET_KEY'] = 'your_secret_key'  # 设置一个用于加密表单令牌的密钥
-csrf = CSRFProtect(app)
+# app.config['SECRET_KEY'] = 'your_secret_key'  # 设置一个用于加密表单令牌的密钥
+# csrf = CSRFProtect(app)
 
 # 判断当前用户是否在session中。由于flask要求命名空间映射唯一，所以用exec代替直接定义wrapper函数，结果是一样的
 def if_session(func):
@@ -53,9 +58,16 @@ def login_register():
         data = request.json
         print(data)
         if 'username' in data: # 为注册请求
-            return jsonify({'state': 200, "message": "注册成功"})
+            with app.app_context():
+                res = db.create_user(db_app, data['username'], data['email'], data['password'])  # 在数据库中创建用户
+            print(res)
+            if res[0]:
+                # 创建session对象存储用户名，将用户名存储到 session 中
+                session['user_name'] = data['username']
+                return jsonify({'state': 200, "message": res[1]})
+            else: return jsonify({'state': 500, "message": res[1]})
         else: # 为登入请求
-
+            # todo:改成查询数据库来验证
             with open("./data/userdata.json", 'r') as f:
                 userdata = json.load(f)
             if username in userdata and data['password'] == userdata[username]['password']:
@@ -74,7 +86,5 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(port=5000, debug=True)
 
-    # 删除所有继承自db.Model的表
-    db.drop_all()
