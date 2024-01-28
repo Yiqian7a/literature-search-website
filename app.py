@@ -7,20 +7,18 @@ import database as db
 
 # 创建flask实例对象
 app = Flask(__name__, template_folder=r".\templates")
-app.secret_key = os.urandom(24)
+app.config.from_object(db.DevelopmentConfig) # 配置app
+
 with open('session.txt', 'w') as f:
     f.write(str(app.secret_key))
 
-app.config.from_object(db.DevelopmentConfig) # 配置数据库
-
 with app.app_context():
     db_app = db.init_app(app) # 在上下文环境中初始化数据库
-    # db.create_user(db_app, "John",'John@163.com', "John")
+    # db.create_user(db_app, "John",'John@163.com', "John") # test
 
 # 设置日志级别
 app.logger.setLevel(logging.INFO)
 
-# app.config['SECRET_KEY'] = 'your_secret_key'  # 设置一个用于加密表单令牌的密钥
 # csrf = CSRFProtect(app) # 开启后使用post时会出现#400 bad request报错
 
 # 判断当前用户是否在session中。由于flask要求命名空间映射唯一，所以使用functools模块动态生成装饰器函数
@@ -65,14 +63,16 @@ def login_register():
             print(res)
             if res[0] == 200:
                 # 创建session对象存储用户名，将用户名存储到 session 中
-                session['user_name'] = data['username']
+                session['user_name'] = data['email']
                 return jsonify({'state': 200, "message": res[1]})
             else: return jsonify({'state': res[0], "message": res[1]})
+
         else: # 为登入请求
             with app.app_context():
                 res = db.query_user(data['email'], data['password'])  # 在数据库中查找用户并核对密码
             print(res)
             if res[0] == 200:
+                session['user_name'] = data['email']
                 return jsonify({'state': 200})
             else:
                 return jsonify({'state': res[0], 'message': res[1]})
@@ -84,7 +84,6 @@ def logout():
 
 
 if __name__ == '__main__':
-    logout()
-    app.run(port=5000, debug=True)
+    app.run(port=5000)
 
 
