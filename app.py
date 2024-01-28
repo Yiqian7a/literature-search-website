@@ -1,39 +1,40 @@
 from flask import Flask, session, render_template, request, jsonify, json
-import database as db
+import hashlib
 import logging, os
 from flask_wtf import CSRFProtect
+
+import database as db
 
 # 创建flask实例对象
 app = Flask(__name__, template_folder=r".\templates")
 app.secret_key = os.urandom(24)
-print(app.secret_key)
+with open('session.txt', 'w') as f:
+    f.write(str(app.secret_key))
 
 app.config.from_object(db.DevelopmentConfig) # 配置数据库
 
 with app.app_context():
     db_app = db.init_app(app) # 在上下文环境中初始化数据库
-    db.create_user(db_app, "John",'John@163.com', "John")
+    # db.create_user(db_app, "John",'John@163.com', "John")
 
 # 设置日志级别
 app.logger.setLevel(logging.INFO)
 
 # app.config['SECRET_KEY'] = 'your_secret_key'  # 设置一个用于加密表单令牌的密钥
-# csrf = CSRFProtect(app)
+# csrf = CSRFProtect(app) # 开启后使用post时会出现#400 bad request报错
 
-# 判断当前用户是否在session中。由于flask要求命名空间映射唯一，所以用exec代替直接定义wrapper函数，结果是一样的
+# 判断当前用户是否在session中。由于flask要求命名空间映射唯一，所以使用functools模块动态生成装饰器函数
+import functools
 def if_session(func):
-    func_name = func.__name__ + "_wrapper"
-    print(f"wrapping function: {func_name}")
-    exec("""
-def {name}(*args, **kwargs):
-    if "user_name" in session:
-        return func(*args, **kwargs)
-    else:
-        print("user not in session, locate to login")
-        return render_template("login_register.html")
-    return {name}
-""".format(name = func_name))
-    return eval(func_name)
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        if "user_name" in session:
+            return func(*args, **kwargs)
+        else:
+            print("user not in session, redirecting to login")
+            return render_template("login_register.html")
+    return wrapper
+
 
 # 创建根路由
 @app.route('/')
@@ -42,7 +43,7 @@ def home():
     return render_template('index.html')
 
 @app.route('/index', methods=["GET", "POST"])
-# @if_session
+@if_session
 def index():
     if request.method == "GET":
         return render_template('index.html')
@@ -56,28 +57,25 @@ def login_register():
         return render_template('login_register.html')
     elif request.method == 'POST':
         data = request.json
-        print(data)
+        data['password'] = hashlib.sha256(data['password'].encode()).hexdigest()
+        # print(data)
         if 'username' in data: # 为注册请求
             with app.app_context():
                 res = db.create_user(db_app, data['username'], data['email'], data['password'])  # 在数据库中创建用户
             print(res)
-            if res[0]:
+            if res[0] == 200:
                 # 创建session对象存储用户名，将用户名存储到 session 中
                 session['user_name'] = data['username']
                 return jsonify({'state': 200, "message": res[1]})
-            else: return jsonify({'state': 500, "message": res[1]})
+            else: return jsonify({'state': res[0], "message": res[1]})
         else: # 为登入请求
-            # todo:改成查询数据库来验证
-            with open("./data/userdata.json", 'r') as f:
-                userdata = json.load(f)
-            if username in userdata and data['password'] == userdata[username]['password']:
-                # 创建session对象存储用户名，将用户名存储到 session 中
-                session['user_name'] = username[1:]
-                return jsonify({'state': 200, "message": "登录成功"})
-            elif username not in list(userdata):
-                return jsonify({'state': 501, 'message': '用户未注册'})
+            with app.app_context():
+                res = db.query_user(data['email'], data['password'])  # 在数据库中查找用户并核对密码
+            print(res)
+            if res[0] == 200:
+                return jsonify({'state': 200})
             else:
-                return jsonify({'state': 502, 'message': '用户名或密码错误'})
+                return jsonify({'state': res[0], 'message': res[1]})
 
 @app.route('/logout')
 def logout():
@@ -86,5 +84,7 @@ def logout():
 
 
 if __name__ == '__main__':
+    logout()
     app.run(port=5000, debug=True)
+
 
