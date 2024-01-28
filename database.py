@@ -6,10 +6,10 @@ from datetime import timedelta
 import os
 
 class BaseConfig:
-    SECRET_KEY = "your secret key"
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SECRET_KEY = os.urandom(24) # 每次重启服务器都更换session
+    PERMANENT_SESSION_LIFETIME = timedelta(days=7) # session每7天过期
 
-    PERMANENT_SESSION_LIFETIME = timedelta(days=7)
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     UPLOAD_IMAGE_PATH = os.path.join(os.path.dirname(__file__),"media")
 
