@@ -5,18 +5,37 @@ dic = {
 print("user" in dic, "222")
 
 
+def if_session(func):
+    func_name = func.__name__ + "_wrapper"
+    print(f"wrapping function: {func_name}")
+    exec("""
+def {name}(*args, **kwargs):
+    if {name} in "func":
+        return func(*args, **kwargs)
+    else:
+        print("user not in session, locate to login")
+        return "shit"
+""".format(name = func_name))
+    return eval(func_name)
 
+@if_session
+def print1():
+    print("1")
 
-
+@if_session
+def print2():
+    print("2")
 
 
 s="1"
 name="f1"
-exec("""def {}():
-    print('in func {}')
-    print('in func {}')
-print("out of func {}")""".format(name,name,name,name))
-# f1()
+exec("""
+def {name}():
+    print('in func {name}')
+    print('in func {name}')
+print("out of func {name}")""".format(name="func1"))
+
+eval("func1()")
 def if_session(arg1):
     print(arg1, "开始装饰函数")
     if arg1 not in "123":

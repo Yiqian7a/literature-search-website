@@ -71,19 +71,18 @@ registerForm.addEventListener("submit", function (event) {
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(submitForm));
 
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                // 请求成功处理逻辑
-                console.log(xhr.responseText);
+        xhr.onload = function () {
+            const response = JSON.parse(xhr.responseText);
+            alert(response.message);
+            if (response.state === 200) {
                 window.location.href = 'index';
-            } else if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 500) {
-                console.log(xhr.responseText);
             }
         };
 
         xhr.onerror = function () {
             alert("请求失败");
         };
+
     }
 });
 
@@ -98,20 +97,16 @@ loginForm.addEventListener("submit", function (event) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/login_register', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-            // 请求成功处理逻辑
-            console.log(xhr.responseText);
-        }
-    };
+
     xhr.send(JSON.stringify(submitForm));
 
     // 接受 Ajax 响应
     xhr.onload = function () {
         const response = JSON.parse(xhr.responseText);
-        alert(response.message);
         if (response.state === 200) {
             window.location.href = 'index';
+        } else {
+            alert(response.message);
         }
     };
     xhr.onerror = function () {
