@@ -185,7 +185,8 @@ nav ul {
 }
 
 nav li {
-  display: flex;
+  display: inline-block;
+  margin: 0 60px; 
 }
 
 

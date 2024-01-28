@@ -1,6 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-from sqlalchemy.orm import load_only
 
 from datetime import timedelta
 import os

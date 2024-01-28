@@ -1,12 +1,11 @@
 from flask import Flask, session, render_template, request, jsonify, json
 import hashlib
 import logging, os
-from flask_wtf import CSRFProtect
 
 import database as db
 
 # 创建flask实例对象
-app = Flask(__name__, template_folder=r".\templates")
+app = Flask(__name__)
 app.config.from_object(db.DevelopmentConfig) # 配置app
 
 with open('session.txt', 'w') as f:
@@ -19,6 +18,7 @@ with app.app_context():
 # 设置日志级别
 app.logger.setLevel(logging.INFO)
 
+# from flask_wtf import CSRFProtect
 # csrf = CSRFProtect(app) # 开启后使用post时会出现#400 bad request报错
 
 # 判断当前用户是否在session中。由于flask要求命名空间映射唯一，所以使用functools模块动态生成装饰器函数
@@ -36,9 +36,9 @@ def if_session(func):
 
 # 创建根路由
 @app.route('/')
-@if_session
+# @if_session
 def home():
-    return render_template('index.html')
+    return render_template('home.html')
 
 @app.route('/index', methods=["GET", "POST"])
 @if_session
@@ -80,10 +80,10 @@ def login_register():
 @app.route('/logout')
 def logout():
     session.pop('user_name', None)
-    return render_template('login.html')
+    return render_template('login_register.html')
 
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(host='0.0.0.0', port=80)
 
 
