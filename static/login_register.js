@@ -4,6 +4,7 @@ const registerForm = document.getElementById("form1");
 const loginForm = document.getElementById("form2");
 const container = document.querySelector(".container");
 
+
 window.onload = () => {
     container.classList.remove("right-panel-active");
 }

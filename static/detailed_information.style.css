@@ -1,0 +1,174 @@
+/*标题栏*/
+header {
+    padding: 20px;
+    text-align: center;
+    background-image: url("/static/images/index_background.png");
+    background-size: cover;
+    box-shadow: 0 0 10px 1000px rgb(0, 0, 0);
+}
+
+.top-container {
+    display: flex;
+    padding: 10px;
+    text-align: center;
+    align-items: center;
+    background-color: transparent;
+    justify-content: space-between;
+}
+
+.top-container a {
+    margin-right: 10px;
+    flex: 1;
+    text-decoration: none;
+    vertical-align: middle;
+    color: lightgray;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.user-profile {
+    display: flex;
+    justify-content: flex-end;
+    /*align-items: center;*/
+}
+
+.person-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.logged-in-info .username {
+    color: rgb(56, 55, 55);
+    background-color: lightblue;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.logged-in-info {
+    position: relative;
+}
+
+.logged-in-info i {
+    margin-right: 5px;
+}
+
+/*登入后用户信息*/
+.dropdown-content {
+    position: absolute;
+    top: 100%;
+    background-color: #f9f9f9;
+    width: 100px;
+
+    padding: 10px;
+    display: none;
+    box-shadow: 5px 5px 10px 0px rgb(76, 75, 75);
+    border-radius: 10px;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 5px 0;
+    color: #333;
+    text-decoration: none;
+}
+
+.dropdown-content:hover {
+    display: block;
+}
+
+.username:hover + .dropdown-content,
+.dropdown-content:hover {
+    display: block;
+}
+
+.person-icon:hover + .logged-in-info .dropdown-content {
+    display: block;
+}
+
+
+/*搜索框*/
+.search-container {
+    color: transparent;
+    display: flex;
+    width: 80%;
+    text-align: center;
+    margin: 20px auto; /* 设置上下边距为 20px，左右自动居中 */
+    border-radius: 15px;
+    box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.25), 0 0 0.7rem rgba(0, 0, 0, 0.22);
+}
+
+.search-input {
+    flex: 1;
+    padding: 15px;
+    width: 30%;
+    border: none;
+    border-radius: 15px 0 0 15px;
+    font-size: 1rem;
+    background-color: #ccc;
+}
+
+.search-button {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px 15px;
+    background-color: lightblue;
+    border-radius: 0 15px 15px 0;
+    color: black;
+    border: none;
+    cursor: pointer;
+}
+
+.main-container {
+    background-color: rgb(10, 12, 12);
+}
+.main-title-container {
+    padding: 10px;
+    margin: 0 10% 0 10%;
+    width: 80%;
+    background-color: #efefef;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-shadow: 0 0 10px 0px lightgray;
+    display: flex;
+    justify-content: space-between;
+}
+#summary-container {
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #efefef;
+    border-radius: 20px;
+    margin: 5% 10% 0 10%;
+    width: 80%;
+    box-shadow: 0 0 10px 0px lightgray;
+}
+
+
+#source-tree-container {
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #efefef;
+    border-radius: 20px;
+    margin: 5% 10% 10% 10%;
+    width: 80%;
+    box-shadow: 0 0 10px 0px lightgray;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url("https://c-ssl.duitang.com/uploads/item/201712/31/20171231161548_ELGF4.jpeg")
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+    background-color: #414142;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+

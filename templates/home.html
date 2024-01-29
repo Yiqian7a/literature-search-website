@@ -11,50 +11,42 @@
 <body>
     <header>
         <nav class="top-nav">
-            <a href="#">首页</a>
-            <a href="#">开放平台</a>
-            <a href="#">科研热点</a>
-            <a href="https://www.baidu.com">期刊顶会</a>
+            <a href="/index">首页</a>
+            <a href="/index">开放平台</a>
+            <a href="/index">科研热点</a>
+            <a href="/index">期刊顶会</a>
             
         </nav>
         
         <h1>AI智能文献搜索</h1>
         <div class="search-container">
-            <form action="/search" method="POST">
-                <input type="text" class="search-input" placeholder="搜索学者，论文，专利...">
+            <form id = "serach">
+                <input type="text" class="search-input" placeholder="搜索作者、论文...">
                 <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
             </form>
         </div>
     </header>
 
     <main>
-      <nav>
-        <ul>
-          <li ><a href="#">文献列表</a></li>
-          <li ><a href="#">AI对话</a></li>
-          <li ><a href="#">历史记录</a></li>
-        </ul>
-      </nav>
+      <nav >文献列表</nav>
 
     </main>
+    <div class="chatbot-container">
+      <div id="chatbot-window" class="chatbot-window">AI智能文献搜索框
+        <div id="chatbot-messages" class="chatbot-messages"></div>
+      </div>
+      <div class="chatbot-input">
+        <input type="text" id="user-input" placeholder="请输入您的问题">
+        <button id="send-button">发送</button>
+      </div>
+    </div>
 
     <div id="news-container"></div>
 
     <div class="pagination"></div></div>
-    <nav class="denglubtn">
-      <a href="/login_register" class="btn"><i class="fas fa-user"></i>立即登录</a>
-      
-      <b>AI文献搜索，定制科研兴趣，享受科研乐趣</b>
-    </nav>
-
-    <div class="slider-container">
-      <div class="slider">
-        <img src="https://free.wzznft.com/i/2024/01/28/qgpi0d.png" alt="Image 1">
-        <img src="https://free.wzznft.com/i/2024/01/28/prr83z.png" alt="Image 2">
-        <img src="https://free.wzznft.com/i/2024/01/28/psfnwy.png" alt="Image 3">
-      </div>
+    <div class="denglubtn">
+      <a  href="/login_register" class="btn"><i class="fas fa-user"></i>立即登录</a>
     </div>
-
     <script>
       // 新闻数据
       const newsData = [
@@ -114,8 +106,7 @@
       document.addEventListener("click", function(event) {
         // 判断点击的元素是否为新闻标题或内容
         if (event.target.classList.contains("news-link")) {
-          // 执行跳转到www.baidu.com的操作
-          window.location.href = "https://www.baidu.com";
+          window.location.href = "/login_register";
         }
       });
 
@@ -147,9 +138,11 @@
           const newsElement = document.createElement("div");
           newsElement.classList.add("news-item");
           newsElement.innerHTML = `
-            <h2>${newsItem.title}</h2>
-            <p>${newsItem.content}</p>
+            <h2 class="news-link">${newsItem.title}</h2>
+            <p class="news-link">${newsItem.content}</p>
           `;
+          newsContainer.appendChild(newsElement);
+
           newsContainer.appendChild(newsElement);
         }
 
@@ -186,39 +179,6 @@
     let startX;
     let scrollLeft;
 
-    // 监听鼠标按下事件
-    slider.addEventListener('mousedown', (e) => {
-      isDown = true;
-      startX = e.pageX - slider.offsetLeft;
-      scrollLeft = slider.scrollLeft;
-    });
-
-    // 监听鼠标移动事件
-    slider.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX) * 3;
-      slider.scrollLeft = scrollLeft - walk;
-    });
-
-    // 监听鼠标松开事件
-    slider.addEventListener('mouseup', () => {
-      isDown = false;
-    });
-
-    // 监听鼠标离开事件
-    slider.addEventListener('mouseleave', () => {
-      isDown = false;
-    });
-
-    // 自动切换图片
-    let current = 0;
-    const images = document.querySelectorAll('.slider img');
-    setInterval(() => {
-      current = (current + 1) % images.length;
-      slider.style.transform = `translateX(-${current * 33.3333}%)`;
-    }, 3000);
     </script>
     <footer>
         &copy; 2023 文献搜索. All rights reserved.

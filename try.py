@@ -1,9 +1,5 @@
-
-dic = {
-    "users":"user"
-}
-print("user" in dic, "222")
-
+import os
+print("\xb3")
 
 def if_session(func):
     func_name = func.__name__ + "_wrapper"
