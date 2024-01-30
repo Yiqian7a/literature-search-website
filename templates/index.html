@@ -39,7 +39,7 @@
 
 <main class="main-container">
     <div class="left-column">
-        <h2>文献列表</h2>
+        <h2>文 献 列 表</h2>
         <div id="literature-container">
 
         </div>
@@ -111,7 +111,8 @@
             literatureElement.classList.add("literature-item");
             literatureElement.innerHTML = `
                 <h2 class="literature-link">${literatureItem.TI}</a></h2>
-                <p class="literature-link">${literatureItem.AB}</a></p>
+                <p class="literature-link">作者：${literatureItem.AU}</a></p>
+                <p class="literature-link">发布日期：${literatureItem.PY} ${literatureItem.PD}</a></p>
             `;
             literatureContainer.appendChild(literatureElement);
         }
