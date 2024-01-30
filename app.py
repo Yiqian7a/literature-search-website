@@ -1,6 +1,6 @@
-from flask import Flask, session, render_template, request, jsonify, json
-import hashlib, datetime
-import logging, os
+from flask import Flask, session, render_template, request, jsonify
+import hashlib, random
+import logging
 
 import database as db
 
@@ -62,7 +62,12 @@ def home():
 @if_session
 def index():
     if request.method == "GET":
-        return render_template('index.html', username = session['user_name'])
+        # 随机返回5个文献
+        res = []
+        for i in range(5):
+            random_id = random.randint(1, db.RSoE_num)
+            res += db.search_literature(doc_id=random_id)
+        return render_template('index.html', literatureData=res, username=session['user_name'])
     elif request.method == "POST":
         pass
 
@@ -133,9 +138,10 @@ def query_literature():
 def detailed_information():
     if request.method == 'GET':
         doc_id = request.args.get('doc_id')
-        print(doc_id)
+        # print(doc_id)
+        db.add_history(db_app, session['user_id'], doc_id)
         res = db.search_literature(doc_id = doc_id)[0]
-        print(res)
+        # print(res)
         return render_template('detailed_information.html', details = jsonify(res), username=session['user_name'])
     elif request.method == 'POST':
         data = request.json
@@ -152,7 +158,7 @@ def history():
         his_dict = {}
         for i in range(1, 21):
             his_dict[f'h{i}'] = eval(f'his.h{i}')
-        return render_template('history.html', his_dict = jsonify(his_dict))
+        return render_template('history.html', his_dict = jsonify(his_dict), username=session['user_name'])
     elif request.method == 'POST':
         data = request.json
 

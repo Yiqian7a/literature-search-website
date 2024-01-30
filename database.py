@@ -46,7 +46,7 @@ RSoE_title_dict = {
 }
 def init_app(app, init = False):
     db = SQLAlchemy(app)
-    global User, RSoE, User_history
+    global User, RSoE, User_history, RSoE_num
     # 创建用户表单
     class User(db.Model):
         __tablename__ = 'user'  # 设置表名, 表名默认为类名小写
@@ -120,10 +120,12 @@ def init_app(app, init = False):
 
     if init:
         db.drop_all() # 删除所有继承自db.Model的表，即上述类对应的表单
+        print("清除数据库遗留信息")
 
     db.create_all()
     # 写入文献数据
     if init:
+        print("写入文献数据中，...")
         path = "./static/RSoE Data"
         title_dict = {}
         for i in RSoE_title_dict:
@@ -138,7 +140,7 @@ def init_app(app, init = False):
                             title = str(ti)
                             title_dict[title] = line[3:]
                             same_title = True
-                        elif same_title and ti == '  ':
+                        elif ti == '  ' and same_title:
                             title_dict[title] += line[2:]
                         else: # 行标题变了
                             same_title = False
@@ -149,9 +151,12 @@ def init_app(app, init = False):
                         # 清空前一条文献的数据
                         for i in RSoE_title_dict:
                             title_dict[i] = ''
-        print("数据库初始化完成")
+        print("数据库初始化完成！")
 
+    RSoE_num = RSoE.query.count()
     return db
+
+
 
 history_title = {'h1': '', 'h2': '', 'h3': '', 'h4': '', 'h5': '', 'h6': '', 'h7': '', 'h8': '', 'h9': '', 'h10': '',
             'h11': '', 'h12': '', 'h13': '', 'h14': '', 'h15': '', 'h16': '', 'h17': '', 'h18': '', 'h19': '','h20': ''}
@@ -213,6 +218,7 @@ def search_literature(doc_id = None, author = None, title = None):
     ls = []
     for e in res:
         title_dict = {}
+        title_dict['id'] = e.id
         for i in RSoE_title_dict:
             title_dict[i] = eval(f'e.{i}')
         ls.append(title_dict.copy())
@@ -230,7 +236,7 @@ def add_history(db_app, user_id, doc_id):
     new_his=(doc_id, current_time)
 
     # 更新用户历史记录
-    his_dict['h1'] = new_his
+    his_dict = {'h1': new_his}
     history = query_history(user_id=user_id)
     for i in range(2,21):
         his_dict[f'h{i}'] = eval(f'history.h{i-1}')

@@ -9,7 +9,7 @@
 
 #### 安装教程
 
-1.  xxxx
+1.  先安装Mysql，进入后新建一个`literaturesearch`数据库
 2.  xxxx
 3.  xxxx
 
