@@ -4,16 +4,13 @@ import logging
 
 import database as db
 
-'''
-报错信息表 = {
+''' 
+报错信息:
     200: 成功访问页面
     201: 成功创建信息
     403: 服务器拒绝请求
     500: 服务器内部错误
-}
 '''
-
-
 
 # 创建flask实例对象
 app = Flask(__name__)
@@ -24,16 +21,12 @@ with open('session.txt', 'w') as f:
 
 with app.app_context(): # 在上下文环境中初始化数据库
     db_app = db.init_app(app, init = False)
-    # First deploy should make the ↑ var:'init' True. 第一次部署应该将上一句init参数改为Ture
-    # db.create_user(db_app, "John",'John@163.com', "John") # test
-
-
+    # First deploy should config the↑ <init> as True
+    # 第一次部署应该将上一句代码中的init参数改为Ture
 
 # 设置日志级别
 app.logger.setLevel(logging.INFO)
 
-# from flask_wtf import CSRFProtect
-# csrf = CSRFProtect(app) # 开启后使用post时会出现#400 bad request报错
 
 # 判断当前用户是否在session中。由于flask要求命名空间映射唯一，所以使用functools模块动态生成装饰器函数
 import functools
@@ -58,7 +51,7 @@ def create_session(id:int, name:str, email:str):
 def home():
     return render_template('home.html')
 
-@app.route('/index', methods=["GET", "POST"])
+@app.route('/index', methods=["GET"])
 @if_session
 def index():
     if request.method == "GET":
@@ -68,8 +61,59 @@ def index():
             random_id = random.randint(1, db.RSoE_num)
             res += db.search_literature(doc_id=random_id)
         return render_template('index.html', literatureData=res, username=session['user_name'])
-    elif request.method == "POST":
         pass
+
+# 翻页的时候调用?
+@app.route('/query', methods = ['POST'])
+@if_session
+def query_literature():
+    data = request.json
+    res = db.query_literature(data['start'],data['end'])
+    if res:
+        return jsonify({'state': 200, 'res': res})
+    else: return jsonify({'state': 200, 'res': jsonify({"没有查询到相关结果"})})
+
+# 在搜索框输入时调用
+@app.route('/search', methods = ['GET'])
+@if_session
+def search():
+    search_key = request.args.get('search_key')
+    ls = search_key.split(" ")
+    dic = {'AU':'', 'TI':''}
+    for i in ls:
+        dic['author'] = i.split('author:')[1]
+        dic['title'] = i.split('title:')[1]
+    res = db.search_literature(**dic)
+    # literatureData likes [{'TI':'xx', 'AU':'xx', ...}, ...]
+    return render_template('index.html', literatureData=res, username=session['user_name'])
+
+
+@app.route('/detailed_information', methods = ['GET', 'POST'])
+@if_session
+def detailed_information():
+    if request.method == 'GET':
+        doc_id = request.args.get('doc_id')
+        # 添加历史记录
+        if (res := db.add_history(db_app, user_id = session['user_id'], doc_id = doc_id))[0] != 201:
+            return jsonify({'state': res[0], 'res': res[1]})
+        res = db.search_literature(doc_id = doc_id)[0] # 查找文献
+        # print(res)
+        # details likes {'TI':'xx', 'AU':'xx', ...}
+        return render_template('detailed_information.html', details = jsonify(res), username=session['user_name'])
+
+@app.route('/history', methods = ['GET'])
+@if_session
+def history():
+    if request.method == 'GET':
+        his = db.query_history(user_id = session['user_id'])
+        his_dict = {}
+        for i in range(1, 21):
+            if (s := eval(f'his.h{i}')) != '':
+                ls = eval(s)
+                print(s,ls)
+                his_dict[f'h{i}'] = ls + [(db.search_literature(doc_id=ls[1])[0]['TI'])]
+        # historyData likes {'h1':[doc_id, time, doc_title], 'h2':xx, ...}
+        return render_template('history.html', historyData = jsonify(his_dict), username=session['user_name'])
 
 
 @app.route('/login_register', methods=["GET", "POST"])
@@ -113,52 +157,6 @@ def login_register():
 def logout():
     session.clear()
     return render_template('login_register.html')
-
-# 在搜索框输入时调用
-@app.route('/search', methods = ['GET'])
-@if_session
-def search():
-    search_key = request.args.get('search_key')
-    ls = search_key.split(" ")
-    dic = {'AU':'', 'TI':''}
-    for i in ls:
-        dic['author'] = i.split('author:')[1]
-        dic['title'] = i.split('title:')[1]
-    res = db.search_literature(**dic)
-    return render_template('index.html', literatureData=res, username=session['user_name'])
-
-# 翻页的时候调用?
-@app.route('/query', methods = ['POST'])
-@if_session
-def query_literature():
-    data = request.json
-    res = db.query_literature(data['start'],data['end'])
-    if res:
-        return jsonify({'state': 200, 'res': res})
-    else: return jsonify({'state': 200, 'res': jsonify({"没有查询到相关结果"})})
-
-@app.route('/detailed_information', methods = ['GET'])
-@if_session
-def detailed_information():
-    if request.method == 'GET':
-        doc_id = request.args.get('doc_id')
-        # 添加历史记录
-        if (res := db.add_history(db_app, user_id = session['user_id'], doc_id = doc_id))[0] != 201:
-            return jsonify({'state': res[0], 'res': res[1]})
-        res = db.search_literature(doc_id = doc_id)[0] # 查找文献
-        # print(res)
-        return render_template('detailed_information.html', details = jsonify(res), username=session['user_name'])
-
-@app.route('/history', methods = ['GET'])
-@if_session
-def history():
-    if request.method == 'GET':
-        his = db.query_history(user_id = session['user_id'])
-        his_dict = {}
-        for i in range(1, 21):
-            his_dict[f'h{i}'] = eval(f'his.h{i}')
-        return render_template('history.html', historyData = jsonify(his_dict), username=session['user_name'])
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)

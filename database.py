@@ -138,10 +138,10 @@ def init_app(app, init = False):
                         ti = line[:2]
                         if ti in title_dict:
                             title = str(ti)
-                            title_dict[title] = line[3:]
+                            title_dict[title] = line[3:-1]
                             same_title = True
                         elif ti == '  ' and same_title:
-                            title_dict[title] += line[2:]
+                            title_dict[title] += line[2:-1]
                         else: # 行标题变了
                             same_title = False
                     else: # 为空行，写入前一条文献的数据
@@ -232,12 +232,12 @@ def query_history(user_id):
 
 def add_history(db_app, user_id, doc_id):
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
-    new_his="(doc_id, current_time)"
+    new_his=f"[{doc_id}, '{current_time}']"
     # 更新用户历史记录
     user_history = query_history(user_id=user_id)
 
     try:
-        for i in range(2,21):
+        for i in range(20, 1, -1):
             exec(f'user_history.h{i} = user_history.h{i-1}')
             db_app.session.commit()
         user_history.h1 = new_his
