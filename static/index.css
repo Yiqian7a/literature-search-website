@@ -5,7 +5,6 @@ header {
     background-image: url("/static/images/index_background.png");
     background-size: cover;
     color: #f8f8f8;
-    box-shadow: 0 0 100px 10px rgb(0, 0, 0);
 }
 
 .top-container {
@@ -128,6 +127,7 @@ header {
 }
 
 .left-column {
+    margin: 5% 0 10% 0;
     width: 68%;
     background-color: #CECECEFF;
     border-radius: 10px;
@@ -141,7 +141,9 @@ header {
 
 .right-column {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    margin: 5% 0 10% 0;
+    /*justify-content: flex-end;*/
     width: 30%;
 }
 
@@ -187,6 +189,9 @@ body {
     cursor: pointer;
 }
 
+.slider-container {
+    overflow: hidden;
+}
 
 /*AI问答*/
 .chatbot-container {
@@ -252,7 +257,6 @@ nav a {
     color: #6c6969;
     font-size: 30px;
 }
-
 
 /*页标*/
 .pagination {

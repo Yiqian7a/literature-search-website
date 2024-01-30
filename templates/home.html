@@ -3,185 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>首页</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/home.css">
+    <link rel="stylesheet" type="text/css" href="/static/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <header>
-        <nav class="top-nav">
+<header>
+    <div class="top-container">
+        <div>
             <a href="/index">首页</a>
             <a href="/index">开放平台</a>
             <a href="/index">科研热点</a>
             <a href="/index">期刊顶会</a>
-            
-        </nav>
-        
-        <h1>AI智能文献搜索</h1>
-        <div class="search-container">
-            <form id = "serach">
-                <input type="text" class="search-input" placeholder="搜索作者、论文...">
-                <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
-            </form>
         </div>
-    </header>
-
-    <main>
-      <nav >文献列表</nav>
-
-    </main>
-    <div class="chatbot-container">
-      <div id="chatbot-window" class="chatbot-window">AI智能文献搜索框
-        <div id="chatbot-messages" class="chatbot-messages"></div>
-      </div>
-      <div class="chatbot-input">
-        <input type="text" id="user-input" placeholder="请输入您的问题">
-        <button id="send-button">发送</button>
-      </div>
+        <div class="login-btn">
+          <a href="/login_register" class="btn"><i class="fas fa-user"></i>立即登录</a>
+        </div>
+       
     </div>
 
-    <div id="news-container"></div>
-
-    <div class="pagination"></div></div>
-    <div class="denglubtn">
-      <a  href="/login_register" class="btn"><i class="fas fa-user"></i>立即登录</a>
+    <h1>AI智能文献搜索</h1>
+    <div class="search-container">
+        <input type="text" class="search-input" placeholder="搜索作者、标题...">
+        <button type="submit" class="search-button"><i style="font-size: 150%;" class="fas fa-search"></i></button>
     </div>
-    <script>
-      // 新闻数据
-      const newsData = [
-        {
-          title: "Mixtral of Experts",
-          content: "We introduce Mixtral 8x7B, a Sparse Mixture of Experts (SMoE) language model. Mixtral has the same architecture as Mistral 7B, with the difference that each layer is composed of 8 feedforward blocks (i.e. experts). For every token, at each layer, a router network selects two experts to process the current state and combine their outputs. Even though each token only sees two experts, the selected experts can be different at each timestep. As a result, each token has access to 47B parameters, but only uses 13B active parameters during inference. Mixtral was trained with a context size of 32k tokens and it outperforms or matches Llama "
-        },
-        {
-          title: "DeepSeek LLM: Scaling Open-Source Language Models with Longtermism",
-          content: "The rapid development of open-source large language models (LLMs) has been truly remarkable. However, the scaling law described in previous literature presents varying conclusions, which casts a dark cloud over scaling LLMs. We delve into the study of scaling laws and present our distinctive findings that facilitate scaling of large scale models in two commonly used open-source configurations, 7B and 67B. Guided by the scaling laws, we introduce DeepSeek LLM, a project dedicated to advancing open-source language models with a long-term perspective. To support the pre-training phase, we have developed a dataset that currently consists of 2 trillion tokens"
-        },
-        {
-          title: "Denoising Vision Transformers",
-          content: "We delve into a nuanced but significant challenge inherent to Vision Transformers (ViTs): feature maps of these models exhibit grid-like artifacts, which detrimentally hurt the performance of ViTs in downstream tasks. Our investigations trace this fundamental issue down to the positional embeddings at the input stage. To address this, we propose a novel noise model, which is universally applicable to all ViTs. Specifically, the noise model dissects ViT outputs into three components: a semantics term free from noise artifacts and two artifact-related terms that are conditioned on pixel locations. Such a decomposition is achieved by enforcing cross-view feature consis"
-        },
-        {
-          title: "Paraneoplastic NMDA encephalitis, a case report and an extensive review of available literature",
-          content: "Anti-N-methyl-D-aspartate receptor (NMDAr) encephalitis is a prevalent autoimmune condition marked by diverse neuropsychiatric symptoms, primarily impacting young females. The exact mechanisms underlying the development of NMDAr encephalitis have not been fully elucidated. Nonetheless, studies have demonstrated that auto-antibodies targeting the NR1-NR2 subunits of the NMDAr can trigger receptor dysfunction within the central nervous system, thus giving rise to the associated symptoms. Notably"
-        },
-        {
-          title: "Multiseptate gallbladder in an asymptomatic child: Case report and review of the literature",
-          content: "Multiseptated gallbladder also known as “Honeycomb gallbladder” is a rare condition that was first described by Tandon in 1963. It is described as a congenital anomaly in most of the cases. It may be asymptomatic or may lead symptoms. We present the case of a multiseptate gallbladder in a 5 year old girl who was admitted for managament of acute appendicitis."
-        },
-        {
-          title: "文献标题 6",
-          content: "文献内容 6"
-        },
-        {
-          title: "文献标题 7",
-          content: "文献内容 7"
-        },
-        {
-          title: "文献标题 8",
-          content: "文献内容 8"
-        },
-        {
-          title: "文献标题 9",
-          content: "文献内容 9"
-        },
-        {
-          title: "文献标题 10",
-          content: "文献内容 10"
-        },
-        {
-          title: "文献标题 11",
-          content: "文献内容 11"
-        },
-        {
-          title: "文献标题 12",
-          content: "文献内容 12"
-        },
-        
-      ];
+</header>
 
-      // 每页显示的新闻数
-      const newsPerPage = 5;
-      document.addEventListener("click", function(event) {
+<main class="main-container">
+    <div class="left-column">
+        <h2>文献列表</h2>
+        <div id="literature-container">
+
+        </div>
+    </div>
+
+    <div class="right-column">
+        <div class="chatbot-container">
+            <div id="chatbot-window" class="chatbot-window">AI智能文献搜索框
+                <div id="chatbot-messages" class="chatbot-messages"></div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="user-input" placeholder="请输入您的问题">
+                <button id="send-button">发送</button>
+            </div>
+        </div>
+
+    </div>
+
+
+</main>
+<div class="pagination"></div>
+
+<script>
+    // 新闻数据
+    const literatureData = [
+        {
+            title: "Mixtral of Experts",
+            content: "We introduce Mixtral 8x7B, a Sparse Mixture of Experts (SMoE) language model. Mixtral has the same architecture as Mistral 7B, with the difference that each layer is composed of 8 feedforward blocks (i.e. experts). For every token, at each layer, a router network selects two experts to process the current state and combine their outputs. Even though each token only sees two experts, the selected experts can be different at each timestep. As a result, each token has access to 47B parameters, but only uses 13B active parameters during inference. Mixtral was trained with a context size of 32k tokens and it outperforms or matches Llama "
+        },
+        {
+            title: "DeepSeek LLM: Scaling Open-Source Language Models with Longtermism",
+            content: "The rapid development of open-source large language models (LLMs) has been truly remarkable. However, the scaling law described in previous literature presents varying conclusions, which casts a dark cloud over scaling LLMs. We delve into the study of scaling laws and present our distinctive findings that facilitate scaling of large scale models in two commonly used open-source configurations, 7B and 67B. Guided by the scaling laws, we introduce DeepSeek LLM, a project dedicated to advancing open-source language models with a long-term perspective. To support the pre-training phase, we have developed a dataset that currently consists of 2 trillion tokens"
+        },
+        {
+            title: "Denoising Vision Transformers",
+            content: "We delve into a nuanced but significant challenge inherent to Vision Transformers (ViTs): feature maps of these models exhibit grid-like artifacts, which detrimentally hurt the performance of ViTs in downstream tasks. Our investigations trace this fundamental issue down to the positional embeddings at the input stage. To address this, we propose a novel noise model, which is universally applicable to all ViTs. Specifically, the noise model dissects ViT outputs into three components: a semantics term free from noise artifacts and two artifact-related terms that are conditioned on pixel locations. Such a decomposition is achieved by enforcing cross-view feature consis"
+        },
+        {
+            title: "Paraneoplastic NMDA encephalitis, a case report and an extensive review of available literature",
+            content: "Anti-N-methyl-D-aspartate receptor (NMDAr) encephalitis is a prevalent autoimmune condition marked by diverse neuropsychiatric symptoms, primarily impacting young females. The exact mechanisms underlying the development of NMDAr encephalitis have not been fully elucidated. Nonetheless, studies have demonstrated that auto-antibodies targeting the NR1-NR2 subunits of the NMDAr can trigger receptor dysfunction within the central nervous system, thus giving rise to the associated symptoms. Notably"
+        },
+        {
+            title: "Multiseptate gallbladder in an asymptomatic child: Case report and review of the literature",
+            content: "Multiseptated gallbladder also known as “Honeycomb gallbladder” is a rare condition that was first described by Tandon in 1963. It is described as a congenital anomaly in most of the cases. It may be asymptomatic or may lead symptoms. We present the case of a multiseptate gallbladder in a 5 year old girl who was admitted for managament of acute appendicitis."
+        },
+        {
+            title: "文献标题 6",
+            content: "文献内容 6"
+        },
+        {
+            title: "文献标题 7",
+            content: "文献内容 7"
+        },
+        {
+            title: "文献标题 8",
+            content: "文献内容 8"
+        },
+        {
+            title: "文献标题 9",
+            content: "文献内容 9"
+        },
+        {
+            title: "文献标题 10",
+            content: "文献内容 10"
+        },
+        {
+            title: "文献标题 11",
+            content: "文献内容 11"
+        },
+        {
+            title: "文献标题 12",
+            content: "文献内容 12"
+        },
+
+    ];
+
+    // 每页显示的新闻数
+    const literaturePerPage = 5;
+    document.addEventListener("click", function (event) {
         // 判断点击的元素是否为新闻标题或内容
-        if (event.target.classList.contains("news-link")) {
-          window.location.href = "/login_register";
+        if (event.target.classList.contains("literature-link")) {
+            window.location.href = "/login_register";
         }
-      });
+    });
 
-      // 计算总页数
-      const totalPages = Math.ceil(newsData.length / newsPerPage);
+    // 计算总页数
+    const totalPages = Math.ceil(literatureData.length / literaturePerPage);
 
-      // 初始化当前页码
-      let currentPage = 1;
+    // 初始化当前页码
+    let currentPage = 1;
 
-      // 获取新闻容器和翻页容器
-      const newsContainer = document.getElementById("news-container");
-      const paginationContainer = document.querySelector(".pagination");
+    // 获取新闻容器和翻页容器
+    const literatureContainer = document.getElementById("literature-container");
+    const paginationContainer = document.querySelector(".pagination");
 
-      // 显示当前页的新闻
-      function showPage(page) {
+    // 显示当前页的新闻
+    function showPage(page) {
         // 更新当前页码
         currentPage = page;
 
         // 计算起始索引和结束索引
-        const startIndex = (page - 1) * newsPerPage;
-        const endIndex = startIndex + newsPerPage;
+        const startIndex = (page - 1) * literaturePerPage;
+        const endIndex = startIndex + literaturePerPage;
 
         // 清空新闻容器中的内容
-        newsContainer.innerHTML = "";
+        literatureContainer.innerHTML = "";
 
         // 遍历新闻数据，显示当前页的新闻
-        for (let i = startIndex; i < endIndex && i < newsData.length; i++) {
-          const newsItem = newsData[i];
-          const newsElement = document.createElement("div");
-          newsElement.classList.add("news-item");
-          newsElement.innerHTML = `
-            <h2 class="news-link">${newsItem.title}</h2>
-            <p class="news-link">${newsItem.content}</p>
-          `;
-          newsContainer.appendChild(newsElement);
+        for (let i = startIndex; i < endIndex && i < literatureData.length; i++) {
+            const literatureItem = literatureData[i];
+            const literatureElement = document.createElement("div");
+            literatureElement.classList.add("literature-item");
+            literatureElement.innerHTML = `
+            <h2 class="literature-link">${literatureItem.title}</h2>
+            <p class="literature-link">${literatureItem.content}</p>
+            `;
+            literatureContainer.appendChild(literatureElement);
 
-          newsContainer.appendChild(newsElement);
+            literatureContainer.appendChild(literatureElement);
         }
 
         // 更新翻页导航栏
         updatePagination();
-      }
+    }
 
-      // 更新翻页导航栏
-      function updatePagination() {
+    // 更新翻页导航栏
+    function updatePagination() {
         // 生成翻页链接
         let paginationHTML = "";
         for (let i = 1; i <= totalPages; i++) {
-          if (i === currentPage) {
-            paginationHTML += `
-              <a href="#" class="active">${i}</a>
+            if (i === currentPage) {
+                paginationHTML += `
+                <a href="#" class="active">${i}</a>
+                `;
+            } else {
+                paginationHTML += `
+                <a href="#" onclick="showPage(${i})">${i}</a>
             `;
-          } else {
-            paginationHTML += `
-              <a href="#" onclick="showPage(${i})">${i}</a>
-            `;
-          }
+            }
         }
 
         // 更新翻页容器中的内容
         paginationContainer.innerHTML = paginationHTML;
-      }
+    }
 
-      // 显示第一页的新闻
-      showPage(1);
-    </script>
-    <script>
-          const slider = document.querySelector('.slider');
+    // 显示第一页的新闻
+    showPage(1);
+</script>
+<script>
+    const slider = document.querySelector('.slider');
     let isDown = false;
     let startX;
     let scrollLeft;
 
-    </script>
-    <footer>
-        &copy; 2023 文献搜索. All rights reserved.
-    </footer>
+</script>
+<footer>
+    &copy; 2023 文献搜索. All rights reserved.
+</footer>
 </body>
 </html>

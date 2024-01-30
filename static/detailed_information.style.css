@@ -4,7 +4,7 @@ header {
     text-align: center;
     background-image: url("/static/images/index_background.png");
     background-size: cover;
-    box-shadow: 0 0 10px 1000px rgb(0, 0, 0);
+    color: #f8f8f8;
 }
 
 .top-container {
@@ -120,11 +120,12 @@ header {
 }
 
 .main-container {
+    display: inline-block;
     background-color: rgb(10, 12, 12);
 }
 .main-title-container {
     padding: 10px;
-    margin: 0 10% 0 10%;
+    margin: 5% 10% 0 10%;
     width: 80%;
     background-color: #efefef;
     border: 1px solid #ccc;

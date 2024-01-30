@@ -21,7 +21,7 @@
             <div class="logged-in-info">
                 <div class="username"><i class="fas fa-user"></i>已登录：{{ username }}</div>
                 <div class="dropdown-content">
-                    <a href="#">浏览历史</a>
+                    <a href="/history">浏览历史</a>
                     <a href="#">个人主页</a>
                     <a href="#">我的关注</a>
                     <a href="/logout">退出登录</a>
@@ -37,15 +37,22 @@
     </div>
 </header>
 
+
 <div class="main-container">
+    <div id="summary-container">
+        <h1 id="TI"></h1>
+        <p>文献摘要:</p>
+        <p id="AB"></p>
+        <a id="read-original">阅读原文</a>
+    </div>
+
     <div class="main-title-container">
         <div class="left-column">
-            <p>作者：</p>
+            <p >作者：</p>
             <p>页数：</p>
             <p>出版日期：</p>
             <p>类别：</p>
             <p>研究方向：</p>
-            <p>引用的参考文献：</p>
             <p>引用的参考文献数：</p>
             <p>被引用次数(180天):</p>
             <p>被引用次数(2013年至今):</p>
@@ -56,27 +63,20 @@
             <p>会议主办方：</p>
         </div>
         <div class="right-column">
-            <p>{{ AU }}</p>
-            <p>{{ PG }}</p>
-            <p>{{ PD }}</p>
-            <p>{{ WC }}</p>
-            <p>{{ SC }}</p>
-            <p>{{ CR }}</p>
-            <p>{{ NR }}</p>
-            <p>{{ U1 }}</p>
-            <p>{{ U2 }}</p>
-            <p>{{ CT }}</p>
-            <p>{{ CY }}</p>
-            <p>{{ CL }}</p>
-            <p>{{ SP }}</p>
-            <p>{{ HO }}</p>
+            <p id="AU"></p>
+            <p id="PG"></p>
+            <p id="PD"></p>
+            <p id="WC"></p>
+            <p id="SC"></p>
+            <p id="NR"></p>
+            <p id="U1"></p>
+            <p id="U2"></p>
+            <p id="CT"></p>
+            <p id="CY"></p>
+            <p id="CL"></p>
+            <p id="SP"></p>
+            <p id="HO"></p>
         </div>
-    </div>
-
-    <div id="summary-container">
-        <h1>{{ TI }}</h1>
-        <p>文献摘要:{{ AB }}</p>
-        <a href="https://webofscience.clarivate.cn/wos/woscc/full-record/{{ UT }}">阅读原文</a>
     </div>
 
     <div id="source-tree-container">
@@ -93,7 +93,26 @@
 </footer>
 
 <script>
+    var jsonData = {{ details.json | safe }};
 
+    document.getElementById("TI").innerHTML = jsonData.TI;
+    document.getElementById("AU").innerHTML = jsonData.AU;
+    document.getElementById("PG").innerHTML = jsonData.PG;
+    document.getElementById("PD").innerHTML = jsonData.PY +' '+ jsonData.PD;
+    document.getElementById("WC").innerHTML = jsonData.WC;
+    document.getElementById("SC").innerHTML = jsonData.SC;
+    document.getElementById("NR").innerHTML = jsonData.NR;
+    document.getElementById("U1").innerHTML = jsonData.U1;
+    document.getElementById("U2").innerHTML = jsonData.U2;
+    document.getElementById("CT").innerHTML = jsonData.CT;
+    document.getElementById("CY").innerHTML = jsonData.CY;
+    document.getElementById("CL").innerHTML = jsonData.CL;
+    document.getElementById("SP").innerHTML = jsonData.SP;
+    document.getElementById("HO").innerHTML = jsonData.HO;
+    document.getElementById("AB").innerHTML = jsonData.AB;
+    // 构建原文链接
+    var originalLink = "https://webofscience.clarivate.cn/wos/woscc/full-record/" + jsonData.UT;
+    document.getElementById("read-original").href = originalLink; // 将链接赋给 <a> 元素的 href 属性
 </script>
 </body>
 </html>

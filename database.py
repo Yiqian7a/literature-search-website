@@ -1,12 +1,11 @@
 ﻿from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-import os
-
-from datetime import timedelta
+import os, datetime
 
 class BaseConfig:
-    SECRET_KEY = os.urandom(24) # 每次重启服务器都更换session
-    PERMANENT_SESSION_LIFETIME = timedelta(days=7) # session每7天过期
+    SECRET_KEY = '66666666'
+    # SECRET_KEY = os.urandom(24) # 每次重启服务器都更换session
+    PERMANENT_SESSION_LIFETIME = datetime.timedelta(days=7) # session每7天过期
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -23,23 +22,68 @@ class DevelopmentConfig(BaseConfig):
 
     AVATARS_SAVE_PATH = os.path.join(BaseConfig.UPLOAD_IMAGE_PATH, "avatars")
 
+RSoE_title_dict = {
+    "AB": "摘要",
+    "TI": "文献标题",
+    "AU": "作者",
+    "PG": "页数",
+    "PY": "出版年",
+    "PD": "出版日期",
 
+    "WC": "类别",
+    "SC": "研究方向",
+    "NR": "引用的参考文献数",
+    "U1": "被引用次数（最近 180 天）",
+    "U2": "被引用次数（2013 年至今）",
+
+    "CT": "会议标题",
+    "CY": "会议日期",
+    "CL": "会议地点",
+    "SP": "会议赞助方",
+    "HO": "会议主办方",
+
+    "UT": "入藏号",
+}
 def init_app(app, init = False):
     db = SQLAlchemy(app)
-    # 删除所有继承自db.Model的表
-    # db.drop_all()
-
-    global User, RSoE
+    global User, RSoE, User_history
     # 创建用户表单
     class User(db.Model):
         __tablename__ = 'user'  # 设置表名, 表名默认为类名小写
         id = db.Column(db.Integer, primary_key=True) # 设置主键, 默认自增
-        username = db.Column(db.String(80), nullable=False)
+        name = db.Column(db.String(80), nullable=False)
         email = db.Column(db.String(120), unique=True, nullable=False) # 设置字段名 和 唯一约束
         password = db.Column(db.String(120), nullable=False)
+        create_time = db.Column(db.String(64))
         # 执行print(实例)时返回的内容
         def __repr__(self):
-            return '<User %r>' % self.username
+            return f'用户名：{self.name} id：{self.id} 邮箱：{self.email} 创建时间：{self.create_time}'
+
+    # 创建用户历史记录表单
+    class User_history(db.Model):
+        __tablename__ = 'user_history'
+        # 只存放20条数据，滚动更新
+        user_id = db.Column(db.Integer, primary_key=True)
+        h1 = db.Column(db.Text)
+        h2 = db.Column(db.Text)
+        h3 = db.Column(db.Text)
+        h4 = db.Column(db.Text)
+        h5 = db.Column(db.Text)
+        h6 = db.Column(db.Text)
+        h7 = db.Column(db.Text)
+        h8 = db.Column(db.Text)
+        h9 = db.Column(db.Text)
+        h10 = db.Column(db.Text)
+        h11 = db.Column(db.Text)
+        h12 = db.Column(db.Text)
+        h13 = db.Column(db.Text)
+        h14 = db.Column(db.Text)
+        h15 = db.Column(db.Text)
+        h16 = db.Column(db.Text)
+        h17 = db.Column(db.Text)
+        h18 = db.Column(db.Text)
+        h19 = db.Column(db.Text)
+        h20 = db.Column(db.Text)
 
     # 创建Remote Sensing of Environment期刊数据表单
     class RSoE(db.Model):
@@ -51,29 +95,6 @@ def init_app(app, init = False):
         # ]
 
         # 创建属性名
-        global title_dict
-        title_dict = {
-            "AB": "摘要",
-            "TI": "文献标题",
-            "AU": "作者",
-            "PG": "页数",
-            "PY": "出版年",
-            "PD": "出版日期",
-
-            "WC": "类别",
-            "SC": "研究方向",
-            "NR": "引用的参考文献数",
-            "U1": "被引用次数（最近 180 天）",
-            "U2": "被引用次数（2013 年至今）",
-
-            "CT": "会议标题",
-            "CY": "会议日期",
-            "CL": "会议地点",
-            "SP": "会议赞助方",
-            "HO": "会议主办方",
-
-            "UT": "入藏号",
-        }
         id = db.Column(db.Integer, primary_key=True)
 
         AB = db.Column(db.Text)
@@ -97,41 +118,56 @@ def init_app(app, init = False):
 
         UT = db.Column(db.String(20))
 
-    db.create_all()
+    if init:
+        db.drop_all() # 删除所有继承自db.Model的表，即上述类对应的表单
 
-    # 写入数据
+    db.create_all()
+    # 写入文献数据
     if init:
         path = "./static/RSoE Data"
-        for i in title_dict: title_dict[i] = ''
+        title_dict = {}
+        for i in RSoE_title_dict:
+            title_dict[i] = ''
         for file in os.listdir(path):
             with open(path + "/" + file, 'r', encoding='utf-8') as f:
                 for line in f.readlines():
                     if line != "\n":
                         # print(line[:-2])
-                        if len(line) >= 4:
-                            ti = line[:2]
-                            if ti in title_dict:
-                                title = str(ti)
-                                title_dict[title] = line[3:]
-                                same_title = True
-                            elif ti == '  ' and same_title:
-                                title_dict[title] += line[2:]
-                            else: same_title = False
+                        ti = line[:2]
+                        if ti in title_dict:
+                            title = str(ti)
+                            title_dict[title] = line[3:]
+                            same_title = True
+                        elif same_title and ti == '  ':
+                            title_dict[title] += line[2:]
+                        else: # 行标题变了
+                            same_title = False
                     else: # 为空行，写入前一条文献的数据
                         # print(title_dict)
                         db.session.add(RSoE(**title_dict))
                         db.session.commit()
                         # 清空前一条文献的数据
-                        for i in title_dict:
+                        for i in RSoE_title_dict:
                             title_dict[i] = ''
         print("数据库初始化完成")
+
     return db
 
+history_title = {'h1': '', 'h2': '', 'h3': '', 'h4': '', 'h5': '', 'h6': '', 'h7': '', 'h8': '', 'h9': '', 'h10': '',
+            'h11': '', 'h12': '', 'h13': '', 'h14': '', 'h15': '', 'h16': '', 'h17': '', 'h18': '', 'h19': '','h20': ''}
 def create_user(db_app, username:str, email:str, password:str):
     try:
-        new_user = User(username=username, email=email, password=password)
+        # 创建用户
+        current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        new_user = User(name=username, email=email, password=password, create_time=current_time)
         db_app.session.add(new_user)
         db_app.session.commit() # 提交更改
+
+        # 创建空的用户历史记录
+        user =  User.query.filter_by(email = email).first()
+        user_his_init = User_history(user_id = user.id, **history_title)
+        db_app.session.add(user_his_init)
+        db_app.session.commit()
     except IntegrityError:
         db_app.session.rollback()
         return 403, "创建用户失败，此邮箱已被注册"
@@ -141,28 +177,71 @@ def create_user(db_app, username:str, email:str, password:str):
     except Exception as e:
         db_app.session.rollback()
         return 500, f"注册失败，未知错误: {str(e)}"
-    else: return 201, "创建用户成功！"
+    else:
+        return 201, "创建用户成功！", user
 
-def query_user(email:str ,password:str):
-    if user := User.query.filter_by(email=email).first():
-        print(user)
-        if user.password == password:
-            return 200, "登入成功", user
-        else: return 403, '用户名或密码错误', user
-    else: return 403, '用户不存在', user
-
-def query_literature(start,end):
-    res = RSoE.query.filter(RSoE.id.between(start, end)).all()
-    print(res)
-    return res
-
-def search_literature(id = False,AU = False, TI = False):
-    res = False
+def query_user(email:str = None, id:int = None):
     if id:
-        res = User.query.filter_by(id = id).first()
-    if AU:
-        res = RSoE.query.filter(RSoE.AU.like(f'%{AU}%')).all()
-    if TI:
-        res = RSoE.query.filter(RSoE.TI.like(f'%{TI}%')).all()
+        if user := User.query.filter_by(id = id).first():
+            return True, user
+        else: return False, '用户不存在'
+    if email:
+        if user := User.query.filter_by(email = email).first():
+            return True, user
+        else: return False, '用户不存在'
 
-    return res
+
+def query_literature(start:int, end:int):
+    res = RSoE.query.filter(RSoE.id.between(start, end)).all()
+    ls = []
+    for e in res:
+        title_dict = {}
+        for i in RSoE_title_dict:
+            title_dict[i] = eval(f'e.{i}')
+        ls.append(title_dict.copy())
+    return ls
+
+def search_literature(doc_id = None, author = None, title = None):
+    res = []
+    if doc_id:
+        res += [RSoE.query.filter_by(id = doc_id).first()]
+    if author:
+        res += RSoE.query.filter(RSoE.AU.like(f'%{author}%')).all()
+    if title:
+        res += RSoE.query.filter(RSoE.TI.like(f'%{title}%')).all()
+
+    ls = []
+    for e in res:
+        title_dict = {}
+        for i in RSoE_title_dict:
+            title_dict[i] = eval(f'e.{i}')
+        ls.append(title_dict.copy())
+    # print(ls)
+    return ls
+
+
+def query_history(user_id):
+    his = User_history.query.filter_by(user_id = user_id).first()
+    print(his)
+    return his
+
+def add_history(db_app, user_id, doc_id):
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    new_his=(doc_id, current_time)
+
+    # 更新用户历史记录
+    his_dict['h1'] = new_his
+    history = query_history(user_id=user_id)
+    for i in range(2,21):
+        his_dict[f'h{i}'] = eval(f'history.h{i-1}')
+
+    try:
+        history.update(his_dict)
+        db_app.session.commit()
+    except SQLAlchemyError as e:
+        return 500, f"写入失败，数据库错误: {str(e)}"
+    except Exception as e:
+        return 500, f"写入失败，未知错误: {str(e)}"
+    else:
+        return 201, "成功写入历史记录"
+

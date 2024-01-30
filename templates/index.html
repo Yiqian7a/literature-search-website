@@ -21,7 +21,7 @@
             <div class="logged-in-info">
                 <div class="username"><i class="fas fa-user"></i>已登录：{{ username }}</div>
                 <div class="dropdown-content">
-                    <a href="#">浏览历史</a>
+                    <a href="/history">浏览历史</a>
                     <a href="#">个人主页</a>
                     <a href="#">我的关注</a>
                     <a href="/logout">退出登录</a>
@@ -46,6 +46,14 @@
     </div>
 
     <div class="right-column">
+        <div class="slider-container">
+            <div class="slider">
+                <img src="https://free.wzznft.com/i/2024/01/28/qgpi0d.png" alt="Image 1">
+                <img src="https://free.wzznft.com/i/2024/01/28/prr83z.png" alt="Image 2">
+                <img src="https://free.wzznft.com/i/2024/01/28/psfnwy.png" alt="Image 3">
+            </div>
+        </div>
+
         <div class="chatbot-container">
             <div id="chatbot-window" class="chatbot-window">AI智能文献搜索框
                 <div id="chatbot-messages" class="chatbot-messages"></div>
@@ -55,11 +63,9 @@
                 <button id="send-button">发送</button>
             </div>
         </div>
-
     </div>
-
-
 </main>
+
 <div class="pagination"></div>
 
 <script>
@@ -121,7 +127,7 @@
     document.addEventListener("click", function (event) {
         // 判断点击的元素是否为新闻标题或内容
         if (event.target.classList.contains("literature-link")) {
-            window.location.href = "/detailed_information";
+            window.location.href = "/detailed_information?doc_id=3";
         }
     });
 
@@ -188,13 +194,39 @@
     // 显示第一页的新闻
     showPage(1);
 </script>
+
 <script>
     const slider = document.querySelector('.slider');
     let isDown = false;
     let startX;
     let scrollLeft;
 
+
+    // 鼠标移动到用户上显示用户信息
+    slider.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 3;
+      slider.scrollLeft = scrollLeft - walk;
+    });
+
+
+    // 鼠标离开用户收起用户信息
+    slider.addEventListener('mouseleave', () => {
+      isDown = false;
+    });
+
+    // 自动切换图片
+    let current = 0;
+    const images = document.querySelectorAll('.slider img');
+    setInterval(() => {
+      current = (current + 1) % images.length;
+      slider.style.transform = `translateX(-${current * 33.3333}%)`;
+    }, 3000);
 </script>
+
+
 <footer>
     &copy; 2023 文献搜索. All rights reserved.
 </footer>

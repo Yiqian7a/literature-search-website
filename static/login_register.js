@@ -75,7 +75,7 @@ registerForm.addEventListener("submit", function (event) {
         xhr.onload = function () {
             const response = JSON.parse(xhr.responseText);
             alert(response.message);
-            if (response.state === 200) {
+            if (response.state === 201) {
                 window.location.href = 'index';
             }
         };
