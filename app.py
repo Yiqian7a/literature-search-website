@@ -115,13 +115,17 @@ def logout():
     return render_template('login_register.html')
 
 # 在搜索框输入时调用
-@app.route('/search', methods = ['POST'])
+@app.route('/search', methods = ['GET'])
 @if_session
 def search():
-    search_key = request.json['search_key']
-    res = db.search_literature()
-
-    return jsonify({'state': 200, 'res': res})
+    search_key = request.args.get('search_key')
+    ls = search_key.split(" ")
+    dic = {'AU':'', 'TI':''}
+    for i in ls:
+        dic['author'] = i.split('author:')[1]
+        dic['title'] = i.split('title:')[1]
+    res = db.search_literature(**dic)
+    return render_template('index.html', literatureData=res, username=session['user_name'])
 
 # 翻页的时候调用?
 @app.route('/query', methods = ['POST'])
@@ -133,24 +137,19 @@ def query_literature():
         return jsonify({'state': 200, 'res': res})
     else: return jsonify({'state': 200, 'res': jsonify({"没有查询到相关结果"})})
 
-@app.route('/detailed_information', methods = ['GET', 'POST'])
+@app.route('/detailed_information', methods = ['GET'])
 @if_session
 def detailed_information():
     if request.method == 'GET':
         doc_id = request.args.get('doc_id')
-        # print(doc_id)
-        db.add_history(db_app, session['user_id'], doc_id)
-        res = db.search_literature(doc_id = doc_id)[0]
+        # 添加历史记录
+        if (res := db.add_history(db_app, user_id = session['user_id'], doc_id = doc_id))[0] != 201:
+            return jsonify({'state': res[0], 'res': res[1]})
+        res = db.search_literature(doc_id = doc_id)[0] # 查找文献
         # print(res)
         return render_template('detailed_information.html', details = jsonify(res), username=session['user_name'])
-    elif request.method == 'POST':
-        data = request.json
-        res = db.search_literature(doc_id = data['doc_id'])
-        if res:
-            return jsonify({'state': 200, 'res': res})
-        else: return jsonify({'state': 200, 'res': "未查询到相关结果"})
 
-@app.route('/history', methods = ['GET', 'POST'])
+@app.route('/history', methods = ['GET'])
 @if_session
 def history():
     if request.method == 'GET':
@@ -158,9 +157,7 @@ def history():
         his_dict = {}
         for i in range(1, 21):
             his_dict[f'h{i}'] = eval(f'his.h{i}')
-        return render_template('history.html', his_dict = jsonify(his_dict), username=session['user_name'])
-    elif request.method == 'POST':
-        data = request.json
+        return render_template('history.html', historyData = jsonify(his_dict), username=session['user_name'])
 
 
 if __name__ == '__main__':

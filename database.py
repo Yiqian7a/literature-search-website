@@ -209,7 +209,7 @@ def query_literature(start:int, end:int):
 def search_literature(doc_id = None, author = None, title = None):
     res = []
     if doc_id:
-        res += [RSoE.query.filter_by(id = doc_id).first()]
+        res += [RSoE.query.get(doc_id)]
     if author:
         res += RSoE.query.filter(RSoE.AU.like(f'%{author}%')).all()
     if title:
@@ -227,22 +227,20 @@ def search_literature(doc_id = None, author = None, title = None):
 
 
 def query_history(user_id):
-    his = User_history.query.filter_by(user_id = user_id).first()
-    print(his)
+    his = User_history.query.get(user_id)
     return his
 
 def add_history(db_app, user_id, doc_id):
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
-    new_his=(doc_id, current_time)
-
+    new_his="(doc_id, current_time)"
     # 更新用户历史记录
-    his_dict = {'h1': new_his}
-    history = query_history(user_id=user_id)
-    for i in range(2,21):
-        his_dict[f'h{i}'] = eval(f'history.h{i-1}')
+    user_history = query_history(user_id=user_id)
 
     try:
-        history.update(his_dict)
+        for i in range(2,21):
+            exec(f'user_history.h{i} = user_history.h{i-1}')
+            db_app.session.commit()
+        user_history.h1 = new_his
         db_app.session.commit()
     except SQLAlchemyError as e:
         return 500, f"写入失败，数据库错误: {str(e)}"

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>历史记录</title>
+    <title>{{ TI }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="/static/history.css">
 </head>
@@ -36,7 +36,93 @@
         <button type="submit" class="search-button"><i style="font-size: 150%;" class="fas fa-search"></i></button>
     </div>
 </header>
+<main class="main-container">
+    <div class="left-column">
+        <h2>历史记录</h2>
+        <div id="history-container">
 
+        </div>
+    </div>
+
+</main>
+
+<script>
+        var historyData = {{ historyData | safe }};
+    console.log(historyData);
+    console.log(historyData[0]);
+    // 每页显示的新闻数
+    const historyPerPage = 5;
+
+
+    // 计算总页数
+    const totalPages = Math.ceil(historyData.length / historyPerPage);
+
+    // 初始化当前页码
+    let currentPage = 1;
+
+    // 获取新闻容器和翻页容器
+    const historyContainer = document.getElementById("history-container");
+    const paginationContainer = document.querySelector(".pagination");
+
+    // 显示当前页的新闻
+    function showPage(page) {
+        // 更新当前页码
+        currentPage = page;
+
+        // 计算起始索引和结束索引
+        const startIndex = (page - 1) * historyPage;
+        const endIndex = startIndex + historyPerPage;
+
+        // 清空新闻容器中的内容
+        historyContainer.innerHTML = "";
+
+        // 遍历新闻数据，显示当前页的新闻
+        for (let i = startIndex; i < endIndex && i < historyData.length; i++) {
+            const hisrotyItem = historyData[i];
+            const historyElement = document.createElement("div");
+            historyElement.addEventListener("click", function (event) {
+                // 判断点击的元素是否为新闻标题或内容
+                if (event.target.classList.contains("history-link")) {
+                    window.location.href = "/detailed_information?doc_id=" + history.id;
+                }
+            });
+            historyElement.classList.add("history-item");
+            historyElement.innerHTML = `
+                <h2 class="history-link">${historyItem.TI}</a></h2>
+                <p class="history-link">浏览日期： ${historyItem.PD}</a></p>
+            `;
+            historyContainer.appendChild(historyElement);
+        }
+
+
+        // 更新翻页导航栏
+        updatePagination();
+    }
+
+    // 更新翻页导航栏
+    function updatePagination() {
+        // 生成翻页链接
+        let paginationHTML = "";
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === currentPage) {
+                paginationHTML += `
+                <a href="#" class="active">${i}</a>
+                `;
+            } else {
+                paginationHTML += `
+                <a href="#" onclick="showPage(${i})">${i}</a>
+            `;
+            }
+        }
+
+        // 更新翻页容器中的内容
+        paginationContainer.innerHTML = paginationHTML;
+    }
+    // 显示第一页的新闻
+    showPage(1);
+
+
+</script>
 
 <footer>
     &copy; 2023 文献搜索. All rights reserved.
