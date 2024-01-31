@@ -1,12 +1,10 @@
 window.onload = function() {
-
-    console.log("li", literatureData)
+    //console.log("li", literatureData)
     console.log("kw", keyWord)
     // 获取文献容器
     const literatureContainer = document.getElementById("literature-container");
 
     if (keyWord != '') {
-        console.log("keyWord not null");
         // 创建正则表达式，用于匹配关键词
         var regex = new RegExp(keyWord, 'gi');
         var searchInput = document.getElementById('search-input');

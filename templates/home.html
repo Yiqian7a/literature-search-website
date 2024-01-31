@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/common.css">
-    <link rel="stylesheet" type="text/css" href="/static/index.css">
-    <link rel="stylesheet" type="text/css" href="/static/home.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/common.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css">
 </head>
 
 <body>
@@ -66,7 +65,7 @@
 </main>
 
 <script>
-    // 新闻数据
+    // 文献数据
     const literatureData = [
         {
             title: "&nbsp;&nbsp;此页面为展示页面，请登入后浏览网站",
@@ -84,7 +83,7 @@
 
     const literatureContainer = document.getElementById("literature-container");
 
-        // 遍历新闻数据，显示当前页的新闻
+        // 遍历文献数据，显示当前页的文献
         for (let i = 0; i < 4; i++) {
             const literatureItem = literatureData[i];
             const literatureElement = document.createElement("div");

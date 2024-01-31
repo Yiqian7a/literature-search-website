@@ -61,6 +61,7 @@ def index():
             print("search!")
             res = db.search_literature(author=search_key, title=search_key)
         else:
+            search_key = ''
             # 随机查询15篇文献
             res = []
             for i in range(50):
