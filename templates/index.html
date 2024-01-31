@@ -76,7 +76,7 @@
             literatureElement.addEventListener("click", function (event) {
                 // 判断点击的元素是否为新闻标题或内容
                 if (event.target.classList.contains("literature-link")) {
-                    window.location.href = "/detailed_information?doc_id=" + literatureItem.id;
+                    window.location.href = "/details?doc_id=" + literatureItem.id;
                 }
             });
             literatureElement.classList.add("literature-item");

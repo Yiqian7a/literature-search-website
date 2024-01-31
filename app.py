@@ -88,16 +88,17 @@ def search():
     return render_template('index.html', literatureData=res, username=session['user_name'])
 
 
-@app.route('/detailed_information', methods = ['GET', 'POST'])
+@app.route('/details', methods = ['GET', 'POST'])
 @if_session
-def detailed_information():
+def details():
     if request.method == 'GET':
         doc_id = request.args.get('doc_id')
         # 添加历史记录
         if (res := db.add_history(db_app, user_id = session['user_id'], doc_id = doc_id))[0] != 201:
             return jsonify({'state': res[0], 'res': res[1]})
-        res = db.search_literature(doc_id = doc_id)[0] # 查找文献
-        # print(res)
+        # 查找文献
+        res = db.search_literature(doc_id = doc_id)[0]
+
         # details likes {'TI':'xx', 'AU':'xx', ...}
         return render_template('details.html', details = jsonify(res), username=session['user_name'])
 
@@ -122,9 +123,6 @@ def login_register():
         return render_template('login_register.html')
     elif request.method == 'POST':
         data = request.json
-        print(data)
-
-
         data['password'] = hashlib.sha256(data['password'].encode()).hexdigest()
         if 'username' in data: # 为注册请求
             if data['username'] == '' or data['email'] == '' or data['password'] == '':
