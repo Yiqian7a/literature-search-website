@@ -107,9 +107,9 @@ def history():
             if (s := eval(f'his.h{i}')) != '':
                 ls = eval(s)
                 print(ls)
-                ti = db.search_literature(doc_id=ls[1])[0].TI
+                ti = db.search_literature(doc_id=ls[0])[0].TI
                 ls.append(ti)
-                his_dict[f'h{i}'] = ls.copy()
+                his_dict[f'h{i}'] = ls
         print(his_dict)
         # historyData likes {'h1':[doc_id, time, doc_title], 'h2':xx, ...}
         return render_template('history.html', historyData = jsonify(his_dict))
