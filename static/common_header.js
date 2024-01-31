@@ -3,6 +3,4 @@ fetch('get_header')
     .then(data => {
         const headerElement = document.querySelector('header');
         headerElement.innerHTML = data;
-
-    console.log(data)
     });

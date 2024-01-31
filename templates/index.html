@@ -54,10 +54,16 @@
 
     // 初始化当前页码
     let currentPage = 1;
-
     // 获取新闻容器和翻页容器
     const literatureContainer = document.getElementById("literature-container");
     const paginationContainer = document.querySelector(".pagination");
+
+    // 获取要高亮显示的文本内容
+    const text = literatureContainer.innerText
+    // 创建正则表达式，用于匹配关键词
+    const keyWord = '{{ highlight | safe }}';
+    const regex = new RegExp(keyWord, 'gi');
+
 
     // 显示当前页的新闻
     function showPage(page) {
@@ -75,6 +81,10 @@
         for (let i = startIndex; i < endIndex && i < literatureData.length; i++) {
             const literatureItem = literatureData[i];
             const literatureElement = document.createElement("div");
+            const literatureTI = literatureItem.TI.replace(regex, '<span style="background-color: yellow;">$&</span>');
+            const literatureAU = literatureItem.AU.replace(regex, '<span style="background-color: yellow;">$&</span>')
+            console.log(literatureTI)
+
             literatureElement.addEventListener("click", function (event) {
                 // 判断点击的元素是否为新闻标题或内容
                 if (event.target.classList.contains("literature-link")) {
@@ -83,8 +93,8 @@
             });
             literatureElement.classList.add("literature-item");
             literatureElement.innerHTML = `
-                <h2 class="literature-link">${literatureItem.TI}</a></h2>
-                <p class="literature-link">作者：${literatureItem.AU}</a></p>
+                <h2 class="literature-link">${ literatureTI}</a></h2>
+                <p class="literature-link">作者：${literatureAU}</a></p>
                 <p class="literature-link">发布日期：${literatureItem.PY} ${literatureItem.PD}</a></p>
             `;
             literatureContainer.appendChild(literatureElement);

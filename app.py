@@ -55,13 +55,18 @@ def home():
 @if_session
 def index():
     if request.method == "GET":
-        # 随机返回5个文献
-        res = []
-        for i in range(5):
-            random_id = random.randint(1, db.RSoE_num)
-            res += db.search_literature(doc_id=random_id)
-        return render_template('index.html', literatureData=res, username=session['user_name'])
-        pass
+        search_key = request.args.get('search_key')
+        print(search_key)
+        if search_key:
+            res = db.search_literature(author=search_key, title=search_key)
+        else:
+            # 随机返回15篇文献
+            res = []
+            for i in range(15):
+                random_id = random.randint(1, db.RSoE_num)
+                res += db.search_literature(doc_id=random_id)
+        return render_template('index.html', literatureData=res, highlight=search_key)
+
 
 # 翻页的时候调用?
 @app.route('/query', methods = ['GET'])
@@ -72,22 +77,6 @@ def query_literature():
     if res:
         return jsonify({'state': 200, 'res': res})
     else: return jsonify({'state': 200, 'res': jsonify({"没有查询到相关结果"})})
-
-# 在搜索框输入时调用
-@app.route('/search', methods = ['GET'])
-@if_session
-def search():
-    search_key = request.args.get('search_key')
-    params = search_key
-    ls = search_key.split(" ")
-    key_dic = {'AU':'', 'TI':''}
-    for i in ls:
-        key_dic['author'] = i.split('author:')[1]
-        key_dic['title'] = i.split('title:')[1]
-    print(key_dic)
-    res = db.search_literature(**key_dic)
-    # literatureData likes [{'TI':'xx', 'AU':'xx', ...}, ...]
-    return render_template('index.html', literatureData=res, username=session['user_name'])
 
 
 @app.route('/details', methods = ['GET', 'POST'])
@@ -102,7 +91,7 @@ def details():
         res = db.search_literature(doc_id = doc_id)[0]
 
         # details likes {'TI':'xx', 'AU':'xx', ...}
-        return render_template('details.html', details = jsonify(res), username=session['user_name'])
+        return render_template('details.html', details = jsonify(res))
 
 @app.route('/history', methods = ['GET'])
 @if_session
