@@ -20,6 +20,7 @@
     </div>
 </main>
 
+
 <script>
     var historyData = {{ historyData | safe }}
     const historyContainer = document.getElementById("history-container");
@@ -35,6 +36,9 @@
         historyContainer.appendChild(historyElement);
     }
 </script>
+
+<script src="/static/js/search.js"></script>
+<script src="/static/js/index.js"></script>
 
 <footer>
     &copy; 糖式组. All rights reserved. &nbsp;&nbsp;&nbsp;

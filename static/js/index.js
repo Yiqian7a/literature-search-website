@@ -1,6 +1,7 @@
 window.onload = function() {
-    //console.log("li", literatureData)
+    console.log("li", literatureData)
     console.log("kw", keyWord)
+
     // 获取文献容器
     const literatureContainer = document.getElementById("literature-container");
 
@@ -40,7 +41,8 @@ window.onload = function() {
             for (let i = startIndex; i < endIndex && i < literatureData.length; i++) {
                 const literatureItem = literatureData[i];
                 const literatureElement = document.createElement("div");
-                if (keyWord != '' && keyWord != null) {
+
+                if (keyWord != '') {
                     var literatureTI = literatureItem.TI.replace(regex, '<span style="background-color: yellow;">$&</span>');
                     var literatureAU = literatureItem.AU.replace(regex, '<span style="background-color: yellow;">$&</span>')
                 } else {
@@ -74,11 +76,11 @@ window.onload = function() {
             for (let i = 1; i <= totalPages; i++) {
                 if (i === currentPage) {
                     paginationHTML += `
-                <a href="#" class="active">${i}</a>
+                <a class="active">${i}</a>
                 `;
                 } else {
                     paginationHTML += `
-                <a href="#" onclick="showPage(${i})">${i}</a>
+                <a onclick="showPage(${i})">${i}</a>
             `;
                 }
             }

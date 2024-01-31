@@ -146,9 +146,9 @@ def login_register():
                 return jsonify({'state': 403, "message": '登入邮箱、密码不能为空'})
             # with app.app_context():
             res = db.query_user(email = data['email'])  # 在数据库中查找用户并核对密码
-            print('用户登入：', res[1].email)
             if res[0]:
                 if res[1].password == data['password']:
+                    print('用户登入：', res[1].email)
                     create_session(id = res[1].id, name=res[1].name, email = res[1].email)
                     return jsonify({'state': 200, "message": "登入成功"})
                 else:
