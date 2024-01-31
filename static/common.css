@@ -134,6 +134,10 @@ footer {
     text-align: center;
 }
 
+footer a {
+    color: white;
+}
+
 /*主要内容的容器，以上全是通用的搜索框、页标等*/
 .main-container {
     display: flex;

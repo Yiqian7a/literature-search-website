@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="TI"></title>
+    <title id="title-TI"></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="/static/details.css">
 </head>
@@ -16,70 +16,69 @@
 
 <main class="main-container">
     <div id="summary-container">
-        <h1 id="TI"></h1>
-        <p>文献摘要:</p>
+        <h1 id="TI">a</h1>
+        <h4>文献摘要:</h4>
         <p id="AB"></p>
-        <a id="read-original">阅读原文</a>
+        <a id="read-original">前往 Web of Science 阅读原文</a>
     </div>
 
     <div class="main-title-container">
         <div>
-            <p class="title">作者：</p>
+            <h4 class="title">作者：</h4>
             <p class="content" id="AU"></p>
         </div>
         <div>
-            <p class="title">页数：</p>
+            <h4 class="title">页数：</h4>
             <p class="content" id="PG"></p>
         </div>
         <div>
-            <p class="title">出版日期：</p>
+            <h4 class="title">出版日期：</h4>
             <p class="content" id="PD"></p>
         </div>
         <div>
-            <p class="title">类别：</p>
+            <h4 class="title">类别：</h4>
             <p class="content" id="WC"></p>
         </div>
         <div>
-            <p class="title">研究方向：</p>
+            <h4 class="title">研究方向：</h4>
             <p class="content" id="SC"></p>
         </div>
         <div>
-            <p class="title">引用的参考文献数：</p>
+            <h4 class="title">引用的参考文献数：</h4>
             <p class="content" id="NR"></p>
         </div>
         <div>
-            <p class="title">被引用次数(180天):</p>
+            <h4 class="title">被引用次数(180天):</h4>
             <p class="content" id="U1"></p>
         </div>
         <div>
-            <p class="title">被引用次数(2013年至今):</p>
+            <h4 class="title">被引用次数(2013年至今):</h4>
             <p class="content" id="U2"></p>
         </div>
         <div>
-            <p class="title">会议标题：</p>
+            <h4 class="title">会议标题：</h4>
             <p class="content" id="CT"></p>
         </div>
         <div>
-            <p class="title">会议日期：</p>
+            <h4 class="title">会议日期：</h4>
             <p class="content" id="CY"></p>
         </div>
         <div>
-            <p class="title">会议地点：</p>
+            <h4 class="title">会议地点：</h4>
             <p class="content" id="CL"></p>
         </div>
         <div>
-            <p class="title">会议赞助方：</p>
+            <h4 class="title">会议赞助方：</h4>
             <p class="content" id="SP"></p>
         </div>
         <div>
-            <p class="title">会议主办方：</p>
+            <h4 class="title">会议主办方：</h4>
             <p class="content" id="HO"></p>
         </div>
     </div>
 
     <div id="source-tree-container">
-        <h1>溯源树</h1>
-        主题树
+        <h4>溯源树</h4>
     </div>
 
 
@@ -87,28 +86,30 @@
 
 
 <footer>
-    &copy; 2023 文献搜索. All rights reserved.
+    &copy; 糖式组. All rights reserved. &nbsp;&nbsp;&nbsp;
+    <a href="https://gitee.com/Yiqian7a/literature-search-website">前往Gitee仓库</a>
 </footer>
 
 <script src="/static/search.js"></script>
 <script>
     var jsonData = {{ details.json | safe }};
 
-    document.getElementById("TI").innerHTML = jsonData.TI;
+    document.getElementById("title-TI").innerHTML = '文献搜索：'+jsonData.TI;
+    document.getElementById("TI").innerHTML = '&nbsp;&nbsp;'+jsonData.TI;
     document.getElementById("AU").innerHTML = jsonData.AU;
-    document.getElementById("PG").innerHTML = jsonData.PG +'页';
+    document.getElementById("PG").innerHTML = jsonData.PG +'&nbsp;页';
     document.getElementById("PD").innerHTML = jsonData.PY +' '+ jsonData.PD;
     document.getElementById("WC").innerHTML = jsonData.WC;
     document.getElementById("SC").innerHTML = jsonData.SC;
-    document.getElementById("NR").innerHTML = jsonData.NR +'篇';
-    document.getElementById("U1").innerHTML = jsonData.U1 +'次';
-    document.getElementById("U2").innerHTML = jsonData.U2 +'次';
+    document.getElementById("NR").innerHTML = jsonData.NR +'&nbsp;篇';
+    document.getElementById("U1").innerHTML = jsonData.U1 +'&nbsp;次';
+    document.getElementById("U2").innerHTML = jsonData.U2 +'&nbsp;次';
     document.getElementById("CT").innerHTML = jsonData.CT;
     document.getElementById("CY").innerHTML = jsonData.CY;
     document.getElementById("CL").innerHTML = jsonData.CL;
     document.getElementById("SP").innerHTML = jsonData.SP;
     document.getElementById("HO").innerHTML = jsonData.HO;
-    document.getElementById("AB").innerHTML = jsonData.AB;
+    document.getElementById("AB").innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;'+jsonData.AB;
     // 构建原文链接
     var originalLink = "https://webofscience.clarivate.cn/wos/woscc/full-record/" + jsonData.UT;
     document.getElementById("read-original").href = originalLink; // 将链接赋给 <a> 元素的 href 属性

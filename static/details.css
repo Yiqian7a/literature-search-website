@@ -23,11 +23,10 @@
     align-items: center;
 }
 .title{
-    flex: 1;
-    max-width: 15%;
+    max-width: 20%;
 }
 .content {
-    flex: 3;
+    flex: 1;
     max-width: 75%;
     word-break: break-all;
 }
@@ -41,7 +40,9 @@
     width: 80%;
     box-shadow: 0 0 10px 0px lightgray;
 }
-
+#read-original{
+    color: #4785d7;
+}
 
 #source-tree-container {
     padding: 10px;

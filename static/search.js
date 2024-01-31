@@ -1,6 +1,6 @@
 
 function search() {
-    var searchInput = document.getElementById('search-input').value;
+    const searchInput = document.getElementById('search-input').value;
     window.location.href = '/index?search_key=' + encodeURIComponent(searchInput);
 }
 

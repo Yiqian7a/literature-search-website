@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <title>首页</title>
+    <title>文献搜索：首页</title>
     <link rel="stylesheet" type="text/css" href="/static/index.css">
 </head>
 <body>
@@ -41,114 +41,15 @@
 <div class="pagination"></div>
 
 
-<script src="/static/search.js"></script>
+<footer href="https://gitee.com/Yiqian7a/literature-search-website">
+    &copy; 糖式组. All rights reserved. &nbsp;&nbsp;&nbsp;前往Gitee仓库
+</footer>
 <script>
     var literatureData = {{ literatureData | safe }};
-    {#console.log(literatureData);#}
-    {#console.log(literatureData[0]);#}
-    // 每页显示的新闻数
-    const literaturePerPage = 5;
-
-    // 计算总页数
-    const totalPages = Math.ceil(literatureData.length / literaturePerPage);
-
-    // 初始化当前页码
-    let currentPage = 1;
-    // 获取新闻容器和翻页容器
-    const literatureContainer = document.getElementById("literature-container");
-    const paginationContainer = document.querySelector(".pagination");
-
-    // 获取要高亮显示的文本内容
-    const text = literatureContainer.innerText
-    // 创建正则表达式，用于匹配关键词
-    const keyWord = '{{ highlight | safe }}';
-    const regex = new RegExp(keyWord, 'gi');
-
-    if (keyWord != '' ){
-        const searchInput = document.getElementById('search-input');
-        searchInput.value = keyWord
-    }
-
-    // 显示当前页的新闻
-    function showPage(page) {
-        // 更新当前页码
-        currentPage = page;
-
-        // 计算起始索引和结束索引
-        const startIndex = (page - 1) * literaturePerPage;
-        const endIndex = startIndex + literaturePerPage;
-
-        // 清空新闻容器中的内容
-        literatureContainer.innerHTML = "";
-
-        // 遍历新闻数据，显示当前页的新闻
-        for (let i = startIndex; i < endIndex && i < literatureData.length; i++) {
-            const literatureItem = literatureData[i];
-            const literatureElement = document.createElement("div");
-            const literatureTI = literatureItem.TI.replace(regex, '<span style="background-color: yellow;">$&</span>');
-            const literatureAU = literatureItem.AU.replace(regex, '<span style="background-color: yellow;">$&</span>')
-            console.log(literatureTI)
-
-            literatureElement.addEventListener("click", function (event) {
-                // 判断点击的元素是否为新闻标题或内容
-                if (event.target.classList.contains("literature-link")) {
-                    window.location.href = "/details?doc_id=" + literatureItem.id;
-                }
-            });
-            literatureElement.classList.add("literature-item");
-            literatureElement.innerHTML = `
-                <h2 class="literature-link">${literatureTI}</a></h2>
-                <p class="literature-link">作者：${literatureAU}</a></p>
-                <p class="literature-link">发布日期：${literatureItem.PY} ${literatureItem.PD}</a></p>
-            `;
-            literatureContainer.appendChild(literatureElement);
-        }
-
-
-        // 更新翻页导航栏
-        updatePagination();
-    }
-
-    // 更新翻页导航栏
-    function updatePagination() {
-        // 生成翻页链接
-        let paginationHTML = "";
-        for (let i = 1; i <= totalPages; i++) {
-            if (i === currentPage) {
-                paginationHTML += `
-                <a href="#" class="active">${i}</a>
-                `;
-            } else {
-                paginationHTML += `
-                <a href="#" onclick="showPage(${i})">${i}</a>
-            `;
-            }
-        }
-
-        // 更新翻页容器中的内容
-        paginationContainer.innerHTML = paginationHTML;
-    }
-    // 显示第一页的新闻
-    showPage(1);
-
-    var slider = document.querySelector('.slider');
-    var currentIndex = 0;
-
-    setInterval(function() {
-        currentIndex++;
-        if (currentIndex >= slider.children.length) {
-            currentIndex = 0;
-            var imageWidth = document.querySelector('.slider img').clientWidth;
-        }
-        var newPosition = -currentIndex * imageWidth;
-        slider.style.transform = 'translateX(' + newPosition + 'px)';
-    }, 3000);
-
+    var keyWord = "{{ highlight | safe }}";
 </script>
+<script src="/static/search.js"></script>
+<script src="/static/index.js"></script>
 
-
-<footer>
-    &copy; 2023 文献搜索. All rights reserved.
-</footer>
 </body>
 </html>

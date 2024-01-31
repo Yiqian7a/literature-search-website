@@ -18,7 +18,8 @@
 }
 h1{
 	color: #fff;
-	font-size: 60px;
+	font-size: 40px;
+	margin-bottom:20%;
 }
 body {
 	align-items: center;
@@ -212,4 +213,16 @@ body {
 		opacity: 1;
 		z-index: 5;
 	}
+}
+
+footer {
+	margin-top: 10%;
+    background-color: rgba(65, 65, 66, 0.44);
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+footer a {
+    color: white;
 }
