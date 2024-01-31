@@ -102,17 +102,13 @@ def details():
 def history():
     if request.method == 'GET':
         his = db.query_history(user_id = session['user_id'])
-        his_dict = {}
+        history_ls = []
         for i in range(1, 21):
-            if (s := eval(f'his.h{i}')) != '':
+            if (s := eval(f'his.h{i}')) != '': #
                 ls = eval(s)
-                print(ls)
-                ti = db.search_literature(doc_id=ls[0])[0].TI
-                ls.append(ti)
-                his_dict[f'h{i}'] = ls
-        print(his_dict)
-        # historyData likes {'h1':[doc_id, time, doc_title], 'h2':xx, ...}
-        return render_template('history.html', historyData = jsonify(his_dict))
+                history_ls.append(ls + [db.search_literature(doc_id=ls[0])[0].TI])
+        # historyData likes [[doc_id, time, doc_title], [xx], ...]
+        return render_template('history.html', historyData = history_ls)
 
 @app.route('/empty')
 @if_session

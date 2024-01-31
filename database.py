@@ -9,18 +9,15 @@ class BaseConfig:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    UPLOAD_IMAGE_PATH = os.path.join(os.path.dirname(__file__),"media")
-
-    PER_PAGE_COUNT = 10
 
 class DevelopmentConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:root@127.0.0.1:3306/literaturesearch?charset=utf8mb4"
     # 缓存配置
-    CACHE_TYPE = "RedisCache"
-    CACHE_REDIS_HOST = "127.0.0.1"
-    CACHE_REDIS_PORT = 6379
+    CACHE_TYPE = "simple"
+    # CACHE_TYPE = "RedisCache"
+    # CACHE_REDIS_HOST = "127.0.0.1"
+    # CACHE_REDIS_PORT = 6379
 
-    AVATARS_SAVE_PATH = os.path.join(BaseConfig.UPLOAD_IMAGE_PATH, "avatars")
 
 RSoE_title_dict = {
     "AB": "摘要",
@@ -212,7 +209,7 @@ def query_history(user_id):
     return his
 
 def add_history(db_app, user_id, doc_id):
-    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     new_his=f"[{doc_id}, '{current_time}']"
     # 更新用户历史记录
     user_history = query_history(user_id=user_id)

@@ -1,52 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+
     <title>文献搜索：历史记录</title>
-    <style>
-        .main-container {
-            flex-direction: column;
-        }
-        .title-column{
-            display: flex;
-            flex-direction: column;
-            background-color: #CECECEFF;
-            border-radius: 10px 10px 0 0;
-        }
-        .title-column div{
-            margin: 0 5% 0 5%;
-        }
-        .title-column span{
-            margin: 0 10% 10px 10% ;
-        }
-        #history-container {
-            background-color: #CECECEFF;
-            margin-top: 0;
-            flex-direction: column;
-            border-radius: 0 0 10px 10px;
-            }
-
-        #history-container div{
-            background-color: #efefef;
-            padding: 10px;
-            margin: 0 10px 20px 10px;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-        }
-
-        .history-item a {
-            color: #4785d7;
-        }
-
-        .history-item p {
-            color: lightslategray;
-            text-align: left;
-            text-indent: 2em;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/static/history.css">
+    <script src="/static/common_header.js"></script>
 </head>
 <body>
 <header>
-    <script src="/static/common_header.js"></script>
 </header>
 
 <main class="main-container">
@@ -60,25 +21,18 @@
 </main>
 
 <script>
-    window.onload = function() {
-        var historyData = {{ historyData.json | safe }};
-        console.log(historyData);
+    var historyData = {{ historyData | safe }}
+    const historyContainer = document.getElementById("history-container");
 
-        const historyContainer = document.getElementById("history-container");
-
-
-        for (let key in historyData) {
-            if (historyData.hasOwnProperty(key)) {
-                const historyItem = historyData[key];
-                const historyElement = document.createElement("div");
-                historyElement.classList.add("history-item");
-                historyElement.innerHTML = `
-                <a href="/details?doc_id=${historyItem[0]}">${historyItem[2]}</a>
-                <p>浏览日期：${historyItem[1]}</p>
-            `;
-                historyContainer.appendChild(historyElement);
-            }
-        }
+    for (let i = 0; i <= 20; i++) {
+        const historyItem = historyData[i];
+        const historyElement = document.createElement("div");
+        historyElement.classList.add("history-item");
+        historyElement.innerHTML = `
+        <a href="/details?doc_id=${historyItem[0]}">${historyItem[2]}</a>
+        <p>浏览日期：${historyItem[1]}</p>
+    `;
+        historyContainer.appendChild(historyElement);
     }
 </script>
 

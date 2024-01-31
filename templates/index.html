@@ -3,10 +3,10 @@
 <head>
     <title>文献搜索：首页</title>
     <link rel="stylesheet" type="text/css" href="/static/index.css">
+    <script src="/static/common_header.js"></script>
 </head>
 <body>
 <header>
-    <script src="/static/common_header.js"></script>
 </header>
 
 <main class="main-container">
@@ -40,11 +40,6 @@
 
 <div class="pagination"></div>
 
-
-<footer href="https://gitee.com/Yiqian7a/literature-search-website">
-    &copy; 糖式组. All rights reserved. &nbsp;&nbsp;&nbsp;前往Gitee仓库
-</footer>
-
 <script>
     var literatureData = {{ literatureData | safe }};
     var keyWord = "{{ highlight | safe }}";
@@ -52,6 +47,12 @@
 
 <script src="/static/index.js"></script>
 <script src="/static/search.js"></script>
+
+
+<footer href="https://gitee.com/Yiqian7a/literature-search-website">
+    &copy; 糖式组. All rights reserved. &nbsp;&nbsp;&nbsp;前往Gitee仓库
+</footer>
+
 
 </body>
 </html>
