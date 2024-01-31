@@ -131,33 +131,19 @@
     // 显示第一页的新闻
     showPage(1);
 
-    // 图片滚动
-    const slider = document.querySelector('.slider');
-    let isDown = false;
-    let startX;
-    let scrollLeft;
+    var slider = document.querySelector('.slider');
+    var currentIndex = 0;
 
-    // 鼠标移动事件
-    slider.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - slider.offsetLeft;
-        const walk = (x - startX) * 3;
-        slider.scrollLeft = scrollLeft - walk;
-    });
-
-    // 鼠标离开继续播放图片
-    slider.addEventListener('mouseleave', () => {
-        isDown = false;
-    });
-
-    // 自动切换图片
-    let current = 0;
-    const images = document.querySelectorAll('.slider img');
-    setInterval(() => {
-      current = (current + 1) % images.length;
-      slider.style.transform = `translateX(-${current * 33.3333}%)`;
+    setInterval(function() {
+        currentIndex++;
+        if (currentIndex >= slider.children.length) {
+            currentIndex = 0;
+            var imageWidth = document.querySelector('.slider img').clientWidth;
+        }
+        var newPosition = -currentIndex * imageWidth;
+        slider.style.transform = 'translateX(' + newPosition + 'px)';
     }, 3000);
+
 </script>
 
 

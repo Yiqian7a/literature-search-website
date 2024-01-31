@@ -5,33 +5,31 @@
     <link rel="stylesheet" type="text/css" href="/static/common.css">
 </head>
 
-<header>
-    <div class="top-container">
-        <div>
-            <a href="/index">首页</a>
-            <a href="/empty">开放平台</a>
-            <a href="/empty">科研热点</a>
-            <a href="/empty">期刊顶会</a>
-        </div>
-        <div class="user-profile">
-            <div class="logged-in-info">
-                <div class="username"><i class="fas fa-user"></i>已登录：{{ username }}</div>
-                <div class="dropdown-content">
-                    <a href="/history">浏览历史</a>
-                    <a href="/empty">个人主页</a>
-                    <a href="/empty">我的关注</a>
-                    <a href="/logout">退出登录</a>
-                </div>
+<div class="top-container">
+    <div>
+        <a href="/index">首页</a>
+        <a href="/empty">开放平台</a>
+        <a href="/empty">科研热点</a>
+        <a href="/empty">期刊顶会</a>
+    </div>
+    <div class="user-profile">
+        <div class="logged-in-info">
+            <div class="username"><i class="fas fa-user"></i>已登录：{{ username }}</div>
+            <div class="dropdown-content">
+                <a href="/history">浏览历史</a>
+                <a href="/empty">个人主页</a>
+                <a href="/empty">我的关注</a>
+                <a href="/logout">退出登录</a>
             </div>
         </div>
     </div>
+</div>
 
-    <h1>AI智能文献搜索</h1>
-    <div class="search-container">
-        <input type="text" id="search-input" class="search-input" placeholder="搜索作者、标题...">
-        <button type="submit" class="search-button" onclick="search()">
-            <i style="font-size: 150%;" class="fas fa-search"></i>
-        </button>
-    </div>
-</header>
+<h1>AI智能文献搜索</h1>
+<div class="search-container">
+    <input type="text" id="search-input" class="search-input" placeholder="搜索作者、标题...">
+    <button type="submit" class="search-button" onclick="search()">
+        <i style="font-size: 150%;" class="fas fa-search"></i>
+    </button>
+</div>
 
