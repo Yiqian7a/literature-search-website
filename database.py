@@ -202,9 +202,9 @@ def search_literature(doc_id = None, author = None, title = None):
     if doc_id:
         res += [RSoE.query.get(doc_id)]
     if author:
-        res += RSoE.query.filter(RSoE.AU.like(f'%{author}%')).all()
+        res += RSoE.query.filter(RSoE.AU.ilike(f'%{author}%')).all()
     if title:
-        res += RSoE.query.filter(RSoE.TI.like(f'%{title}%')).all()
+        res += RSoE.query.filter(RSoE.TI.ilike(f'%{title}%')).all()
     return res
 
 def query_history(user_id):
@@ -216,6 +216,7 @@ def add_history(db_app, user_id, doc_id):
     new_his=f"[{doc_id}, '{current_time}']"
     # 更新用户历史记录
     user_history = query_history(user_id=user_id)
+
 
     try:
         for i in range(20, 1, -1):

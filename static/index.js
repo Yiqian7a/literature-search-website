@@ -1,7 +1,7 @@
 window.onload = function() {
 
-    console.log("li", typeof literatureData)
-    console.log("kw", typeof keyWord)
+    console.log("li", literatureData)
+    console.log("kw", keyWord)
     // 获取文献容器
     const literatureContainer = document.getElementById("literature-container");
 
@@ -64,7 +64,6 @@ window.onload = function() {
             `;
                 literatureContainer.appendChild(literatureElement);
             }
-
 
             // 更新翻页导航栏
             updatePagination();
