@@ -1,127 +1,58 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ TI }}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/history.css">
-</head>
+    <title>历史记录</title>
+    <style>
+        .main-container {
+                flex-direction: column;
+            }
 
+    </style>
+</head>
 <body>
 <header>
-    <div class="top-container">
-        <div>
-            <a href="/index">首页</a>
-            <a href="/index">开放平台</a>
-            <a href="/index">科研热点</a>
-            <a href="/index">期刊顶会</a>
-        </div>
-        <div class="user-profile">
-            <div class="logged-in-info">
-                <div class="username"><i class="fas fa-user"></i>已登录：{{ username }}</div>
-                <div class="dropdown-content">
-                    <a href="/history">浏览历史</a>
-                    <a href="#">个人主页</a>
-                    <a href="#">我的关注</a>
-                    <a href="/logout">退出登录</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <h1>AI智能文献搜索</h1>
-    <div class="search-container">
-        <input type="text" class="search-input" placeholder="搜索作者、标题...">
-        <button type="submit" class="search-button"><i style="font-size: 150%;" class="fas fa-search"></i></button>
-    </div>
+    <script src="/static/common_header.js"></script>
 </header>
+
 <main class="main-container">
-    <div class="left-column">
-        <h2>历史记录</h2>
-        <div id="history-container">
-
-        </div>
+    <div class="title-column">
+        <div><h2>历史记录:</h2></div>
+        <div>（历史记录仅保存20条）</div>
     </div>
+    <div id="history-container">
 
+    </div>
 </main>
 
 <script>
-        var historyData = {{ historyData | safe }};
+    var historyData = {{ historyData.json | safe }};
     console.log(historyData);
     console.log(historyData[0]);
-    // 每页显示的新闻数
-    const historyPerPage = 5;
-
-
-    // 计算总页数
-    const totalPages = Math.ceil(historyData.length / historyPerPage);
-
-    // 初始化当前页码
-    let currentPage = 1;
 
     // 获取新闻容器和翻页容器
     const historyContainer = document.getElementById("history-container");
-    const paginationContainer = document.querySelector(".pagination");
-
-    // 显示当前页的新闻
-    function showPage(page) {
-        // 更新当前页码
-        currentPage = page;
-
-        // 计算起始索引和结束索引
-        const startIndex = (page - 1) * historyPage;
-        const endIndex = startIndex + historyPerPage;
-
-        // 清空新闻容器中的内容
-        historyContainer.innerHTML = "";
-
-        // 遍历新闻数据，显示当前页的新闻
-        for (let i = startIndex; i < endIndex && i < historyData.length; i++) {
-            const hisrotyItem = historyData[i];
-            const historyElement = document.createElement("div");
-            historyElement.addEventListener("click", function (event) {
-                // 判断点击的元素是否为新闻标题或内容
-                if (event.target.classList.contains("history-link")) {
-                    window.location.href = "/detailed_information?doc_id=" + history.id;
-                }
-            });
-            historyElement.classList.add("history-item");
-            historyElement.innerHTML = `
-                <h2 class="history-link">${historyItem.TI}</a></h2>
-                <p class="history-link">浏览日期： ${historyItem.PD}</a></p>
-            `;
-            historyContainer.appendChild(historyElement);
-        }
 
 
-        // 更新翻页导航栏
-        updatePagination();
-    }
+    // 清空新闻容器中的内容
+    historyContainer.innerHTML = "";
 
-    // 更新翻页导航栏
-    function updatePagination() {
-        // 生成翻页链接
-        let paginationHTML = "";
-        for (let i = 1; i <= totalPages; i++) {
-            if (i === currentPage) {
-                paginationHTML += `
-                <a href="#" class="active">${i}</a>
-                `;
-            } else {
-                paginationHTML += `
-                <a href="#" onclick="showPage(${i})">${i}</a>
-            `;
+    // 遍历新闻数据，显示当前页的新闻
+    for (let i = startIndex; i < endIndex && i < historyData.length; i++) {
+        const historyItem = historyData[i];
+        const historyElement = document.createElement("div");
+        historyElement.addEventListener("click", function (event) {
+            // 判断点击的元素是否为新闻标题或内容
+            if (event.target.classList.contains("history-link")) {
+                window.location.href = "/detailed_information?doc_id=" + historyItem[0];
             }
-        }
-
-        // 更新翻页容器中的内容
-        paginationContainer.innerHTML = paginationHTML;
+        });
+        historyElement.classList.add("history-item");
+        historyElement.innerHTML = `
+            <h2 class="history-link">${historyItem[2]}</a></h2>
+            <p class="history-link">浏览日期： ${historyItem[1]}</a></p>
+        `;
+        historyContainer.appendChild(historyElement);
     }
-    // 显示第一页的新闻
-    showPage(1);
-
-
 </script>
 
 <footer>

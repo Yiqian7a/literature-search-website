@@ -64,10 +64,10 @@ def index():
         pass
 
 # 翻页的时候调用?
-@app.route('/query', methods = ['POST'])
+@app.route('/query', methods = ['GET'])
 @if_session
 def query_literature():
-    data = request.json
+    data = request.args.get('data')
     res = db.query_literature(data['start'],data['end'])
     if res:
         return jsonify({'state': 200, 'res': res})
@@ -99,7 +99,7 @@ def detailed_information():
         res = db.search_literature(doc_id = doc_id)[0] # 查找文献
         # print(res)
         # details likes {'TI':'xx', 'AU':'xx', ...}
-        return render_template('detailed_information.html', details = jsonify(res), username=session['user_name'])
+        return render_template('details.html', details = jsonify(res), username=session['user_name'])
 
 @app.route('/history', methods = ['GET'])
 @if_session
@@ -113,7 +113,7 @@ def history():
                 print(s,ls)
                 his_dict[f'h{i}'] = ls + [(db.search_literature(doc_id=ls[1])[0]['TI'])]
         # historyData likes {'h1':[doc_id, time, doc_title], 'h2':xx, ...}
-        return render_template('history.html', historyData = jsonify(his_dict), username=session['user_name'])
+        return render_template('history.html', historyData = jsonify(his_dict))
 
 
 @app.route('/login_register', methods=["GET", "POST"])
@@ -152,6 +152,16 @@ def login_register():
                     return jsonify({'state': 403, 'message': '用户名或密码错误'})
             else:
                 return jsonify({'state': 403, 'message':'用户不存在'})
+
+@app.route('/empty')
+@if_session
+def empty():
+    return render_template('empty.html')
+
+@app.route('/get_header')
+def get_header():
+    return render_template('common_header.html', username = session['user_name'])
+
 
 @app.route('/logout')
 def logout():

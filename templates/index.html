@@ -1,45 +1,17 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>首页</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="/static/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
 <header>
-    <div class="top-container">
-        <div>
-            <a href="/index">首页</a>
-            <a href="/index">开放平台</a>
-            <a href="/index">科研热点</a>
-            <a href="/index">期刊顶会</a>
-        </div>
-        <div class="user-profile">
-            <div class="logged-in-info">
-                <div class="username"><i class="fas fa-user"></i>已登录：{{ username }}</div>
-                <div class="dropdown-content">
-                    <a href="/history">浏览历史</a>
-                    <a href="#">个人主页</a>
-                    <a href="#">我的关注</a>
-                    <a href="/logout">退出登录</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <h1>AI智能文献搜索</h1>
-    <div class="search-container">
-        <input type="text" class="search-input" placeholder="搜索作者、标题...">
-        <button type="submit" class="search-button"><i style="font-size: 150%;" class="fas fa-search"></i></button>
-    </div>
+    <script src="/static/common_header.js"></script>
 </header>
 
 <main class="main-container">
     <div class="left-column">
-        <h2>文 献 列 表</h2>
+        <h2>文&nbsp;献&nbsp;列&nbsp;表</h2>
         <div id="literature-container">
 
         </div>
@@ -70,11 +42,10 @@
 
 <script>
     var literatureData = {{ literatureData | safe }};
-    console.log(literatureData);
-    console.log(literatureData[0]);
+    {#console.log(literatureData);#}
+    {#console.log(literatureData[0]);#}
     // 每页显示的新闻数
     const literaturePerPage = 5;
-
 
     // 计算总页数
     const totalPages = Math.ceil(literatureData.length / literaturePerPage);
@@ -144,26 +115,24 @@
     // 显示第一页的新闻
     showPage(1);
 
-
+    // 图片滚动
     const slider = document.querySelector('.slider');
     let isDown = false;
     let startX;
     let scrollLeft;
 
-
-    // 鼠标移动到用户上显示用户信息
+    // 鼠标移动事件
     slider.addEventListener('mousemove', (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX) * 3;
-      slider.scrollLeft = scrollLeft - walk;
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 3;
+        slider.scrollLeft = scrollLeft - walk;
     });
 
-
-    // 鼠标离开用户收起用户信息
+    // 鼠标离开继续播放图片
     slider.addEventListener('mouseleave', () => {
-      isDown = false;
+        isDown = false;
     });
 
     // 自动切换图片

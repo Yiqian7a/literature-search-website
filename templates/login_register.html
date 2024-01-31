@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>AI智能文献搜索——糖式组</h1>
+        <h2>AI智能文献搜索——糖式组</h2>
         <div class="search-container">
         </div>
     </header>
@@ -31,7 +31,7 @@
                 <h2 class="form__title">欢迎登陆</h2>
                 <input type="email" id="Lemail" placeholder="邮箱" class="input" />
                 <input type="password" id="Lpassword" placeholder="密码" class="input" />
-                <a href="#" class="link">忘记密码</a>
+                <a onclick="forgot()">忘记密码</a>
                 <button class="btn">登录</button>
             </form>
         </div>
@@ -48,7 +48,13 @@
             </div>
         </div>
     </div>
+
     <script src="/static/login_register.js"></script>
+    <script>
+    function forgot() {
+        alert("即将开放，敬请期待！");
+    }
+</script>
 </body>
 
 </html>
