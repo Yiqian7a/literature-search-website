@@ -56,30 +56,28 @@ def home():
 def index():
     if request.method == "GET":
         search_key = request.args.get('search_key')
-        print(search_key)
+        print("search: ",search_key)
         if search_key:
             res = db.search_literature(author=search_key, title=search_key)
         else:
-            # 随机返回15篇文献
+            search_key = ''
+            # 随机查询15篇文献
             res = []
-            for i in range(15):
+            for i in range(50):
                 random_id = random.randint(1, db.RSoE_num)
                 res += db.search_literature(doc_id=random_id)
-        return render_template('index.html', literatureData=res, highlight=search_key)
+
+        # 创建简要信息表
+        ls = []
+        for e in res:
+            res_dict = {}
+            for i in ['id','AU','TI','PD','PY']:
+                res_dict[i] = eval(f'e.{i}')
+            ls.append(res_dict.copy())
+        return render_template('index.html', literatureData=ls, highlight=search_key)
 
 
-# 翻页的时候调用?
-@app.route('/query', methods = ['GET'])
-@if_session
-def query_literature():
-    data = request.args.get('data')
-    res = db.query_literature(data['start'],data['end'])
-    if res:
-        return jsonify({'state': 200, 'res': res})
-    else: return jsonify({'state': 200, 'res': jsonify({"没有查询到相关结果"})})
-
-
-@app.route('/details', methods = ['GET', 'POST'])
+@app.route('/details', methods = ['GET'])
 @if_session
 def details():
     if request.method == 'GET':
@@ -90,8 +88,14 @@ def details():
         # 查找文献
         res = db.search_literature(doc_id = doc_id)[0]
 
+        # 创建文献信息字典
+        res_dict = {}
+        for i in db.RSoE_title_dict:
+            ti = eval(f'res.{i}')
+            res_dict[i] = ti if ti != '' else '（没有记录）'
+
         # details likes {'TI':'xx', 'AU':'xx', ...}
-        return render_template('details.html', details = jsonify(res))
+        return render_template('details.html', details = jsonify(res_dict))
 
 @app.route('/history', methods = ['GET'])
 @if_session
@@ -103,7 +107,7 @@ def history():
             if (s := eval(f'his.h{i}')) != '':
                 ls = eval(s)
                 print(s,ls)
-                his_dict[f'h{i}'] = ls + [(db.search_literature(doc_id=ls[1])[0]['TI'])]
+                his_dict[f'h{i}'] = ls + [(db.search_literature(doc_id=ls[1])[0].TI)]
         # historyData likes {'h1':[doc_id, time, doc_title], 'h2':xx, ...}
         return render_template('history.html', historyData = jsonify(his_dict))
 
@@ -129,8 +133,8 @@ def login_register():
                 return jsonify({'state': 403, "message": '注册用户名、邮箱、密码不能为空'})
             # with app.app_context():
             res = db.create_user(db_app, data['username'], data['email'], data['password'])  # 在数据库中创建用户
-            print(res)
             if res[0] == 201:
+                print('用户注册：', res[2].email)
                 # 创建session对象存储用户名，将用户名存储到 session 中
                 create_session(id = res[2].id, name=res[2].name, email = res[2].email)
                 return jsonify({'state': 201, "message": res[1]})
@@ -141,7 +145,7 @@ def login_register():
                 return jsonify({'state': 403, "message": '登入邮箱、密码不能为空'})
             # with app.app_context():
             res = db.query_user(email = data['email'])  # 在数据库中查找用户并核对密码
-            print(res)
+            print('用户登入：', res[1].email)
             if res[0]:
                 if res[1].password == data['password']:
                     create_session(id = res[1].id, name=res[1].name, email = res[1].email)

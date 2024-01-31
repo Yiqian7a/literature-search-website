@@ -143,6 +143,7 @@ def init_app(app, init = False):
                         elif ti == '  ' and same_title:
                             title_dict[title] += line[2:-1]
                         else: # 行标题变了
+
                             same_title = False
                     else: # 为空行，写入前一条文献的数据
                         # print(title_dict)
@@ -196,16 +197,6 @@ def query_user(email:str = None, id:int = None):
         else: return False, '用户不存在'
 
 
-def query_literature(start:int, end:int):
-    res = RSoE.query.filter(RSoE.id.between(start, end)).all()
-    ls = []
-    for e in res:
-        title_dict = {}
-        for i in RSoE_title_dict:
-            title_dict[i] = eval(f'e.{i}')
-        ls.append(title_dict.copy())
-    return ls
-
 def search_literature(doc_id = None, author = None, title = None):
     res = []
     if doc_id:
@@ -214,17 +205,7 @@ def search_literature(doc_id = None, author = None, title = None):
         res += RSoE.query.filter(RSoE.AU.like(f'%{author}%')).all()
     if title:
         res += RSoE.query.filter(RSoE.TI.like(f'%{title}%')).all()
-
-    ls = []
-    for e in res:
-        title_dict = {}
-        title_dict['id'] = e.id
-        for i in RSoE_title_dict:
-            title_dict[i] = eval(f'e.{i}')
-        ls.append(title_dict.copy())
-    # print(ls)
-    return ls
-
+    return res
 
 def query_history(user_id):
     his = User_history.query.get(user_id)

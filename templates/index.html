@@ -64,6 +64,10 @@
     const keyWord = '{{ highlight | safe }}';
     const regex = new RegExp(keyWord, 'gi');
 
+    if (keyWord != '' ){
+        const searchInput = document.getElementById('search-input');
+        searchInput.value = keyWord
+    }
 
     // 显示当前页的新闻
     function showPage(page) {
@@ -93,7 +97,7 @@
             });
             literatureElement.classList.add("literature-item");
             literatureElement.innerHTML = `
-                <h2 class="literature-link">${ literatureTI}</a></h2>
+                <h2 class="literature-link">${literatureTI}</a></h2>
                 <p class="literature-link">作者：${literatureAU}</a></p>
                 <p class="literature-link">发布日期：${literatureItem.PY} ${literatureItem.PD}</a></p>
             `;
