@@ -78,12 +78,14 @@ def query_literature():
 @if_session
 def search():
     search_key = request.args.get('search_key')
+    params = search_key
     ls = search_key.split(" ")
-    dic = {'AU':'', 'TI':''}
+    key_dic = {'AU':'', 'TI':''}
     for i in ls:
-        dic['author'] = i.split('author:')[1]
-        dic['title'] = i.split('title:')[1]
-    res = db.search_literature(**dic)
+        key_dic['author'] = i.split('author:')[1]
+        key_dic['title'] = i.split('title:')[1]
+    print(key_dic)
+    res = db.search_literature(**key_dic)
     # literatureData likes [{'TI':'xx', 'AU':'xx', ...}, ...]
     return render_template('index.html', literatureData=res, username=session['user_name'])
 
@@ -115,6 +117,15 @@ def history():
                 his_dict[f'h{i}'] = ls + [(db.search_literature(doc_id=ls[1])[0]['TI'])]
         # historyData likes {'h1':[doc_id, time, doc_title], 'h2':xx, ...}
         return render_template('history.html', historyData = jsonify(his_dict))
+
+@app.route('/empty')
+@if_session
+def empty():
+    return render_template('empty.html')
+
+@app.route('/get_header')
+def get_header():
+    return render_template('common_header.html', username = session['user_name'])
 
 
 @app.route('/login_register', methods=["GET", "POST"])
@@ -150,16 +161,6 @@ def login_register():
                     return jsonify({'state': 403, 'message': '用户名或密码错误'})
             else:
                 return jsonify({'state': 403, 'message':'用户不存在'})
-
-@app.route('/empty')
-@if_session
-def empty():
-    return render_template('empty.html')
-
-@app.route('/get_header')
-def get_header():
-    return render_template('common_header.html', username = session['user_name'])
-
 
 @app.route('/logout')
 def logout():
