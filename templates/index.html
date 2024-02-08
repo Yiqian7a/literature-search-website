@@ -2,59 +2,57 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>文献搜索：首页</title>
+    <title id="private-title">文献搜索：首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.25">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/index.css">
-    <script src="/static/js/common_header.js"></script>
+    <link rel="stylesheet" type="text/css" id="private-css" href="/static/css/home.css">
 </head>
+
 <body>
 <header>
+    <div class="top-container">
+        <div>
+            <a href="/index">首页</a>
+            <a href="/empty">开放平台</a>
+            <a href="/empty">科研热点</a>
+            <a href="/empty">期刊顶会</a>
+        </div>
+        <div class="user-profile">
+            <div class="logged-in-info">
+                <div class="username"><i class="fas fa-user"></i>已登录：{{ username }}</div>
+                <div class="dropdown-content">
+                    <a href="/history">浏览历史</a>
+                    <a href="/empty">个人主页</a>
+                    <a href="/empty">我的关注</a>
+                    <a href="/logout">退出登录</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1>AI智能文献搜索</h1>
+    <div class="search-container">
+        <input type="text" id="search-input" class="search-input" placeholder="搜索作者、标题...">
+        <button type="submit" class="search-button" onclick="search()">
+            <i style="font-size: 150%;" class="fas fa-search"></i>
+        </button>
+    </div>
 </header>
 
-<main class="main-container">
-    <div class="left-column">
-        <h2>文&nbsp;献&nbsp;列&nbsp;表</h2>
-        <div id="literature-container">
-
-        </div>
-    </div>
-
-    <div class="right-column">
-        <div class="slider-container">
-            <div class="slider">
-                <img src="/static/images/index_pic1.png" alt="Image 1">
-                <img src="/static/images/index_pic2.png" alt="Image 2">
-                <img src="/static/images/index_pic3.png" alt="Image 3">
-            </div>
-        </div>
-
-        <div class="chatbot-container">
-            <div id="chatbot-window" class="chatbot-window">AI智能文献搜索框
-                <div id="chatbot-messages" class="chatbot-messages"></div>
-            </div>
-            <div class="chatbot-input">
-                <input type="text" id="user-input" placeholder="请输入您的问题">
-                <button id="send-button">发送</button>
-            </div>
-        </div>
-    </div>
+<main class="main">
 </main>
-
-<div class="pagination"></div>
-
-<script>
-    var literatureData = {{ literatureData | safe }};
-    var keyWord = "{{ highlight | safe }}";
-</script>
-
-<script src="/static/js/search.js"></script>
-<script src="/static/js/index.js"></script>
-
 
 <footer>
     &copy; 糖式组. All rights reserved. &nbsp;&nbsp;&nbsp;
     <a href="https://gitee.com/Yiqian7a/literature-search-website">前往Gitee仓库</a>
 </footer>
 
+<script>
 
+</script>
+
+<script type="module" src="/static/js/index.js"></script>
+<script type="module" id="private-js"></script>
 </body>
 </html>

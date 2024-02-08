@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>文献搜索：首页</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/common.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css">
+</head>
+
+<body>
+<header>
+    <div class="top-container">
+        <div>
+            <a href="/index">首页</a>
+            <a href="/empty">开放平台</a>
+            <a href="/empty">科研热点</a>
+            <a href="/empty">期刊顶会</a>
+        </div>
+        <div class="user-profile">
+            <div class="logged-in-info" onclick="redirectToLoginRegister()">
+                <div class="username"><i class="fas fa-user"></i>点击登入\注册</div>
+            </div>
+        </div>
+    </div>
+
+    <h1>AI智能文献搜索</h1>
+    <div class="search-container"  onclick="redirectToLoginRegister()">
+        <input type="text" id="search-input" class="search-input" placeholder="搜索作者、标题...">
+        <button type="submit" class="search-button" onclick="search()">
+            <i style="font-size: 150%;" class="fas fa-search"></i>
+        </button>
+    </div>
+</header>
+
+
+<main class="main-container" onclick="redirectToLoginRegister()">
+    <div class="left-column">
+        <h2>文&nbsp;献&nbsp;列&nbsp;表</h2>
+        <div id="literature-container">
+
+        </div>
+    </div>
+
+    <div class="right-column">
+        <div class="slider-container">
+            <div class="slider">
+                <img src="/static/images/index_pic1.png" alt="Image 1">
+                <img src="/static/images/index_pic2.png" alt="Image 2">
+                <img src="/static/images/index_pic3.png" alt="Image 3">
+            </div>
+        </div>
+
+        <div class="chatbot-container">
+            <div id="chatbot-window" class="chatbot-window">AI智能文献搜索框
+                <div id="chatbot-messages" class="chatbot-messages"></div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="user-input" placeholder="请输入您的问题">
+                <button id="send-button">发送</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // 文献数据
+    const literatureData = [
+        {
+            title: "&nbsp;&nbsp;此页面为展示页面，请登入后浏览网站",
+            content: "此页面为展示页面，使用网站请先登入"
+        },
+        {
+            title: "&nbsp;&nbsp;此页面为展示页面，请登入后浏览网站",
+            content: "此页面为展示页面，使用网站请先登入"
+        },
+        {
+            title: "&nbsp;&nbsp;此页面为展示页面，请登入后浏览网站",
+            content: "此页面为展示页面，使用网站请先登入"
+        },
+    ];
+
+    const literatureContainer = document.getElementById("literature-container");
+
+        // 遍历文献数据，显示当前页的文献
+        for (let i = 0; i < 4; i++) {
+            const literatureItem = literatureData[i];
+            const literatureElement = document.createElement("div");
+            literatureElement.classList.add("literature-item");
+            literatureElement.innerHTML = `
+            <h2 class="literature-link">${literatureItem.title}</h2>
+            <p class="literature-link">${literatureItem.content}</p>
+            `;
+            literatureContainer.appendChild(literatureElement);
+        }
+
+    // 图片切换
+    var slider = document.querySelector('.slider');
+    var currentIndex = 0;
+
+    setInterval(function() {
+        var imageWidth = document.querySelector('.slider img').clientWidth;
+        currentIndex++;
+        if (currentIndex >= slider.children.length) {
+            currentIndex = 0;
+        }
+        var newPosition = -currentIndex * imageWidth;
+        slider.style.transform = 'translateX(' + newPosition + 'px)';
+    }, 3000);
+
+    // 登录按钮
+    function redirectToLoginRegister() {
+    window.location.href = "/login_register";
+}
+</script>
+
+<footer>
+    &copy; 糖式组. All rights reserved. &nbsp;&nbsp;&nbsp;
+    <a href="https://gitee.com/Yiqian7a/literature-search-website">前往Gitee仓库</a>
+</footer>
+</body>
+</html>

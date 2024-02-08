@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="title-TI"></title>
+    <title id="title"></title>
     
     <link rel="stylesheet" type="text/css" href="/static/css/details.css">
     <script src="/static/js/common_header.js"></script>
@@ -83,16 +83,10 @@
 </main>
 
 
-<footer>
-    &copy; 糖式组. All rights reserved. &nbsp;&nbsp;&nbsp;
-    <a href="https://gitee.com/Yiqian7a/literature-search-website">前往Gitee仓库</a>
-</footer>
 
-<script src="/static/search.js"></script>
 <script>
     var jsonData = {{ details.json | safe }};
-
-    document.getElementById("title-TI").innerHTML = '文献搜索：'+jsonData.TI;
+    document.getElementById("title").innerHTML = '文献搜索：'+jsonData.TI;
     document.getElementById("TI").innerHTML = '&nbsp;&nbsp;'+jsonData.TI;
     document.getElementById("AU").innerHTML = jsonData.AU;
     document.getElementById("PG").innerHTML = jsonData.PG +'&nbsp;页';

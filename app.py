@@ -48,19 +48,18 @@ def create_session(id:int, name:str, email:str):
 
 # 创建根路由
 @app.route('/')
-def home():
-    return render_template('home.html')
+def root():
+    return render_template('root.html')
 
-@app.route('/index', methods=["GET"])
+
+@app.route('/index', methods=["GET", "POST"])
 @if_session
 def index():
     if request.method == "GET":
-        search_key = request.args.get('search_key')
-        print("search: '",search_key,"'")
-        if search_key:
-            print("search!")
-            res = db.search_literature(author=search_key, title=search_key)
-        else:
+        return render_template('index.html')
+    else:
+        page_sign = request.json['PageSign']
+        if page_sign == "home":
             search_key = ''
             # 随机查询15篇文献
             res = []
@@ -68,17 +67,27 @@ def index():
                 random_id = random.randint(1, db.RSoE_num)
                 res += db.search_literature(doc_id=random_id)
 
-        # 创建简要信息表
-        ls = []
-        for e in res:
-            res_dict = {}
-            for i in ['id','AU','TI','PD','PY']:
-                res_dict[i] = eval(f'e.{i}')
-            ls.append(res_dict.copy())
-        return render_template('index.html', literatureData=ls, highlight=search_key)
+            # 创建简要信息表
+            ls = []
+            for e in res:
+                res_dict = {}
+                for i in ['id', 'AU', 'TI', 'PD', 'PY']:
+                    res_dict[i] = eval(f'e.{i}')
+                ls.append(res_dict.copy())
+            return jsonify({'state': 201, 'data': ls})
 
 
-@app.route('/details', methods = ['GET'])
+@app.route('/search', methods=["POST"])
+@if_session
+def search():
+    search_key = request.args.get('search_key')
+    print("search: '", search_key, "'")
+    if search_key:
+        print("search!")
+        res = db.search_literature(author=search_key, title=search_key)
+
+
+@app.route('/details', methods=['GET'])
 @if_session
 def details():
     if request.method == 'GET':
@@ -115,11 +124,6 @@ def history():
 @if_session
 def empty():
     return render_template('empty.html')
-
-@app.route('/get_header')
-@if_session
-def get_header():
-    return render_template('common_header.html', username = session['user_name'])
 
 
 @app.route('/login_register', methods=["GET", "POST"])
