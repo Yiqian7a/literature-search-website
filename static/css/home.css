@@ -42,6 +42,11 @@
     text-indent: 2em;
 }
 
+#remain-count{
+    text-align: center;
+    cursor: pointer;
+}
+
 
 /*右侧栏*/
 .right-column {
