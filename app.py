@@ -56,7 +56,7 @@ def root():
 @if_session
 def index():
     if request.method == "GET":
-        return render_template('index.html',username = session['user_name'])
+        return render_template('index.html', username=session['user_name'])
     else:
         page_sign = request.json
         print(page_sign)
