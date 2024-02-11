@@ -56,35 +56,38 @@ def root():
 @if_session
 def index():
     if request.method == "GET":
-        return render_template('index.html')
+        return render_template('index.html',username = session['user_name'])
     else:
-        page_sign = request.json['PageSign']
-        if page_sign == "home":
-            search_key = ''
-            # 随机查询15篇文献
-            res = []
-            for i in range(50):
-                random_id = random.randint(1, db.RSoE_num)
-                res += db.search_literature(doc_id=random_id)
-
-            # 创建简要信息表
-            ls = []
-            for e in res:
-                res_dict = {}
-                for i in ['id', 'AU', 'TI', 'PD', 'PY']:
-                    res_dict[i] = eval(f'e.{i}')
-                ls.append(res_dict.copy())
-            return jsonify({'state': 201, 'data': ls})
+        page_sign = request.json
+        print(page_sign)
+        if page_sign in ['home', 'history', 'details']:
+            return jsonify({'state': 201, 'privateHTML': render_template(f"{page_sign}.html")})
 
 
 @app.route('/search', methods=["POST"])
 @if_session
 def search():
-    search_key = request.args.get('search_key')
+    search_key = request.json
     print("search: '", search_key, "'")
     if search_key:
         print("search!")
         res = db.search_literature(author=search_key, title=search_key)
+    else:
+        search_key = ''
+        # 随机查询5篇文献
+        res = []
+        for i in range(5):
+            random_id = random.randint(1, db.RSoE_num)
+            res += db.search_literature(doc_id=random_id)
+
+    # 创建简要信息表
+    ls = []
+    for e in res:
+        res_dict = {}
+        for i in ['id', 'AU', 'TI', 'PD', 'PY']:
+            res_dict[i] = eval(f'e.{i}')
+        ls.append(res_dict.copy())
+    return jsonify({'state': 201, 'data': ls})
 
 
 @app.route('/details', methods=['GET'])
