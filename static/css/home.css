@@ -2,7 +2,6 @@
     display: flex;
     padding: 5px;
     justify-content: space-between;
-    background-color: rgb(10, 12, 12);
 }
 
 /*左侧栏*/
@@ -29,6 +28,7 @@
 }
 .literature-item a {
     color: #1e1e1e;
+    cursor: pointer;
 }
 
 .literature-item h2 {

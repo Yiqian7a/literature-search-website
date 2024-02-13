@@ -1,5 +1,6 @@
 
 .main-container {
+    display: flex;
     flex-direction: column;
 }
 
@@ -40,6 +41,10 @@
     width: 80%;
     box-shadow: 0 0 10px 0px lightgray;
 }
+#summary-container h1 {
+    text-indent: 0.5em;
+}
+
 #read-original{
     color: #4785d7;
 }

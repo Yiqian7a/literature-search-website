@@ -58,11 +58,40 @@ def index():
     if request.method == "GET":
         return render_template('index.html', username=session['user_name'])
     else:
-        page_sign = request.json
-        print(page_sign)
-        if page_sign in ['home', 'history', 'details']:
-            return jsonify({'state': 201, 'privateHTML': render_template(f"{page_sign}.html")})
+        page_sign = request.json['page_sign']
+        private_data = request.json['private_data']
+        print(page_sign, private_data)
 
+        if page_sign == 'home':
+            return jsonify({'state': 201, 'privateHTML': render_template("home.html")})
+        elif page_sign == 'history':
+            his = db.query_history(user_id=session['user_id'])
+            history_ls = []
+            for i in range(1, 21):
+                if (s := eval(f'his.h{i}')) != '':  #
+                    ls = eval(s)
+                    history_ls.append(ls + [db.search_literature(doc_id=ls[0])[0].TI])
+            # historyData likes [[doc_id, time, doc_title], [xx], ...]
+            return render_template('history.html', historyData=history_ls)
+        elif page_sign == 'details':
+            # 添加历史记录
+            if (res := db.add_history(db_app, user_id=session['user_id'], doc_id=private_data))[0] != 201:
+                return jsonify({'state': res[0], 'res': res[1]})
+            # 查找文献
+            res = db.search_literature(doc_id=private_data)[0]
+
+            # 创建文献信息字典
+            res_dict = {}
+            for i in db.RSoE_title_dict:
+                ti = eval(f'res.{i}')
+                res_dict[i] = ti if ti != '' else '（没有记录）'
+                if i == 'PD' and ti == '':
+                    res_dict['PD'] = ''
+
+            # details likes {'TI':'xx', 'AU':'xx', ...}
+            return  jsonify({'state': 201, 'privateHTML': render_template('details.html', details=jsonify(res_dict))})
+        else:
+            return jsonify({'state': 404})
 
 @app.route('/search', methods=["POST"])
 @if_session
@@ -70,7 +99,6 @@ def search():
     search_key = request.json
     print("search: '", search_key, "'")
     if search_key:
-        print("search!")
         res = db.search_literature(author=search_key, title=search_key)
     else:
         search_key = ''
@@ -89,39 +117,6 @@ def search():
         ls.append(res_dict.copy())
     return jsonify({'state': 201, 'data': ls})
 
-
-@app.route('/details', methods=['GET'])
-@if_session
-def details():
-    if request.method == 'GET':
-        doc_id = request.args.get('doc_id')
-        # 添加历史记录
-        if (res := db.add_history(db_app, user_id = session['user_id'], doc_id = doc_id))[0] != 201:
-            return jsonify({'state': res[0], 'res': res[1]})
-        # 查找文献
-        res = db.search_literature(doc_id = doc_id)[0]
-
-        # 创建文献信息字典
-        res_dict = {}
-        for i in db.RSoE_title_dict:
-            ti = eval(f'res.{i}')
-            res_dict[i] = ti if ti != '' else '（没有记录）'
-
-        # details likes {'TI':'xx', 'AU':'xx', ...}
-        return render_template('details.html', details = jsonify(res_dict))
-
-@app.route('/history', methods = ['GET'])
-@if_session
-def history():
-    if request.method == 'GET':
-        his = db.query_history(user_id = session['user_id'])
-        history_ls = []
-        for i in range(1, 21):
-            if (s := eval(f'his.h{i}')) != '': #
-                ls = eval(s)
-                history_ls.append(ls + [db.search_literature(doc_id=ls[0])[0].TI])
-        # historyData likes [[doc_id, time, doc_title], [xx], ...]
-        return render_template('history.html', historyData = history_ls)
 
 @app.route('/empty')
 @if_session

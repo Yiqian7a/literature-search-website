@@ -103,10 +103,9 @@ async function loadContent() {
     for (let i = 1; i <= Math.min(literaturePerPage, remainCounts); i++) {
         const literatureElement = document.createElement("div");
         const literatureItem = literatureData[loadedNum];
-
         literatureElement.classList.add("literature-item");
         literatureElement.innerHTML = `
-            <a href = "/details?doc_id=${literatureItem.id}"><h2>&nbsp;&nbsp;${literatureItem.TI}</h2></a>
+            <a onclick="get_page('details', '${literatureItem.id}')"><h2>&nbsp;&nbsp;${literatureItem.TI}</h2></a>
             <p>作者：${literatureItem.AU}</a></p>
             <p>发布日期：${literatureItem.PY} ${literatureItem.PD}</a></p>
         `;
@@ -131,7 +130,7 @@ async function loadContent() {
 }
 
 document.getElementById('search-button').addEventListener('click', search);
-search()
+loadContent()
 
 
 

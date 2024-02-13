@@ -13,10 +13,10 @@
 <header>
     <div class="top-container">
         <div>
-            <a href="/index">首页</a>
-            <a href="/empty">开放平台</a>
-            <a href="/empty">科研热点</a>
-            <a href="/empty">期刊顶会</a>
+            <a onclick="get_page('home')">首页</a>
+            <a onclick="get_page('empty')">开放平台</a>
+            <a onclick="get_page('empty')">科研热点</a>
+            <a onclick="get_page('empty')">期刊顶会</a>
         </div>
         <div class="user-profile">
             <div class="logged-in-info">
@@ -48,6 +48,7 @@
     <a href="https://gitee.com/Yiqian7a/literature-search-website">前往Gitee仓库</a>
 </footer>
 
+<script type="module" id="private-js"></script>
 <script>
     var sign2title = {
         "home": "主页",
@@ -55,12 +56,12 @@
         "history": "历史记录"
     }
 
-    function get_page(PageSign) {
+    function get_page(PageSign, privateData='') {
         // 发送 AJAX 请求
         let xhr = new XMLHttpRequest();
         xhr.open('POST', '/index', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(PageSign));
+        xhr.send(JSON.stringify({page_sign:PageSign, private_data:privateData}));
 
         xhr.onload = function () {
             const response = JSON.parse(xhr.responseText);
@@ -77,10 +78,7 @@
             alert("页面请求失败");
         };
     }
-
-
-    get_page("home")
+    get_page('home')
 </script>
-<script type="module" id="private-js"></script>
 </body>
 </html>
