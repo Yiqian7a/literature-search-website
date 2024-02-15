@@ -1,24 +1,24 @@
 
 // 切换图片
-var slider = document.querySelector('.slider');
-var currentIndex = 0;
+let slider = document.querySelector('.slider');
+let currentIndex = 0;
 
 setInterval(function () {
-var imageWidth = document.querySelector('.slider img').clientWidth;
-currentIndex++;
-if (currentIndex >= slider.children.length) {
-    currentIndex = 0;
-}
-var newPosition = -currentIndex * imageWidth;
-slider.style.transform = 'translateX(' + newPosition + 'px)';
+    let imageWidth = document.querySelector('.slider img').clientWidth;
+    currentIndex++;
+    if (currentIndex >= slider.children.length) {
+        currentIndex = 0;
+    }
+    let newPosition = -currentIndex * imageWidth;
+    slider.style.transform = 'translateX(' + newPosition + 'px)';
 }, 3000);
 
 
-var literatureData = [];
-var keyWord
+let literatureData = [];
+let keyWord
 
 const literatureContainer = document.getElementById('literature-container');
-var loadedNum = 0;
+let loadedNum = 0;
 const literaturePerPage = 5;
 
 let randomSearch = false;

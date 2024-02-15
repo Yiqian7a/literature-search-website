@@ -48,9 +48,9 @@
     <a href="https://gitee.com/Yiqian7a/literature-search-website">前往Gitee仓库</a>
 </footer>
 
-<script type="module" id="private-js"></script>
+<script id="private-js"></script>
 <script>
-    var sign2title = {
+    let sign2title = {
         "home": "主页",
         "details": "",
         "history": "历史记录"
@@ -66,11 +66,25 @@
         xhr.onload = function () {
             const response = JSON.parse(xhr.responseText);
             if (response.state === 201) {
+                // 删除main标签的所有子元素
+                var mainElement = document.querySelector('main');
+                while (mainElement.firstChild) {
+                    mainElement.removeChild(mainElement.firstChild);
+                }
+
+
                 document.getElementById("private-title").innerHTML = '文献搜索：' + sign2title[PageSign];
                 document.getElementById("private-css").href = "/static/css/" + PageSign + ".css"
-                document.getElementById("private-js").src= "/static/js/" + PageSign + ".js"
                 document.querySelector(".main").innerHTML = response.privateHTML;
-                window.privateData = response.data;
+
+                // 移除旧Js
+                const oldScript = document.getElementById("private-js")
+                oldScript.parentNode.removeChild(oldScript);
+                // 添加新js
+                const newScript = document.createElement('script')
+                newScript.src = "/static/js/" + PageSign + ".js"
+                newScript.id = "private-js"
+                document.body.appendChild(newScript);
             }
         };
 
@@ -80,5 +94,6 @@
     }
     get_page('home')
 </script>
+
 </body>
 </html>
