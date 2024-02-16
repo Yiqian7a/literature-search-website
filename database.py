@@ -31,7 +31,7 @@ RSoE_title_dict = {
     "SC": "研究方向",
     "NR": "引用的参考文献数",
     "U1": "被引用次数（最近 180 天）",
-    "U2": "被引用次数（2013 年至今）",
+    "U2": "被引用次数（2003 年至今）",
 
     "CT": "会议标题",
     "CY": "会议日期",
@@ -181,7 +181,7 @@ def create_user(db_app, username:str, email:str, password:str):
         db_app.session.rollback()
         return 500, f"注册失败，未知错误: {str(e)}"
     else:
-        return 201, "创建用户成功！", user
+        return 200, "创建用户成功！", user
 
 def query_user(email:str = None, id:int = None):
     if id:
@@ -226,5 +226,5 @@ def add_history(db_app, user_id, doc_id):
     except Exception as e:
         return 500, f"写入失败，未知错误: {str(e)}"
     else:
-        return 201, "成功写入历史记录"
+        return 200, "成功写入历史记录"
 

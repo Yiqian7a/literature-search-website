@@ -7,7 +7,6 @@ import database as db
 ''' 
 报错信息:
     200: 成功访问页面
-    201: 成功创建信息
     403: 服务器拒绝请求
     500: 服务器内部错误
 '''
@@ -64,19 +63,14 @@ def index():
         print(page_sign, private_data)
 
         if page_sign == 'home':
-            return jsonify({'state': 201, 'privateHTML': render_template("home.html")})
+            return jsonify({'state': 200, 'privateHTML': render_template("home.html")})
+
         elif page_sign == 'history':
-            his = db.query_history(user_id=session['user_id'])
-            history_ls = []
-            for i in range(1, 21):
-                if (s := eval(f'his.h{i}')) != '':  #
-                    ls = eval(s)
-                    history_ls.append(ls + [db.search_literature(doc_id=ls[0])[0].TI])
-            # historyData likes [[doc_id, time, doc_title], [xx], ...]
-            return render_template('history.html', historyData=history_ls)
+            return jsonify({'state': 200, 'privateHTML': render_template('history.html')})
+
         elif page_sign == 'details':
             # 添加历史记录
-            if (res := db.add_history(db_app, user_id=session['user_id'], doc_id=private_data))[0] != 201:
+            if (res := db.add_history(db_app, user_id=session['user_id'], doc_id=private_data))[0] != 200:
                 return jsonify({'state': res[0], 'res': res[1]})
             # 查找文献
             res = db.search_literature(doc_id=private_data)[0]
@@ -90,9 +84,10 @@ def index():
                     res_dict['PD'] = ''
 
             # details likes {'TI':'xx', 'AU':'xx', ...}
-            return  jsonify({'state': 201, 'privateHTML': render_template('details.html', details=jsonify(res_dict))})
+            return  jsonify({'state': 200, 'privateHTML': render_template('details.html', details=jsonify(res_dict))})
         else:
             return jsonify({'state': 404})
+
 
 @app.route('/search', methods=["POST"])
 @if_session
@@ -116,13 +111,20 @@ def search():
         for i in ['id', 'AU', 'TI', 'PD', 'PY']:
             res_dict[i] = eval(f'e.{i}')
         ls.append(res_dict.copy())
-    return jsonify({'state': 201, 'data': ls})
+    return jsonify({'state': 200, 'data': ls})
 
 
-@app.route('/empty')
+@app.route('/history', methods=['GET','POST'])
 @if_session
-def empty():
-    return render_template('empty.html')
+def history():
+    his = db.query_history(user_id=session['user_id'])
+    historyData = []
+    for i in range(1, 21):
+        if (s := eval(f'his.h{i}')) != '':  #
+            ls = eval(s)
+            historyData.append(ls + [db.search_literature(doc_id=ls[0])[0].TI])
+    # historyData likes [[doc_id, time, doc_title], [xx,xx,xxx], ...]
+    return historyData
 
 
 @app.route('/login_register', methods=["GET", "POST"])
@@ -137,11 +139,11 @@ def login_register():
                 return jsonify({'state': 403, "message": '注册用户名、邮箱、密码不能为空'})
             # with app.app_context():
             res = db.create_user(db_app, data['username'], data['email'], data['password'])  # 在数据库中创建用户
-            if res[0] == 201:
+            if res[0] == 200:
                 print('用户注册：', res[2].email)
                 # 创建session对象存储用户名，将用户名存储到 session 中
                 create_session(id = res[2].id, name=res[2].name, email = res[2].email)
-                return jsonify({'state': 201, "message": res[1]})
+                return jsonify({'state': 200, "message": res[1]})
             else: return jsonify({'state': res[0], "message": res[1]})
 
         else: # 为登入请求

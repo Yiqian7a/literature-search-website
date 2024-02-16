@@ -27,14 +27,12 @@
     border-radius: 20px;
     box-shadow: 0 0 10px 0px lightgray;
 }
-.literature-item a {
-    color: #1e1e1e;
-    cursor: pointer;
-}
 
 .literature-item h2 {
-    color: black;
+    color: #1e1e1e;
+    cursor: pointer;
     text-align: left;
+    text-decoration: underline;
 }
 
 .literature-item p {

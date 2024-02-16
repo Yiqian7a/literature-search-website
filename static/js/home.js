@@ -39,7 +39,7 @@ if (first_load_js.home) {
 
         xhr.onload = function () {
             const response = JSON.parse(xhr.responseText);
-            if (response.state === 201) {
+            if (response.state === 200) {
                 if (keyWord == '') {
                     if (randomSearch) {
                         // 前一次为随机推荐，继续随机
@@ -111,7 +111,7 @@ if (first_load_js.home) {
             const literatureItem = literatureData[loadedNum];
             literatureElement.classList.add("literature-item");
             literatureElement.innerHTML = `
-            <a onclick="get_page('details', '${literatureItem.id}')"><h2>&nbsp;&nbsp;${literatureItem.TI}</h2></a>
+            <h2 onclick="get_page('details', '${literatureItem.id}')">&nbsp;&nbsp;${literatureItem.TI}</h2>
             <p>作者：${literatureItem.AU}</a></p>
             <p>发布日期：${literatureItem.PY} ${literatureItem.PD}</a></p>
         `;

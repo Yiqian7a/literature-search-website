@@ -22,9 +22,8 @@
             <div class="logged-in-info">
                 <div class="username"><i class="fas fa-user"></i>已登录：{{ username }}</div>
                 <div class="dropdown-content">
-                    <a href="/history">浏览历史</a>
-                    <a href="/empty">个人主页</a>
-                    <a href="/empty">我的关注</a>
+                    <a onclick="get_page('history')">浏览历史</a>
+                    <a href="/personal_info">个人主页</a>
                     <a href="/logout">退出登录</a>
                 </div>
             </div>
