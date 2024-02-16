@@ -57,7 +57,8 @@ def root():
 def index():
     if request.method == "GET":
         return render_template('index.html', username=session['user_name'])
-    else:
+
+    elif request.method == "POST":
         page_sign = request.json['page_sign']
         private_data = request.json['private_data']
         print(page_sign, private_data)

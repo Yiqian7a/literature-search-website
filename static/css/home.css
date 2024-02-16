@@ -43,7 +43,7 @@
     text-indent: 2em;
 }
 
-#remain-count{
+#remain-container{
     text-align: center;
     cursor: pointer;
 }
