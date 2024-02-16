@@ -48,52 +48,7 @@
     <a href="https://gitee.com/Yiqian7a/literature-search-website">前往Gitee仓库</a>
 </footer>
 
-<script id="private-js"></script>
-<script>
-    let sign2title = {
-        "home": "主页",
-        "details": "",
-        "history": "历史记录"
-    }
-
-    function get_page(PageSign, privateData='') {
-        // 发送 AJAX 请求
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', '/index', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify({page_sign:PageSign, private_data:privateData}));
-
-        xhr.onload = function () {
-            const response = JSON.parse(xhr.responseText);
-            if (response.state === 201) {
-                // 删除main标签的所有子元素
-                var mainElement = document.querySelector('main');
-                while (mainElement.firstChild) {
-                    mainElement.removeChild(mainElement.firstChild);
-                }
-
-
-                document.getElementById("private-title").innerHTML = '文献搜索：' + sign2title[PageSign];
-                document.getElementById("private-css").href = "/static/css/" + PageSign + ".css"
-                document.querySelector(".main").innerHTML = response.privateHTML;
-
-                // 移除旧Js
-                const oldScript = document.getElementById("private-js")
-                oldScript.parentNode.removeChild(oldScript);
-                // 添加新js
-                const newScript = document.createElement('script')
-                newScript.src = "/static/js/" + PageSign + ".js"
-                newScript.id = "private-js"
-                document.body.appendChild(newScript);
-            }
-        };
-
-        xhr.onerror = function () {
-            alert("页面请求失败");
-        };
-    }
-    get_page('home')
-</script>
+<script src="/static/js/index.js"></script>
 
 </body>
 </html>
