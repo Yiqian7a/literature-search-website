@@ -15,6 +15,7 @@
 
     function get_page(PageSign, privateData='') {
         if (PageSign === 'empty'){
+            if (currentPage) {eval("exit_" + currentPage + "()")}
             document.querySelector('main').innerHTML = `<h1 style="color:white; text-align: center; margin-top: 30%">即将开放，敬请期待！</h1>`
             currentPage = null;
         }
