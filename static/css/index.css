@@ -68,20 +68,30 @@ header {
 .dropdown-content {
     position: absolute;
     top: 100%;
+    right:0;
     background-color: #f9f9f9;
-    width: 100px;
+    width: 160px;
 
-    padding: 10px;
+    padding: 5px;
     display: none;
     box-shadow: 5px 5px 10px 0px rgb(76, 75, 75);
     border-radius: 10px;
 }
 
-.dropdown-content a {
+.dropdown-content span,
+.dropdown-content a{
     display: block;
     padding: 5px 0;
     color: #333;
-    text-decoration: none;
+    font-size: 14px;
+    font-weight: normal;
+}
+.dropdown-content a {
+    text-decoration: underline;
+}
+.dropdown-content div {
+    display: flex;
+    justify-content: space-between;
 }
 
 .dropdown-content:hover {

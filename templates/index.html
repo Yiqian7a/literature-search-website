@@ -14,17 +14,18 @@
     <div class="top-container">
         <div>
             <a onclick="get_page('home')">首页</a>
-            <a onclick="get_page('empty')">开放平台</a>
-            <a onclick="get_page('empty')">科研热点</a>
+            <a onclick="get_page('developers')">开发团队</a>
             <a onclick="get_page('empty')">期刊顶会</a>
         </div>
         <div class="user-profile">
             <div class="logged-in-info">
-                <div class="username"><i class="fas fa-user"></i>已登录：{{ username }}</div>
+                <div class="username"><i class="fas fa-user"></i>已登录：{{ userData.user_name }}</div>
                 <div class="dropdown-content">
-                    <a onclick="get_page('history')">浏览历史</a>
-                    <a href="/personal_info">个人主页</a>
-                    <a href="/logout">退出登录</a>
+                    <span>绑定邮箱：{{ userData.user_email }}</span>
+                    <div>
+                        <a onclick="get_page('history')">浏览历史</a>
+                        <a href="/logout">退出登录</a>
+                    </div>
                 </div>
             </div>
         </div>

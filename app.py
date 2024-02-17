@@ -32,7 +32,7 @@ import functools
 def if_session(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        if "user_name" in session:
+        if 'user_name' in session:
             return func(*args, **kwargs)
         else:
             print("user not in session, redirecting to login")
@@ -55,20 +55,17 @@ def root():
 @if_session
 def index():
     if request.method == "GET":
-        return render_template('index.html', username=session['user_name'])
+        return render_template('index.html', userData={
+            'user_email': session['user_email'],
+            'user_name': session['user_name'],
+        })
 
     elif request.method == "POST":
         page_sign = request.json['page_sign']
         private_data = request.json['private_data']
-        print(page_sign, private_data)
+        print('user:',session['user_email'],'in:',page_sign, private_data)
 
-        if page_sign == 'home':
-            return jsonify({'state': 200, 'privateHTML': render_template("home.html")})
-
-        elif page_sign == 'history':
-            return jsonify({'state': 200, 'privateHTML': render_template('history.html')})
-
-        elif page_sign == 'details':
+        if page_sign == 'details':
             # 添加历史记录
             if (res := db.add_history(db_app, user_id=session['user_id'], doc_id=private_data))[0] != 200:
                 return jsonify({'state': res[0], 'res': res[1]})
@@ -85,6 +82,8 @@ def index():
 
             # details likes {'TI':'xx', 'AU':'xx', ...}
             return  jsonify({'state': 200, 'privateHTML': render_template('details.html', details=jsonify(res_dict))})
+        elif page_sign:
+            return jsonify({'state': 200, 'privateHTML': render_template(f'{page_sign}.html')})
         else:
             return jsonify({'state': 404})
 
@@ -93,11 +92,11 @@ def index():
 @if_session
 def search():
     search_key = request.json
-    print("search: '", search_key, "'")
     if search_key:
+        print('user:',session['user_email'],'search: ', search_key)
         res = db.search_literature(author=search_key, title=search_key)
     else:
-        search_key = ''
+        print('user:',session['user_email'],'random search')
         # 随机查询5篇文献
         res = []
         for i in range(5):
@@ -120,9 +119,8 @@ def history():
     his = db.query_history(user_id=session['user_id'])
     historyData = []
     for i in range(1, 21):
-        if (s := eval(f'his.h{i}')) != '':  #
-            ls = eval(s)
-            historyData.append(ls + [db.search_literature(doc_id=ls[0])[0].TI])
+        if (s := eval(f'his.h{i}')) != '':
+            historyData.append(eval(s)) # s likes: '[doc_id, time]'
     # historyData likes [[doc_id, time, doc_title], [xx,xx,xxx], ...]
     return historyData
 

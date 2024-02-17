@@ -1,6 +1,4 @@
 if (first_load_js.details) {
-    first_load_js.details = false
-
     function reload_details() {
         history.pushState({}, '', `/index?page=details&id=${document.getElementById("id").className}`);
         const title = document.getElementById("TI").innerHTML;
@@ -8,5 +6,8 @@ if (first_load_js.details) {
         }
 
     function exit_details(){}
-    reload_details()
+
+    eval("reload_" + currentPage + "()")
+
+    first_load_js.details = false
 }

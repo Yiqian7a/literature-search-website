@@ -1,6 +1,4 @@
-
 if (first_load_js.home) {
-    first_load_js.home = false;
 
     let slideInterval
     function slideImg() {
@@ -76,8 +74,8 @@ if (first_load_js.home) {
         const remainContainer = document.getElementById('remain-container')
         let remainCounts = literatureData.length - loadedNum;
 
-        console.log("kw:", keyWord);
-        console.log("li:", literatureData)
+        // console.log("kw:", keyWord);
+        // console.log("li:", literatureData)
         // console.log("1remainingCounts:", remainCounts);
         // console.log('1loaded content', loadedNum)
 
@@ -150,7 +148,9 @@ if (first_load_js.home) {
         clearInterval(slideInterval)
     }
 
-    reload_home()
+    eval("reload_" + currentPage + "()")
+
+    first_load_js.home = false;
 }
 
 

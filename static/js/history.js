@@ -1,14 +1,12 @@
 if (first_load_js.history) {
-    first_load_js.history = false
     function get_history() {
         fetch('/history')
         .then(function(response) {
             return response.json();
         })
         .then(function(data) {
-            console.log(typeof data, data);
             const historyContainer = document.getElementById("history-container");
-            for (let i = 0; i <= Math.min(20, data.length); i++) {
+            for (let i = 0; i <= data.length; i++) {
                 const historyItem = data[i];
                 const historyElement = document.createElement("div");
                 historyElement.classList.add("history-item");
@@ -31,5 +29,6 @@ if (first_load_js.history) {
     }
     function exit_history(){}
 
-    reload_history()
+    eval("reload_" + currentPage + "()")
+    first_load_js.history = false
 }

@@ -195,7 +195,7 @@ def query_user(email:str = None, id:int = None):
         else: return False, '用户不存在'
 
 
-def search_literature(doc_id = None, author = None, title = None):
+def search_literature(doc_id:int = None, author = None, title = None):
     res = []
     if doc_id:
         res += [RSoE.query.get(doc_id)]
@@ -211,10 +211,9 @@ def query_history(user_id):
 
 def add_history(db_app, user_id, doc_id):
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    new_his=f"[{doc_id}, '{current_time}']"
+    new_his=f"[{doc_id}, '{current_time}', '{search_literature(doc_id=doc_id)[0].TI}']"
     # 更新用户历史记录
     user_history = query_history(user_id=user_id)
-
 
     try:
         for i in range(20, 1, -1):

@@ -2,6 +2,7 @@ let first_load_js = {
     "home": true,
     "details": true,
     "history": true,
+    "developers": true,
 }
 
 let currentPage = null;
@@ -12,6 +13,12 @@ function get_page(PageSign, privateData=null) {
         currentPage = null;
     }
     else {
+        if (currentPage && first_load_js[currentPage] === false) {
+            // 使用exit_xxx()函数来终止运行中监听、定时
+            eval("exit_" + currentPage + "()")
+        }
+        currentPage = PageSign
+
         // 发送 AJAX 请求
         let xhr = new XMLHttpRequest();
         xhr.open('POST', '/index', true);
@@ -21,23 +28,18 @@ function get_page(PageSign, privateData=null) {
         xhr.onload = function () {
             const response = JSON.parse(xhr.responseText);
             if (response.state === 200) {
-                if (currentPage) {
-                    // 使用exit_xxx()函数来终止运行中js，例如setTimeInterval
-                    eval("exit_" + currentPage + "()")
-                }
-
                 document.getElementById("private-css").href = "/static/css/" + PageSign + ".css"
                 document.querySelector(".main").innerHTML = response.privateHTML;
 
                 if (first_load_js[PageSign]) {
-                    // 添加新js
+                    // 另外起一个线程加载js，有关该js的初始化操作都放在对应的js中执行
                     const newScript = document.createElement('script')
                     newScript.src = "/static/js/" + PageSign + ".js"
                     document.body.appendChild(newScript);
                 } else {
-                    eval("reload_" + PageSign + "()")
+                    // 加载最后一次get的页面
+                    eval("reload_" + currentPage + "()")
                 }
-                currentPage = PageSign
             }
         };
 
