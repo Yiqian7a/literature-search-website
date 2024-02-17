@@ -48,7 +48,7 @@ def create_session(id:int, name:str, email:str):
 # 创建根路由
 @app.route('/')
 def root():
-    return render_template('root.html')
+    return index()
 
 
 @app.route('/index', methods=["GET", "POST"])

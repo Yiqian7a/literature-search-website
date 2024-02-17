@@ -3,6 +3,7 @@ let first_load_js = {
     "details": true,
     "history": true,
     "developers": true,
+    "document": true,
 }
 
 let currentPage = null;
@@ -65,7 +66,9 @@ if (searchPara.page === 'details' && searchPara.id) {
 else if (searchPara.page === 'history') {
     get_page('history')
 }
-
+else if (searchPara.page === 'document') {
+    get_page('document')
+}
 
 
 // 显示返回顶部按钮
