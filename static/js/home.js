@@ -87,7 +87,7 @@ if (first_load_js.home) {
             if (remainCounts <= literaturePerPage) {
                 search(''); // 页面显示了所有结果，再随机推送一次
             }
-            remainContainer.innerHTML = '点击查看更多文献';
+            remainContainer.innerHTML = '点击查看更多推荐';
             remainContainer.addEventListener('click', loadContent);
         } else {
             // 用户搜索，创建正则表达式匹配关键词，高亮搜索结果
@@ -135,34 +135,19 @@ if (first_load_js.home) {
         // console.log("2remainingCounts:", remainCounts);
         // console.log('2loaded content', loadedNum)
     }
-    // 显示返回顶部按钮
-    function showBackToTopBtn() {
-        if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
-            document.getElementById("back-to-top-btn").style.display = "block";
-        } else {
-            document.getElementById("back-to-top-btn").style.display = "none";
-        }
-    }
 
-    // 点击按钮返回顶部
-    function backToTop() {
-        document.body.scrollTop = 0; // 兼容 Safari
-        document.documentElement.scrollTop = 0; // 兼容 Chrome, Firefox, IE 和 Opera
-    }
+
 
     function reload_home(){
         history.pushState({}, '', '/index?page=home');
         document.getElementById("private-title").innerHTML = '文献搜索：首页';
         loadedNum = 0
-        document.getElementById("back-to-top-btn").addEventListener('click', backToTop);
-        window.addEventListener('scroll', showBackToTopBtn);
         slideImg()
         loadContent()
     }
 
     function exit_home(){
         clearInterval(slideInterval)
-        window.removeEventListener('scroll',showBackToTopBtn)
     }
 
     reload_home()

@@ -50,8 +50,8 @@ header {
 }
 
 .logged-in-info .username {
-    color: rgb(56, 55, 55);
-    background-color: lightblue;
+    color: #383737FF;
+    background-color: #96c5ee;
     padding: 10px 20px;
     border-radius: 5px;
 }
@@ -122,14 +122,56 @@ header {
 #search-button {
     display: flex;
     justify-content: flex-end;
-    padding: 15px 15px;
-    background-color: lightblue;
+    padding: 15px;
+    background-color: #96c5ee;
     border-radius: 0 15px 15px 0;
-    color: black;
+    color: #383737FF;
     border: none;
     cursor: pointer;
 }
 
+/*返回顶部按钮*/
+#back-to-top-btn {
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+    z-index: 99;
+
+
+    width: 42px;
+    height: 42px;
+    display: none;
+    border: none;
+    outline: none;
+    background-color: white;
+    color: #2a2a2a;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+#back-to-top-btn:hover {
+    background-color: #c2c2c2;
+}
+
+#icon-up {
+    display: inline-block;
+    zoom: 140%;
+}
+
+#back-to-top-btn:hover #icon-up {
+    display: none;
+}
+
+#text {
+    color: #383737FF;
+    display: none;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#back-to-top-btn:hover #text {
+    display: inline-block;
+}
 
 
 footer {

@@ -102,7 +102,6 @@
 
 .chatbot-input {
     display: flex;
-
 }
 
 .chatbot-input input {
@@ -114,55 +113,15 @@
 
 .chatbot-input button {
     padding: 5px 10px;
-    background-color: #45b1e1;
-    color: white;
+    background-color: #96c5ee;
+    color: #383737FF;
     border: none;
     border-radius: 3px;
     cursor: pointer;
+
 }
 
 .chatbot-input button:hover {
-    background-color: #50dcec;
+    background-color: #8ab3d7;
 }
 
-/*返回顶部按钮*/
-#back-to-top-btn {
-    position: fixed;
-    bottom: 60px;
-    right: 20px;
-    z-index: 99;
-
-
-    width: 42px;
-    height: 42px;
-    display: none;
-    border: none;
-    outline: none;
-    background-color:  #efefef;
-    color: #131313;
-    cursor: pointer;
-    border-radius: 50%;
-}
-
-#back-to-top-btn:hover {
-    background-color: #CECECEFF;
-}
-
-#icon-up {
-    display: inline-block;
-    zoom: 140%;
-}
-
-#back-to-top-btn:hover #icon-up {
-    display: none;
-}
-
-#text {
-    display: none;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-#back-to-top-btn:hover #text {
-    display: inline-block;
-}

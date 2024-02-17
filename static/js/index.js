@@ -1,5 +1,3 @@
-
-
 let first_load_js = {
     "home": true,
     "details": true,
@@ -7,8 +5,7 @@ let first_load_js = {
 }
 
 let currentPage = null;
-
-function get_page(PageSign, privateData='') {
+function get_page(PageSign, privateData=null) {
     if (PageSign === 'empty'){
         if (currentPage) {eval("exit_" + currentPage + "()")}
         document.querySelector('main').innerHTML = `<h1 style="color:white; text-align: center; margin-top: 30%">即将开放，敬请期待！</h1>`
@@ -50,19 +47,39 @@ function get_page(PageSign, privateData='') {
     }
 }
 
+
 // 获取浏览器网址栏的参数
-let params = window.location.search.substring(1).split("&");
+const params = window.location.search.substring(1).split("&");
 let searchPara = {};
 for (let i = 0; i < params.length; i++) {
     let param = params[i].split("=");
     searchPara[param[0]] = param[1];
 }
 
-
 get_page('home')
-if (searchPara.page === 'details') {
+if (searchPara.page === 'details' && searchPara.id) {
     get_page('details', searchPara.id)
 }
 else if (searchPara.page === 'history') {
     get_page('history')
 }
+
+
+
+// 显示返回顶部按钮
+function showBackToTopBtn() {
+    if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+        document.getElementById("back-to-top-btn").style.display = "block";
+    } else {
+        document.getElementById("back-to-top-btn").style.display = "none";
+    }
+}
+
+// 点击按钮返回顶部
+function backToTop() {
+    document.body.scrollTop = 0; // 兼容 Safari
+    document.documentElement.scrollTop = 0; // 兼容 Chrome, Firefox, IE 和 Opera
+}
+
+document.getElementById("back-to-top-btn").addEventListener('click', backToTop);
+window.addEventListener('scroll', showBackToTopBtn);
