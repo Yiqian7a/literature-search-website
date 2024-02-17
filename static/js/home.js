@@ -1,6 +1,7 @@
 
 if (first_load_js.home) {
     first_load_js.home = false;
+
     let slideInterval
     function slideImg() {
         // 切换图片
@@ -29,6 +30,7 @@ if (first_load_js.home) {
     let randomSearch = false;
 
     function search() {
+        if (currentPage !== 'home') {get_page('home')}
         literatureContainer = document.getElementById('literature-container');
         keyWord = document.getElementById('search-input').value
         // 发送 AJAX 请求
@@ -111,7 +113,7 @@ if (first_load_js.home) {
             const literatureItem = literatureData[loadedNum];
             literatureElement.classList.add("literature-item");
             literatureElement.innerHTML = `
-            <h2 onclick="get_page('details', '${literatureItem.id}')">&nbsp;&nbsp;${literatureItem.TI}</h2>
+            <h2 onclick="get_page('details', '${literatureItem.id}')">${literatureItem.TI}</h2>
             <p>作者：${literatureItem.AU}</a></p>
             <p>发布日期：${literatureItem.PY} ${literatureItem.PD}</a></p>
         `;
@@ -133,19 +135,39 @@ if (first_load_js.home) {
         // console.log("2remainingCounts:", remainCounts);
         // console.log('2loaded content', loadedNum)
     }
+    // 显示返回顶部按钮
+    function showBackToTopBtn() {
+        if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+            document.getElementById("back-to-top-btn").style.display = "block";
+        } else {
+            document.getElementById("back-to-top-btn").style.display = "none";
+        }
+    }
+
+    // 点击按钮返回顶部
+    function backToTop() {
+        document.body.scrollTop = 0; // 兼容 Safari
+        document.documentElement.scrollTop = 0; // 兼容 Chrome, Firefox, IE 和 Opera
+    }
 
     function reload_home(){
+        history.pushState({}, '', '/index?page=home');
+        document.getElementById("private-title").innerHTML = '文献搜索：首页';
         loadedNum = 0
+        document.getElementById("back-to-top-btn").addEventListener('click', backToTop);
+        window.addEventListener('scroll', showBackToTopBtn);
         slideImg()
         loadContent()
     }
 
     function exit_home(){
         clearInterval(slideInterval)
+        window.removeEventListener('scroll',showBackToTopBtn)
     }
+
+    reload_home()
 }
 
-reload_home()
 
 
 

@@ -114,7 +114,7 @@ def search():
     return jsonify({'state': 200, 'data': ls})
 
 
-@app.route('/history', methods=['GET','POST'])
+@app.route('/history', methods=['GET'])
 @if_session
 def history():
     his = db.query_history(user_id=session['user_id'])

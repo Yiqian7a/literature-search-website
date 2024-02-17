@@ -1,4 +1,5 @@
 if (first_load_js.history) {
+    first_load_js.history = false
     function get_history() {
         fetch('/history')
         .then(function(response) {
@@ -12,7 +13,7 @@ if (first_load_js.history) {
                 const historyElement = document.createElement("div");
                 historyElement.classList.add("history-item");
                 historyElement.innerHTML = `
-                    <h2 onclick="get_page('details', '${historyItem[0]}')">&nbsp;&nbsp;${historyItem[2]}</h2>
+                    <h2 onclick="get_page('details', '${historyItem[0]}')">${historyItem[2]}</h2>
                     <p>浏览日期：${historyItem[1]}</p>
                 `;
                 historyContainer.appendChild(historyElement);
@@ -24,6 +25,8 @@ if (first_load_js.history) {
     }
 
     function reload_history() {
+        history.pushState({}, '', '/index?page=history');
+        document.getElementById("private-title").innerHTML = '文献搜索：历史记录';
         get_history()
     }
     function exit_history(){}

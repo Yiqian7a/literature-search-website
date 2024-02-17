@@ -20,6 +20,7 @@ class DevelopmentConfig(BaseConfig):
 
 
 RSoE_title_dict = {
+    'id': 'id',
     "AB": "摘要",
     "TI": "文献标题",
     "AU": "作者",
