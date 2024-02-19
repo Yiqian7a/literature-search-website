@@ -15,7 +15,7 @@ import database as db
 app = Flask(__name__)
 app.config.from_object(db.DevelopmentConfig) # 配置app
 
-with open('session.txt', 'w') as f:
+with open('session_cache.txt', 'w') as f:
     f.write(str(app.secret_key))
 
 with app.app_context(): # 在上下文环境中初始化数据库

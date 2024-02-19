@@ -124,7 +124,7 @@ def init_app(app, init = False):
     # 写入文献数据
     if init:
         print("写入文献数据中，...")
-        path = "./static/RSoE Data"
+        path = "./RSoE OriginData"
         title_dict = {}
         for i in RSoE_title_dict:
             title_dict[i] = ''
