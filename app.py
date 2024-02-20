@@ -3,6 +3,7 @@ import hashlib, random
 import logging
 
 import database as db
+from topic_modeling import conclude_topic
 
 ''' 
 报错信息:
@@ -79,6 +80,7 @@ def index():
                 res_dict[i] = ti if ti != '' else '（没有记录）'
                 if i == 'PD' and ti == '':
                     res_dict['PD'] = ''
+            res_dict['Topic'] = conclude_topic(res_dict)
 
             # details likes {'TI':'xx', 'AU':'xx', ...}
             return  jsonify({'state': 200, 'privateHTML': render_template('details.html', details=jsonify(res_dict))})
