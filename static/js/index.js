@@ -64,11 +64,8 @@ get_page('home')
 if (searchPara.page === 'details' && searchPara.id) {
     get_page('details', searchPara.id)
 }
-else if (searchPara.page === 'history') {
-    get_page('history')
-}
-else if (searchPara.page === 'document') {
-    get_page('document')
+else if (['history','document', 'developers'].includes(searchPara.page)) {
+    get_page(searchPara.page)
 }
 
 

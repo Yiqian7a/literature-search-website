@@ -1,4 +1,19 @@
 .main-container {
-
+    display: flex;
+    background-color: #efefef;
+    border-radius: 10px;
 }
 
+.left-column,
+.right-column {
+    padding: 20px;
+}
+
+.left-column {
+    width: 30%;
+    border-right: 1px solid #ccc; /* 添加右侧分割线 */
+}
+
+.right-column {
+    width: 70%;
+}
