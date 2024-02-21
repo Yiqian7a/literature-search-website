@@ -24,6 +24,7 @@
 }
 .md-toc-link-wrapper,
 .md-toc-link-wrapper p{
+    color: #64656c;
     padding:0;
     margin: 5px 0 5px 0;
 }
@@ -42,4 +43,13 @@
 }
 .right-column img {
     width: 100%;
+}
+.right-column h2 {
+    text-indent: 0.5em;
+}
+.right-column h3 {
+    text-indent: 1em;
+}
+.right-column p {
+    text-indent: 2em;
 }

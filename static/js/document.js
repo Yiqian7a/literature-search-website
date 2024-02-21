@@ -3,10 +3,10 @@ if (first_load_js.document) {
     const left_width = document.querySelector('.left-column').offsetWidth
     let content = document.querySelector('.content')
     content.style.width = 0.8*left_width + 'px'
-    let top_height = content.getBoundingClientRect().height + 40;
+    let top_height = content.getBoundingClientRect().height;
     // 开启固定左侧栏
     function fixLeftColumn() {
-        if (document.body.scrollTop > top_height|| document.documentElement.scrollTop > top_height) {
+        if (document.body.scrollTop >= top_height|| document.documentElement.scrollTop >= top_height) {
             content.style.position = "fixed";
             content.style.top = '5%';
         } else {
