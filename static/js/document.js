@@ -1,16 +1,28 @@
-// 第一次加载该网页时运行的内容，一般用来定义函数
+
 if (first_load_js.document) {
+    const left_width = document.querySelector('.left-column').offsetWidth
+    let content = document.querySelector('.content')
+    content.style.width = 0.8*left_width + 'px'
+    let top_height = content.getBoundingClientRect().height + 40;
+    // 开启固定左侧栏
+    function fixLeftColumn() {
+        if (document.body.scrollTop > top_height|| document.documentElement.scrollTop > top_height) {
+            content.style.position = "fixed";
+            content.style.top = '5%';
+        } else {
+            content.style.position = "relative";
+            content.style.top = '0';
+        }
+    }
 
-    function reload_document(){
-        // 完成第一次加载后每次进入该网页都会运行的内容，一般用于加载main标签内部的监听、定时器
-        history.pushState({}, '', '/index?page=document'); // 更改网页url
+    function reload_document(){history.pushState({}, '', '/index?page=document');
         document.getElementById("private-title").innerHTML = '文献搜索：功能说明';
-
+        window.addEventListener('scroll', fixLeftColumn);
     }
     function exit_document(){
-        // 退出该页面执行的函数，一般用于关闭全局监听、定时等
+        window.removeEventListener('scroll', fixLeftColumn);
     }
 
     eval("reload_" + currentPage + "()")
-    first_load_js.document = false; // 写在最后，当加载完该js才认为第一次加载页面成功
+    first_load_js.document = false;
 }

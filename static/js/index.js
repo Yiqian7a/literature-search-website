@@ -77,6 +77,7 @@ function showBackToTopBtn() {
         document.getElementById("back-to-top-btn").style.display = "none";
     }
 }
+window.addEventListener('scroll', showBackToTopBtn);
 
 // 点击按钮返回顶部
 function backToTop() {
@@ -85,4 +86,4 @@ function backToTop() {
 }
 
 document.getElementById("back-to-top-btn").addEventListener('click', backToTop);
-window.addEventListener('scroll', showBackToTopBtn);
+

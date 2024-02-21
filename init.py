@@ -1,6 +1,6 @@
 if __name__ == '__main__':
     import json
-    data = {"login_name": input('请登入数据库账号：'), "password": input('请输入密码：'),
+    data = {"login_name": input('请输入数据库用户名：'), "password": input('请输入密码：'),
             "host": "127.0.0.1:3306",
             "database_name": "literaturesearch"}
 
