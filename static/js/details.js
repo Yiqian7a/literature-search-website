@@ -62,7 +62,7 @@ if (first_load_js.details) {
             for (const topic in data) {
                 data[topic] = Math.sqrt(totalArea * data[topic] / sum);
             }
-            console.log(data)
+            // console.log(data)
 
             const colorBoard = ['rgba(232,78,78,0.7)', 'rgba(236,122,60,0.65)', 'rgba(243,214,62,0.68)', 'rgba(125,231,112,0.68)',
                 'rgba(155,239,246,0.68)', 'rgba(88,154,243,0.71)', 'rgba(127,127,229,0.73)'];

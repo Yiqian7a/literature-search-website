@@ -45,7 +45,7 @@ def conclude_topic(data, model = 'LSI'):
         tagged_words = nltk.pos_tag(texts[i])
         # 筛选出名词
         texts[i] = [word for word, tag in tagged_words if tag.startswith('N')]
-    print(texts)
+    # print(texts)
 
     # 生成词典
     dictionary = corpora.Dictionary(texts)  # 进行词典构造时，texts必须是2维的array，即两个中括号[[]]

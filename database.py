@@ -1,6 +1,6 @@
 ﻿from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-import os, datetime
+import os, datetime, json
 
 class BaseConfig:
     SECRET_KEY = '66666666'
@@ -11,7 +11,9 @@ class BaseConfig:
 
 
 class DevelopmentConfig(BaseConfig):
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:root@127.0.0.1:3306/literaturesearch?charset=utf8mb4"
+    with open ('./db_account.json', 'r') as f:
+        data = json.load(f)
+    SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{data['login_name']}:{data['password']}@{data['host']}/{data['database_name']}?charset=utf8mb4"
     # 缓存配置
     CACHE_TYPE = "simple"
     # CACHE_TYPE = "RedisCache"
