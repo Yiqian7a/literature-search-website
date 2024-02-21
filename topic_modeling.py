@@ -68,8 +68,8 @@ def conclude_topic(data, model = 'LSI'):
     res = {}
     ls = topic_model.show_topics()[0][1].split(' + ')
     for e in ls:
-        l = e[0:].split('*')
-        res[eval(l[1])] = l[0]
+        l = e[3:].split('*')
+        res[eval(l[1])] = eval(l[0])
     print(res)
     return res
 

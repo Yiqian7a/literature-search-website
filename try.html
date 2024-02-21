@@ -2,7 +2,7 @@
 <html>
 <head>
     <style>
-        .circle-chart {
+        。topic-modeling-container {
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -10,7 +10,7 @@
             position: relative;
         }
 
-        .circle {
+        .topic {
             position: absolute;
             width: 100px;
             height: 100px;
@@ -25,7 +25,7 @@
     </style>
 </head>
 <body>
-<div class="circle-chart" id="chart-container"></div>
+<div class="topic-modeling-container" id="topic-container"></div>
 <script>
     const data = {
         'Topic 1': 30,
@@ -46,8 +46,8 @@
         data[topic] = Math.sqrt(totalArea * data[topic] / sum);
     }
 
-    const chartContainer = document.getElementById('chart-container');
-    chartContainer.innerHTML = '';
+    const topicContainer = document.getElementById('topic-container');
+    topicContainer.innerHTML = '';
     const colorBoard = ['#e84e4e', '#ec7a3c', '#f3d63e', '#7de770',
         '#9beff6', '#3b8cf6', '#6d6de7'];
 
@@ -55,7 +55,7 @@
     for (const topic in data) {
         const a = data[topic];
         const circle = document.createElement('div');
-        circle.className = 'circle';
+        circle.className = 'topic';
         circle.innerText = topic;
         circle.id = topic;
         circle.style.backgroundColor = colorBoard[random(7)];
@@ -71,7 +71,7 @@
         circle.addEventListener("mousedown", dragStart);
         circle.addEventListener("mouseup", dragEnd);
 
-        chartContainer.appendChild(circle);
+        topicContainer.appendChild(circle);
     }
 
     function random(max) {
@@ -81,36 +81,50 @@
 
 
     let activeElement = null;
-    let initialX;
-    let initialY;
-    let xOffset = 0;
-    let yOffset = 0;
+    let initialX, initialY;
+    let initialMouseX, initialMouseY;
+    let xBias = 0;
+    let yBias = 0;
+    let first;
 
     // 拖拽开始时记录初始位置
     function dragStart(e) {
         activeElement = e.target;
-        initialX = e.clientX - activeElement.getBoundingClientRect().left - xOffset;
-        initialY = e.clientY - activeElement.getBoundingClientRect().top - yOffset;
+        console.log(e.target.innerHTML)
+        xBias = 0;
+        yBias = 0;
+        initialX = activeElement.style.left;
+        initialY = activeElement.style.top;
+        console.log(initialX, initialY)
+        first = true
     }
 
     function dragEnd(e) {
         activeElement = null;
-        xOffset = 0;
-        yOffset = 0;
     }
 
     function drag(e) {
         if (activeElement) {
-            e.preventDefault();
-            xOffset = e.clientX - initialX;
-            yOffset = e.clientY - initialY;
-            setTranslate(xOffset, yOffset, activeElement);
+            if (first){
+                initialMouseX = e.pageX;
+                initialMouseY = e.pageY;
+                first = false;
+            }
+
+            // e.preventDefault();
+            xBias = e.pageX - initialMouseX;
+            yBias = e.pageY - initialMouseY;
+        console.log(xBias, yBias)
+            setTranslate(xBias, yBias, activeElement);
+            activeElement.style.left = initialX + xBias + 'px';
+            activeElement.style.top = initialY + yBias + 'px';
         }
     }
 
     function setTranslate(xPos, yPos, el) {
-        el.style.left = xPos + 'px';
-        el.style.top = yPos + 'px';
+        console.log(initialX, xPos)
+        el.style.left = initialX + xPos + 'px';
+        el.style.top = initialY + yPos + 'px';
     }
 
     document.addEventListener("mousemove", drag);

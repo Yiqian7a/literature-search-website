@@ -82,4 +82,5 @@
     align-items: center;
     font-size: 12px;
     cursor: move;
+    user-select: none;
 }
