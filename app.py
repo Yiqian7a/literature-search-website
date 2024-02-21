@@ -1,5 +1,5 @@
 from flask import Flask, session, render_template, request, jsonify
-import hashlib, random
+import hashlib, random, functools
 import logging
 
 import database as db
@@ -16,20 +16,16 @@ from topic_modeling import conclude_topic
 app = Flask(__name__)
 app.config.from_object(db.DevelopmentConfig) # 配置app
 
-with open('session_cache.txt', 'w') as f:
-    f.write(str(app.secret_key))
-
-with app.app_context(): # 在上下文环境中初始化数据库
-    db_app = db.init_app(app, init = False)
-    # First deploy should config the↑ <init> as True
-    # 第一次部署应该将上一句代码中的init参数改为Ture
+print('secret_key: ', app.secret_key)
+if __name__ == 'app' or __name__ == '__main__':
+    with app.app_context(): # 在上下文环境中初始化数据库
+        db_app = db.init_app(app)
 
 # 设置日志级别
 app.logger.setLevel(logging.INFO)
 
 
 # 判断当前用户是否在session中。由于flask要求命名空间映射唯一，所以使用functools模块动态生成装饰器函数
-import functools
 def if_session(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -80,11 +76,12 @@ def index():
                 res_dict[i] = ti if ti != '' else '（没有记录）'
                 if i == 'PD' and ti == '':
                     res_dict['PD'] = ''
-            res_dict['Topic'] = conclude_topic(res_dict)
+            res_dict['id'] = private_data
+            res_dict['Topic'] = conclude_topic(res_dict, model = 'LDA')
 
             # details likes {'TI':'xx', 'AU':'xx', ...}
             return  jsonify({'state': 200, 'privateHTML': render_template('details.html', details=jsonify(res_dict))})
-        elif page_sign:
+        elif page_sign in ["home", "history", "developers", "document"]:
             return jsonify({'state': 200, 'privateHTML': render_template(f'{page_sign}.html')})
         else:
             return jsonify({'state': 404})

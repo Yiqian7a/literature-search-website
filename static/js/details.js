@@ -1,5 +1,4 @@
 if (first_load_js.details) {
-
     function random(max) {
         return Math.floor(Math.random() * max);
     }
@@ -42,7 +41,6 @@ if (first_load_js.details) {
 
         }
     }
-
 
     function drawTopic(data) {
         // console.log(typeof data,data)
@@ -98,7 +96,9 @@ if (first_load_js.details) {
 
         document.addEventListener("mouseup", dragEnd)
         document.addEventListener("mousemove", drag);
-        drawTopic(document.getElementById("topic-container").innerHTML)
+        setTimeout(function() {
+            drawTopic(document.getElementById("topic-container").innerHTML)
+        },100)
         }
 
     function exit_details(){

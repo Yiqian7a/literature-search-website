@@ -28,6 +28,7 @@ function get_page(PageSign, privateData=null) {
 
         xhr.onload = function () {
             const response = JSON.parse(xhr.responseText);
+            // console.log(response)
             if (response.state === 200) {
                 document.getElementById("private-css").href = "/static/css/" + PageSign + ".css"
                 document.querySelector(".main").innerHTML = response.privateHTML;

@@ -20,7 +20,6 @@ class DevelopmentConfig(BaseConfig):
 
 
 RSoE_title_dict = {
-    'id': 'id',
     "AB": "摘要",
     "TI": "文献标题",
     "AU": "作者",
@@ -32,7 +31,7 @@ RSoE_title_dict = {
     "SC": "研究方向",
     "NR": "引用的参考文献数",
     "U1": "被引用次数（最近 180 天）",
-    "U2": "被引用次数（2003 年至今）",
+    "U2": "被引用次数（2013 年至今）",
 
     "CT": "会议标题",
     "CY": "会议日期",
