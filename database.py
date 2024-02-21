@@ -11,7 +11,7 @@ class BaseConfig:
 
 
 class DevelopmentConfig(BaseConfig):
-    with open ('./db_account.json', 'r') as f:
+    with open ('./db_setting.json', 'r') as f:
         data = json.load(f)
     SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{data['login_name']}:{data['password']}@{data['host']}/{data['database_name']}?charset=utf8mb4"
     # 缓存配置

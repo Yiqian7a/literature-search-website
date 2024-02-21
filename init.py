@@ -4,7 +4,7 @@ if __name__ == '__main__':
             "host": "127.0.0.1:3306",
             "database_name": "literaturesearch"}
 
-    with open ('./db_account.json', 'w') as f:
+    with open ('./db_setting.json', 'w') as f:
         json.dump(data, f)
 
     import database, topic_modeling
