@@ -13,19 +13,19 @@
 <header>
     <div class="top-container">
         <div>
-            <a href="/index">首页</a>
-            <a href="/empty">开放平台</a>
-            <a href="/empty">科研热点</a>
-            <a href="/empty">期刊顶会</a>
+            <a onclick="get_page('home')">首页</a>
+            <a onclick="get_page('developers')">开发团队</a>
+            <a onclick="get_page('document')">帮助文档</a>
         </div>
         <div class="user-profile">
             <div class="logged-in-info">
-                <div class="username"><i class="fas fa-user"></i>已登录：{{ username }}</div>
+                <div class="username"><i class="fas fa-user"></i>已登录：{{ userData.user_name }}</div>
                 <div class="dropdown-content">
-                    <a href="/history">浏览历史</a>
-                    <a href="/empty">个人主页</a>
-                    <a href="/empty">我的关注</a>
-                    <a href="/logout">退出登录</a>
+                    <span>绑定邮箱：{{ userData.user_email }}</span>
+                    <div>
+                        <a onclick="get_page('history')">浏览历史</a>
+                        <a href="/logout">退出登录</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -35,52 +35,24 @@
     <div class="search-container">
         <input type="text" id="search-input" placeholder="搜索作者、标题...">
         <button type="submit" id="search-button">
-            <i style="font-size: 150%;" class="fas fa-search"></i>
+            <i style="font-size: 160%;" class="fas fa-search"></i>
         </button>
     </div>
 </header>
 
-<main class="main">
-</main>
+<main class="main"></main>
+
+<button id="back-to-top-btn" title="返回顶部">
+    <span id="icon-up" class="fas fa-arrow-up"></span>
+    <span id="text">返回<br>顶部</span>
+</button>
 
 <footer>
     &copy; 糖式组. All rights reserved. &nbsp;&nbsp;&nbsp;
     <a href="https://gitee.com/Yiqian7a/literature-search-website">前往Gitee仓库</a>
 </footer>
 
-<script>
-    var sign2title = {
-        "home": "主页",
-        "details": "",
-        "history": "历史记录"
-    }
+<script src="/static/js/index.js"></script>
 
-    function get_page(PageSign) {
-        // 发送 AJAX 请求
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', '/index', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(PageSign));
-
-        xhr.onload = function () {
-            const response = JSON.parse(xhr.responseText);
-            if (response.state === 201) {
-                document.getElementById("private-title").innerHTML = '文献搜索：' + sign2title[PageSign];
-                document.getElementById("private-css").href = "/static/css/" + PageSign + ".css"
-                document.getElementById("private-js").src= "/static/js/" + PageSign + ".js"
-                document.querySelector(".main").innerHTML = response.privateHTML;
-                window.privateData = response.data;
-            }
-        };
-
-        xhr.onerror = function () {
-            alert("页面请求失败");
-        };
-    }
-
-
-    get_page("home")
-</script>
-<script type="module" id="private-js"></script>
 </body>
 </html>

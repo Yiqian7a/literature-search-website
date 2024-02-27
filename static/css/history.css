@@ -1,4 +1,5 @@
 .main-container {
+    display: flex;
     flex-direction: column;
 }
 .title-column{
@@ -16,6 +17,8 @@
 .title-column span{
     margin: 0 10% 10px 10% ;
 }
+
+
 #history-container {
     background-color: #CECECEFF;
     margin-top: 0;
@@ -26,14 +29,18 @@
 #history-container div{
     background-color: #efefef;
     padding: 10px;
-    margin: 0 10px 20px 10px;
+    margin: 0 10% 3% 10%;
     border: 1px solid #ccc;
     border-radius: 20px;
 }
 
-.history-item a {
-    text-indent: 2em;
-    color: #4785d7;
+.history-item h2 {
+    margin: 0 10px 0 10px;
+    color: #1e1e1e;
+    text-decoration: underline;
+    cursor: pointer;
+    text-indent: 1em;
+
 }
 
 .history-item p {

@@ -1,110 +1,70 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="title"></title>
-    
-    <link rel="stylesheet" type="text/css" href="/static/css/details.css">
-    <script src="/static/js/common_header.js"></script>
-</head>
-
-<body>
-<header></header>
-
-<main class="main-container">
+<div class="main-container">
     <div id="summary-container">
-        <h1 id="TI">a</h1>
-        <h4>文献摘要:</h4>
-        <p id="AB"></p>
-        <a id="read-original">前往 Web of Science 阅读原文</a>
+        <h1 id="TI">{{ details.json.TI | safe }}</h1>
+        <h3>文献摘要:</h3>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;{{ details.json.AB | safe }}</p>
+        <a href='https://webofscience.clarivate.cn/wos/woscc/full-record/ + {{ details.json.UT | safe }}'>前往 Web of Science 阅读原文</a>
+        <div id='id' class='{{ details.json.id | safe }}'></div>
     </div>
 
     <div class="main-title-container">
         <div>
             <h4 class="title">作者：</h4>
-            <p class="content" id="AU"></p>
+            <p class="content">{{ details.json.AU | safe }}</p>
         </div>
         <div>
             <h4 class="title">页数：</h4>
-            <p class="content" id="PG"></p>
+            <p class="content">{{ details.json.PG | safe }} 页</p>
         </div>
         <div>
             <h4 class="title">出版日期：</h4>
-            <p class="content" id="PD"></p>
+            <p class="content">{{ details.json.PY | safe }} {{ details.json.PD | safe }}</p>
         </div>
         <div>
             <h4 class="title">类别：</h4>
-            <p class="content" id="WC"></p>
+            <p class="content">{{ details.json.WC | safe }}</p>
         </div>
         <div>
             <h4 class="title">研究方向：</h4>
-            <p class="content" id="SC"></p>
+            <p class="content">{{ details.json.SC | safe }}</p>
         </div>
         <div>
             <h4 class="title">引用的参考文献数：</h4>
-            <p class="content" id="NR"></p>
+            <p class="content">{{ details.json.NR | safe }} 篇</p>
         </div>
         <div>
-            <h4 class="title">被引用次数(180天):</h4>
-            <p class="content" id="U1"></p>
+            <h4 class="title">被引用次数:<br> (180天内)</h4>
+            <p class="content">{{ details.json.U1 | safe }} 次</p>
         </div>
         <div>
-            <h4 class="title">被引用次数(2013年至今):</h4>
-            <p class="content" id="U2"></p>
+            <h4 class="title">被引用次数:<br>(2013年至今)</h4>
+            <p class="content">{{ details.json.U2 | safe }} 次</p>
         </div>
         <div>
             <h4 class="title">会议标题：</h4>
-            <p class="content" id="CT"></p>
+            <p class="content">{{ details.json.CT | safe }}</p>
         </div>
         <div>
             <h4 class="title">会议日期：</h4>
-            <p class="content" id="CY"></p>
+            <p class="content">{{ details.json.CY | safe }}</p>
         </div>
         <div>
             <h4 class="title">会议地点：</h4>
-            <p class="content" id="CL"></p>
+            <p class="content">{{ details.json.CL | safe }}</p>
         </div>
         <div>
             <h4 class="title">会议赞助方：</h4>
-            <p class="content" id="SP"></p>
+            <p class="content">{{ details.json.SP | safe }}</p>
         </div>
         <div>
             <h4 class="title">会议主办方：</h4>
-            <p class="content" id="HO"></p>
+            <p class="content">{{ details.json.HO | safe }}</p>
         </div>
+
     </div>
 
-    <div id="source-tree-container">
-        <h4>溯源树</h4>
+    <div class="topic-modeling-container">
+        <h3>主题分布：</h3>
+        <div id="topic-container">{{ details.json.Topic | safe }}</div>
     </div>
-
-
-</main>
-
-
-
-<script>
-    var jsonData = {{ details.json | safe }};
-    document.getElementById("title").innerHTML = '文献搜索：'+jsonData.TI;
-    document.getElementById("TI").innerHTML = '&nbsp;&nbsp;'+jsonData.TI;
-    document.getElementById("AU").innerHTML = jsonData.AU;
-    document.getElementById("PG").innerHTML = jsonData.PG +'&nbsp;页';
-    document.getElementById("PD").innerHTML = jsonData.PY +' '+ jsonData.PD;
-    document.getElementById("WC").innerHTML = jsonData.WC;
-    document.getElementById("SC").innerHTML = jsonData.SC;
-    document.getElementById("NR").innerHTML = jsonData.NR +'&nbsp;篇';
-    document.getElementById("U1").innerHTML = jsonData.U1 +'&nbsp;次';
-    document.getElementById("U2").innerHTML = jsonData.U2 +'&nbsp;次';
-    document.getElementById("CT").innerHTML = jsonData.CT;
-    document.getElementById("CY").innerHTML = jsonData.CY;
-    document.getElementById("CL").innerHTML = jsonData.CL;
-    document.getElementById("SP").innerHTML = jsonData.SP;
-    document.getElementById("HO").innerHTML = jsonData.HO;
-    document.getElementById("AB").innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;'+jsonData.AB;
-    // 构建原文链接
-    var originalLink = "https://webofscience.clarivate.cn/wos/woscc/full-record/" + jsonData.UT;
-    document.getElementById("read-original").href = originalLink; // 将链接赋给 <a> 元素的 href 属性
-</script>
-</body>
-</html>
+</div>

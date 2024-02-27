@@ -1,8 +1,8 @@
+
 .main-container {
     display: flex;
     padding: 5px;
     justify-content: space-between;
-    background-color: rgb(10, 12, 12);
 }
 
 /*左侧栏*/
@@ -27,13 +27,13 @@
     border-radius: 20px;
     box-shadow: 0 0 10px 0px lightgray;
 }
-.literature-item a {
-    color: #1e1e1e;
-}
 
 .literature-item h2 {
-    color: black;
+    text-indent: 1em;
+    color: #1e1e1e;
+    cursor: pointer;
     text-align: left;
+    text-decoration: underline;
 }
 
 .literature-item p {
@@ -42,7 +42,7 @@
     text-indent: 2em;
 }
 
-#remain-count{
+#remain-container{
     text-align: center;
     cursor: pointer;
 }
@@ -102,7 +102,6 @@
 
 .chatbot-input {
     display: flex;
-
 }
 
 .chatbot-input input {
@@ -114,53 +113,15 @@
 
 .chatbot-input button {
     padding: 5px 10px;
-    background-color: #5ed5b5;
-    color: white;
+    background-color: #96c5ee;
+    color: #383737FF;
     border: none;
     border-radius: 3px;
     cursor: pointer;
+
 }
 
 .chatbot-input button:hover {
-    background-color: #45a049;
+    background-color: #8ab3d7;
 }
 
-
-/*页标*/
-.pagination {
-    text-align: center;
-    margin: 10px 0 10px 0;
-}
-
-.pagination a {
-    display: inline-block;
-    margin: 0 5px 5px 0;
-    padding: 5px 10px;
-    background-color: #f2f2f2;
-    color: #333;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-.pagination a.active {
-    background-color: #4CAF50;
-    color: white;
-}
-
-/*按钮*/
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    text-transform: uppercase;
-    background-color: lightblue;
-    color: #fff;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-}
-
-footer {
-    margin-bottom: 10px;
-}

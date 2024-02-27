@@ -1,6 +1,6 @@
 ﻿from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-import os, datetime
+import os, datetime, json
 
 class BaseConfig:
     SECRET_KEY = '66666666'
@@ -11,7 +11,9 @@ class BaseConfig:
 
 
 class DevelopmentConfig(BaseConfig):
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:root@127.0.0.1:3306/literaturesearch?charset=utf8mb4"
+    with open ('./db_setting.json', 'r') as f:
+        data = json.load(f)
+    SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{data['login_name']}:{data['password']}@{data['host']}/{data['database_name']}?charset=utf8mb4"
     # 缓存配置
     CACHE_TYPE = "simple"
     # CACHE_TYPE = "RedisCache"
@@ -123,7 +125,7 @@ def init_app(app, init = False):
     # 写入文献数据
     if init:
         print("写入文献数据中，...")
-        path = "./static/RSoE Data"
+        path = "./RSoE OriginData"
         title_dict = {}
         for i in RSoE_title_dict:
             title_dict[i] = ''
@@ -181,7 +183,7 @@ def create_user(db_app, username:str, email:str, password:str):
         db_app.session.rollback()
         return 500, f"注册失败，未知错误: {str(e)}"
     else:
-        return 201, "创建用户成功！", user
+        return 200, "创建用户成功！", user
 
 def query_user(email:str = None, id:int = None):
     if id:
@@ -194,7 +196,7 @@ def query_user(email:str = None, id:int = None):
         else: return False, '用户不存在'
 
 
-def search_literature(doc_id = None, author = None, title = None):
+def search_literature(doc_id:int = None, author = None, title = None):
     res = []
     if doc_id:
         res += [RSoE.query.get(doc_id)]
@@ -210,10 +212,9 @@ def query_history(user_id):
 
 def add_history(db_app, user_id, doc_id):
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    new_his=f"[{doc_id}, '{current_time}']"
+    new_his=f"[{doc_id}, '{current_time}', '{search_literature(doc_id=doc_id)[0].TI}']"
     # 更新用户历史记录
     user_history = query_history(user_id=user_id)
-
 
     try:
         for i in range(20, 1, -1):
@@ -226,5 +227,5 @@ def add_history(db_app, user_id, doc_id):
     except Exception as e:
         return 500, f"写入失败，未知错误: {str(e)}"
     else:
-        return 201, "成功写入历史记录"
+        return 200, "成功写入历史记录"
 

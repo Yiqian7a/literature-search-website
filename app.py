@@ -1,13 +1,13 @@
 from flask import Flask, session, render_template, request, jsonify
-import hashlib, random
+import hashlib, random, functools
 import logging
 
 import database as db
+from topic_modeling import conclude_topic
 
 ''' 
 报错信息:
     200: 成功访问页面
-    201: 成功创建信息
     403: 服务器拒绝请求
     500: 服务器内部错误
 '''
@@ -16,24 +16,20 @@ import database as db
 app = Flask(__name__)
 app.config.from_object(db.DevelopmentConfig) # 配置app
 
-with open('session.txt', 'w') as f:
-    f.write(str(app.secret_key))
-
-with app.app_context(): # 在上下文环境中初始化数据库
-    db_app = db.init_app(app, init = False)
-    # First deploy should config the↑ <init> as True
-    # 第一次部署应该将上一句代码中的init参数改为Ture
+print('secret_key: ', app.secret_key)
+if __name__ == 'app' or __name__ == '__main__':
+    with app.app_context(): # 在上下文环境中初始化数据库
+        db_app = db.init_app(app)
 
 # 设置日志级别
 app.logger.setLevel(logging.INFO)
 
 
 # 判断当前用户是否在session中。由于flask要求命名空间映射唯一，所以使用functools模块动态生成装饰器函数
-import functools
 def if_session(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        if "user_name" in session:
+        if 'user_name' in session:
             return func(*args, **kwargs)
         else:
             print("user not in session, redirecting to login")
@@ -49,31 +45,57 @@ def create_session(id:int, name:str, email:str):
 # 创建根路由
 @app.route('/')
 def root():
-    return render_template('root.html')
+    return index()
 
 
 @app.route('/index', methods=["GET", "POST"])
 @if_session
 def index():
     if request.method == "GET":
-        return render_template('index.html', username=session['user_name'])
-    else:
-        page_sign = request.json
-        print(page_sign)
-        if page_sign in ['home', 'history', 'details']:
-            return jsonify({'state': 201, 'privateHTML': render_template(f"{page_sign}.html")})
+        return render_template('index.html', userData={
+            'user_email': session['user_email'],
+            'user_name': session['user_name'],
+        })
+
+    elif request.method == "POST":
+        page_sign = request.json['page_sign']
+        private_data = request.json['private_data']
+        print('user:',session['user_email'],'in:',page_sign, private_data)
+
+        if page_sign == 'details':
+            # 添加历史记录
+            if (res := db.add_history(db_app, user_id=session['user_id'], doc_id=private_data))[0] != 200:
+                return jsonify({'state': res[0], 'res': res[1]})
+            # 查找文献
+            res = db.search_literature(doc_id=private_data)[0]
+
+            # 创建文献信息字典
+            res_dict = {}
+            for i in db.RSoE_title_dict:
+                ti = eval(f'res.{i}')
+                res_dict[i] = ti if ti != '' else '（没有记录）'
+                if i == 'PD' and ti == '':
+                    res_dict['PD'] = ''
+            res_dict['id'] = private_data
+            res_dict['Topic'] = conclude_topic(res_dict, model = 'LDA')
+
+            # details likes {'TI':'xx', 'AU':'xx', ...}
+            return  jsonify({'state': 200, 'privateHTML': render_template('details.html', details=jsonify(res_dict))})
+        elif page_sign in ["home", "history", "developers", "document"]:
+            return jsonify({'state': 200, 'privateHTML': render_template(f'{page_sign}.html')})
+        else:
+            return jsonify({'state': 404})
 
 
 @app.route('/search', methods=["POST"])
 @if_session
 def search():
     search_key = request.json
-    print("search: '", search_key, "'")
     if search_key:
-        print("search!")
+        print('user:',session['user_email'],'search: ', search_key)
         res = db.search_literature(author=search_key, title=search_key)
     else:
-        search_key = ''
+        print('user:',session['user_email'],'random search')
         # 随机查询5篇文献
         res = []
         for i in range(5):
@@ -87,46 +109,19 @@ def search():
         for i in ['id', 'AU', 'TI', 'PD', 'PY']:
             res_dict[i] = eval(f'e.{i}')
         ls.append(res_dict.copy())
-    return jsonify({'state': 201, 'data': ls})
+    return jsonify({'state': 200, 'data': ls})
 
 
-@app.route('/details', methods=['GET'])
-@if_session
-def details():
-    if request.method == 'GET':
-        doc_id = request.args.get('doc_id')
-        # 添加历史记录
-        if (res := db.add_history(db_app, user_id = session['user_id'], doc_id = doc_id))[0] != 201:
-            return jsonify({'state': res[0], 'res': res[1]})
-        # 查找文献
-        res = db.search_literature(doc_id = doc_id)[0]
-
-        # 创建文献信息字典
-        res_dict = {}
-        for i in db.RSoE_title_dict:
-            ti = eval(f'res.{i}')
-            res_dict[i] = ti if ti != '' else '（没有记录）'
-
-        # details likes {'TI':'xx', 'AU':'xx', ...}
-        return render_template('details.html', details = jsonify(res_dict))
-
-@app.route('/history', methods = ['GET'])
+@app.route('/history', methods=['GET'])
 @if_session
 def history():
-    if request.method == 'GET':
-        his = db.query_history(user_id = session['user_id'])
-        history_ls = []
-        for i in range(1, 21):
-            if (s := eval(f'his.h{i}')) != '': #
-                ls = eval(s)
-                history_ls.append(ls + [db.search_literature(doc_id=ls[0])[0].TI])
-        # historyData likes [[doc_id, time, doc_title], [xx], ...]
-        return render_template('history.html', historyData = history_ls)
-
-@app.route('/empty')
-@if_session
-def empty():
-    return render_template('empty.html')
+    his = db.query_history(user_id=session['user_id'])
+    historyData = []
+    for i in range(1, 21):
+        if (s := eval(f'his.h{i}')) != '':
+            historyData.append(eval(s)) # s likes: '[doc_id, time]'
+    # historyData likes [[doc_id, time, doc_title], [xx,xx,xxx], ...]
+    return historyData
 
 
 @app.route('/login_register', methods=["GET", "POST"])
@@ -141,11 +136,11 @@ def login_register():
                 return jsonify({'state': 403, "message": '注册用户名、邮箱、密码不能为空'})
             # with app.app_context():
             res = db.create_user(db_app, data['username'], data['email'], data['password'])  # 在数据库中创建用户
-            if res[0] == 201:
+            if res[0] == 200:
                 print('用户注册：', res[2].email)
                 # 创建session对象存储用户名，将用户名存储到 session 中
                 create_session(id = res[2].id, name=res[2].name, email = res[2].email)
-                return jsonify({'state': 201, "message": res[1]})
+                return jsonify({'state': 200, "message": res[1]})
             else: return jsonify({'state': res[0], "message": res[1]})
 
         else: # 为登入请求

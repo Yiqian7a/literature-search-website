@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>文献搜索：历史记录</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/history.css">
-    <script src="/static/js/common_header.js"></script>
-</head>
-<body>
-<header>
-</header>
 
 <main class="main-container">
     <div class="title-column">
@@ -19,31 +8,3 @@
 
     </div>
 </main>
-
-
-<script>
-    var historyData = {{ historyData | safe }}
-    const historyContainer = document.getElementById("history-container");
-
-    for (let i = 0; i <= 20; i++) {
-        const historyItem = historyData[i];
-        const historyElement = document.createElement("div");
-        historyElement.classList.add("history-item");
-        historyElement.innerHTML = `
-        <a href="/details?doc_id=${historyItem[0]}">${historyItem[2]}</a>
-        <p>浏览日期：${historyItem[1]}</p>
-    `;
-        historyContainer.appendChild(historyElement);
-    }
-</script>
-
-<script src="/static/js/search.js"></script>
-<script src="/static/js/index.js"></script>
-
-<footer>
-    &copy; 糖式组. All rights reserved. &nbsp;&nbsp;&nbsp;
-    <a href="https://gitee.com/Yiqian7a/literature-search-website">前往Gitee仓库</a>
-</footer>
-
-</body>
-</html>

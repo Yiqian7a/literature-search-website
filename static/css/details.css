@@ -1,5 +1,6 @@
 
 .main-container {
+    display: flex;
     flex-direction: column;
 }
 
@@ -14,6 +15,7 @@
     display: flex;
     flex-direction: column;
 }
+
 .main-title-container div{
     display: flex;
     justify-content: space-between;
@@ -40,11 +42,15 @@
     width: 80%;
     box-shadow: 0 0 10px 0px lightgray;
 }
+#summary-container h1 {
+    text-indent: 1em;
+}
+
 #read-original{
     color: #4785d7;
 }
 
-#source-tree-container {
+.topic-modeling-container {
     padding: 10px;
     border: 1px solid #ccc;
     background-color: #efefef;
@@ -52,6 +58,29 @@
     margin: 5% 10% 10% 10%;
     width: 80%;
     box-shadow: 0 0 10px 0px lightgray;
+
+}
+
+#topic-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 300px;
+    position: relative;
+
 }
 
 
+.topic {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    box-shadow: 0 0 20px 5px rgba(231, 119, 78, 0.32);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    cursor: move;
+    user-select: none;
+}

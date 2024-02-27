@@ -1,5 +1,5 @@
 __pycache__/
-session.txt
+db_setting.json
 try.py
 .idea/
 venv/
