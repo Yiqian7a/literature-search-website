@@ -17,9 +17,10 @@ app = Flask(__name__)
 app.config.from_object(db.DevelopmentConfig) # 配置app
 
 print('secret_key: ', app.secret_key)
-if __name__ == 'app' or __name__ == '__main__':
+if __name__ == '__main__':
     with app.app_context(): # 在上下文环境中初始化数据库
         db_app = db.init_app(app)
+    session.clear()
 
 # 设置日志级别
 app.logger.setLevel(logging.INFO)

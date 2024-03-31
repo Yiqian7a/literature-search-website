@@ -43,7 +43,7 @@ RSoE_title_dict = {
 
     "UT": "入藏号",
 }
-def init_app(app, init = False):
+def init_app(app, first_write = False):
     db = SQLAlchemy(app)
     global User, RSoE, User_history, RSoE_num
     # 创建用户表单
@@ -117,13 +117,13 @@ def init_app(app, init = False):
 
         UT = db.Column(db.String(20))
 
-    if init:
+    if first_write:
         db.drop_all() # 删除所有继承自db.Model的表，即上述类对应的表单
         print("清除数据库遗留信息")
 
     db.create_all()
     # 写入文献数据
-    if init:
+    if first_write:
         print("写入文献数据中，...")
         path = "./RSoE OriginData"
         title_dict = {}
