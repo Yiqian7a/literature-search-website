@@ -12,7 +12,8 @@
 1.  先安装Mysql数据库，完成后新建一个`literaturesearch`数据库；
 2.  安装python3.10，使用`pip install -r requirement.txt`安装依赖库；
 3.  运行`init.py`设置数据库并下载nltk库所需的数据，根据提示输入数据库的用户名和密码。完成后数据库配置会保留在本地`db_setting.json`中，该文件在`database.py`中调用；
-4.  下载nltk数据可能需要很长时间，可以将项目文件中的`averaged_perceptron_tagger.zip`文件复制进`nltk_data/taggers/`中，再运行`init.py`；
+4.  由于ntlk开发团队位于国外，下载nltk数据可能需要很长时间（科学上网会快很多），如果无法下载可以将项目文件中的`averaged_perceptron_tagger.zip`文件复制进`nltk_data/taggers/`中（nltk_data文件夹在Windows平台一般位于`C:\Users\你的用户名\AppData\Roaming`下，Linux平台一般位于`/root`下，如果没有可以自己新建一个），再运行`init.py`；
+    如果初始化成功，你应该完整地看到如下输出：![image-20240331133027938](README.assets/image-20240331133027938.png)
 5.  完成以上操作后就可以使用了，注意flask app在该项目中使用`host = 0.0.0.0`运行，如不需要外网访问可以删除该参数。
 
 ###  4. 网站开发
